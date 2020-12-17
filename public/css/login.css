@@ -1,0 +1,41 @@
+@charset "utf-8";
+.width1028 {
+    width: 1028px;
+}
+.width800 {
+    width: 800px;
+}
+.textleft {
+    text-align: left;
+}
+.textcenter {
+    padding-top: 20px;
+    text-align: center;
+}
+input {
+    height: 30px;
+    width: 350px;
+}
+table th{
+    padding-top: 10px;
+}
+button.btn1 {
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+
+    /* 文字色を白色に指定 */
+    color: #fff;
+
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #4672c4;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn1:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}

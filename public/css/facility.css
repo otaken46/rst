@@ -1,0 +1,105 @@
+@charset "utf-8";
+.width320 {
+    width:320px;
+}
+.width200 {
+    width:200px;
+}
+.width100 {
+    width:100px;
+}
+.width160 {
+    width:160px;
+}
+.width120 {
+    width:120px;
+}
+.paddingleft10 {
+    padding-left: 10px;
+}
+.paddingtop10 {
+    padding-top: 10px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal-content{
+    background-color: white;
+    width: 500px;
+    height: 300px;
+    margin: 10% auto;
+}
+.textcenter {
+    padding-top: 20px;
+    text-align: center;
+}
+.textright {
+    padding-right: 10px;
+    text-align: right;
+}
+button.btn1 {
+    font-size: inherit;
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+
+    /* 文字色を白色に指定 */
+    color: #fff;
+
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #4672c4;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn1:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}
+input {
+    height: 30px;
+    width: 350px;
+}
+#error_message {
+    display: none;
+}
+.highlight {
+    background-color: red;
+}
+.marginleft400 {
+    margin-left: 400px;
+}
+.paddingleft5 {
+    padding-left: 5px;
+}
+button.btn2 {
+    font-size: inherit;
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+
+    /* 文字色を白色に指定 */
+    color: #fff;
+
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #a7a7a7;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn2:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}
