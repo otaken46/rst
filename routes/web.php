@@ -17,8 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('login_facility','LoginController@facility_index');
-Route::post('login_facility','LoginController@admin_user_check');
+Route::post('login_facility','LoginController@user_check');
 Route::get('facility','FacilityController@index');
 Route::post('facility','FacilityController@regist');
 Route::get('facility_mng','FacilityMngController@index');
 Route::post('facility_mng','FacilityMngController@regist');
+Route::get('viewer','ViewerController@index');
