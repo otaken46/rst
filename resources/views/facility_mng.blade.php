@@ -24,11 +24,10 @@ $(document).ready(function(){
         facility_id = $(this).val();
         target_id  = $(this).val();
         $('table#data tr').remove();
-        str = '<tr><th class="width200">{{config('const.label.facility_manager_name')}}</th>';
-        str += '<th class="width150">{{config('const.label.facility_manager_id')}}</th>';
-        str += '<th class="width150">{{config('const.label.password')}}</th>';
-        str += '<th class="width120">{{config('const.label.contact')}}</th>';
-        str += '<th class="width180">{{config('const.label.mail_address')}}</th></tr>';
+        str = '<tr><th class="width400">{{config('const.label.facility_manager_name')}}</th>';
+        str += '<th class="width200">{{config('const.label.facility_manager_id')}}</th>';
+        str += '<th class="width100">{{config('const.label.contact')}}</th>';
+        str += '<th class="width400">{{config('const.label.mail_address')}}</th></tr>';
         $("#data").append(str);
         $.each(facility_mng, function(key, value) {            
             if(facility_id == value['facility_id']){
@@ -36,7 +35,6 @@ $(document).ready(function(){
                 str += "<tr>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
-                str += "   <td class = 'paddingleft10' id='password'>" + value['password'] +"</td>";
                 if(value['contact'] == 1){contact_str = "〇";}
                 str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
                 str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
@@ -46,7 +44,7 @@ $(document).ready(function(){
             }
         });
         for( ; count < 15; count++){
-            str = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+            str = "<tr><td></td><td></td><td></td><td></td></tr>";
             $("#data").append(str);
         }
         $("#facility_edit_btn").css('background-color', '#a7a7a7');
