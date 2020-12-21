@@ -33,7 +33,7 @@ $(document).ready(function(){
             if(facility_id == value['facility_id']){
                 str = "";
                 str += "<tr>";
-                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"></td>";
+                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
                 if(value['contact'] == 1){contact_str = "〇";}
                 str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
