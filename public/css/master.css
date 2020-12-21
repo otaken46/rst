@@ -127,7 +127,7 @@ button.btn2:hover {
     width:1024px;
 }
 .width650 {
-    width:490px;
+    width:650px;
 }
 .width490 {
     width:490px;
@@ -167,6 +167,9 @@ button.btn2:hover {
 }
 .paddingtop10 {
     padding-top: 10px;
+}
+.paddingtop15 {
+    padding-top: 15px;
 }
 .paddingtop20 {
     padding-top: 20px;
