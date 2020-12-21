@@ -2,7 +2,7 @@
 table {
     margin-top: 10px;
     border-collapse: collapse;
-    width: 800px;
+    width: 1024px;
     font-size: inherit;
 }
 table.layout-fixed {
@@ -25,10 +25,11 @@ td {
     font: bold;
     color: white;
     margin-left: 5px;
+    padding-left: 5px;
     line-height: 50px;
 }
 .btn-area {
-    width: 800px;
+    width: 1024px;
     padding-top: 10px;
     position: relative;
     height: 50px;
@@ -54,4 +55,145 @@ td {
 }
 .height24 {
     height: 24px;
+}
+button.btn_logout {
+    font-size: inherit;
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+
+    /* 文字色を白色に指定 */
+    color: #fff;
+    
+    position: absolute;
+    right: 10px;
+    top:5px;
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #4672c4;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn_logout:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}
+button.btn1 {
+    font-size: inherit;
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+
+    /* 文字色を白色に指定 */
+    color: #fff;
+
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #4672c4;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn1:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}
+button.btn2 {
+    font-size: inherit;
+    /* 縦方向に10px、
+     * 横方向に30pxの余白を指定 */
+    padding: 10px 30px;
+    position: absolute;
+    right: 10px;
+    /* 文字色を白色に指定 */
+    color: #fff;
+
+    /* ボーダーをなくす */
+    border-style: none;
+    background-color: #a7a7a7;
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button.btn2:hover {
+    /* 透明度を20%に指定 */
+    opacity: 0.8;
+}
+.width1024 {
+    width:1024px;
+}
+.width650 {
+    width:490px;
+}
+.width490 {
+    width:490px;
+}
+.width400 {
+    width:400px;
+}
+.width350 {
+    width:350px;
+}
+.width320 {
+    width:320px;
+}
+.width250 {
+    width:250px;
+}
+.width200 {
+    width:200px;
+}
+.width180 {
+    width:180px;
+}
+.width160 {
+    width:160px;
+}
+.width150 {
+    width:150px;
+}
+.width120 {
+    width:120px;
+}
+.width100 {
+    width:100px;
+}
+.paddingleft10 {
+    padding-left: 10px;
+}
+.paddingtop10 {
+    padding-top: 10px;
+}
+.paddingtop20 {
+    padding-top: 20px;
+}
+.margintop30{
+    margin-top: 30px;
+}
+.highlight {
+    background-color: red;
+}
+.marginleft400 {
+    margin-left: 400px;
+}
+.paddingleft5 {
+    padding-left: 5px;
+}
+.textcenter {
+    text-align: center;
+}
+.textright {
+    padding-right: 10px;
+    text-align: right;
+}
+input {
+    height: 30px;
+    width: 350px;
+}
+#error_message {
+    display: none;
 }

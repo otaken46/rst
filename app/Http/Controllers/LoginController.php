@@ -47,4 +47,9 @@ class LoginController extends Controller
             return view('login_facility', compact('id','pass','errors'));
         }
     }
+    public function logout () 
+    {
+        session()->flush();
+        return redirect('login_facility');
+    }
 }

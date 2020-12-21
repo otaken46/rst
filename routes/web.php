@@ -23,3 +23,7 @@ Route::post('facility','FacilityController@regist');
 Route::get('facility_mng','FacilityMngController@index');
 Route::post('facility_mng','FacilityMngController@regist');
 Route::get('viewer','ViewerController@index');
+Route::post('viewer','ViewerController@regist');
+Route::get('patient','PatientController@index');
+Route::post('patient','PatientController@regist');
+Route::get('logout','LoginController@logout');

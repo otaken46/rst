@@ -27,7 +27,7 @@ class FacilityMngController extends Controller
                 if($request['regist_type'] == "new"){
                     $facility_mng_mst = new FacilityManagerMst();
                     $sql_result = $facility_mng_mst->insert([
-                        'facility_id' => $request['target_id'],
+                        'facility_id' => $request['facility_id'],
                         'facility_manager_name' => $request['facility_mng_name'],
                         'facility_manager_id' => $request['facility_mng_id'],
                         'password' => $request['password'],

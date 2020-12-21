@@ -10,7 +10,7 @@ use App\Http\Models\FacilityMst;
 use App\Http\Models\PatientMst;
 use Illuminate\Support\Facades\Log;
 
-class ViewerController extends Controller
+class PatientController extends Controller
 {
     public function index (Request $request) 
     {
@@ -20,40 +20,59 @@ class ViewerController extends Controller
         ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
         ->where('facility_manager_id', $request->session()->get('id'))->get();
         Log::debug($facility);
-        $viewer = ViewerMst::where('facility_id',$facility[0]['id'])->get();
-        Log::debug($facility);
-        return view('viewer', compact('viewer','facility'));
+        $patient = PatientMst::where('facility_id',$facility[0]['id'])->get();
+        Log::debug($patient);
+        $statuscount['regist_status'] = 0;
+        $statuscount['setting_status'] = 0;
+        $statuscount['monitor_status'] = 0;
+        $statuscount['treatment_status'] = 0;
+        foreach($patient as $val){
+            if($val['regist_status'] == 1){$statuscount['regist_status'] =  $statuscount['regist_status'] + 1;}
+            if($val['setting_status'] == 1){$statuscount['setting_status'] =  $statuscount['setting_status'] + 1;}
+            if($val['monitor_status'] == 1){$statuscount['monitor_status'] =  $statuscount['monitor_status'] + 1;}
+            if($val['treatment_status'] == 1){$statuscount['treatment_status'] =  $statuscount['treatment_status'] + 1;}
+        }
+        return view('patient', compact('patient','facility','statuscount'));
     }
     public function regist (Request $request) 
     {
-        if($request['viewer_name'] != ""){
+        if($request['patient_name'] != ""){
             DB::beginTransaction();
             try {
                 $sql_result = 0;
                 if($request['regist_type'] == "new"){
                     Log::debug("1111");
                     Log::debug($request);
-                    $viewer_mst = new ViewerMst();
-                    $sql_result = $viewer_mst->insert([
+                    $patient_mst = new PatientMst();
+                    $sql_result = $patient_mst->insert([
                         'facility_id' => $request['facility_id'],
-                        'viewer_name' => $request['viewer_name'],
-                        'viewer_id' => $request['viewer_id'],
-                        'mail_address' => $request['mail_address'],
+                        'patient_name' => $request['patient_name'],
+                        'patient_id' => $request['patient_id'],
                         'password' => $request['password'],
+                        'regist_status' => $request['regist_status'],
+                        'setting_status' => $request['setting_status'],
+                        'monitor_status' => $request['monitor_status'],
+                        'treatment_status' => $request['treatment_status'],
+                        'doctor' => $request['doctor'],
                         'create_date' => now(),
                     ]);
                     $res = ['result'=>'OK'];
                 }
                 if($request['regist_type'] == "update"){
                     Log::debug("2222");
-                    $viewer_mst = new ViewerMst();
-                    $sql_result = $viewer_mst
+                    $patient_mst = new PatientMst();
+                    $sql_result = $patient_mst
                     ->where('id', $request['target_id'])
                     ->update([
                         'facility_id' => $request['facility_id'],
-                        'viewer_name' => $request['viewer_name'],
+                        'patient_name' => $request['patient_name'],
+                        'patient_id' => $request['patient_id'],
                         'password' => $request['password'],
-                        'mail_address' => $request['mail_address'],
+                        'regist_status' => $request['regist_status'],
+                        'setting_status' => $request['setting_status'],
+                        'monitor_status' => $request['monitor_status'],
+                        'treatment_status' => $request['treatment_status'],
+                        'doctor' => $request['doctor'],
                         'update_date' => now(),
                     ]);
                     $res = ['result'=>'OK'];

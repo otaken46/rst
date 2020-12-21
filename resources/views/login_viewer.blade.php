@@ -27,7 +27,7 @@
                     <td><input name="pass" placeholder="パスワード" type="password" @if($pass<>"") value={{$pass}} @endif/></td>
                 </tr>
                 <tr>
-                    <td class="paddingtop20 textcenter"><button class="btn1">ログイン</button></td>
+                    <td class="textcenter"><button class="btn1">ログイン</button></td>
                 </tr>
                 </table>
             </div>

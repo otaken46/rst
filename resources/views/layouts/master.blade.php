@@ -5,19 +5,34 @@
   <meta name="viewport" content="width=device-width">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/master.css') }}">
-    <title>RSTモニタシステム</title>
+    <title>{{config('const.title')}}</title>
 </head>
 <body>
+<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
+<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+<script>
+$(document).ready(function(){
+  $('#logout').on('click', function() {
+        window.location.href = "{{ url('/logout')}}";
+  });
+});
+</script>
   <div align="center">
-    <div class="site-header">
+    <div class="site-header page-name">
       <?php
         $uri = rtrim(url()->current(),'/');
         $uri = substr($uri, strrpos($uri, '/') + 1);
         if($uri =="facility"){
-          echo "<p class='page-name'>RSTモニタシステム(施設登録)</p>";
+          echo config('const.title') . config('const.page_title.facility') . "<button class='btn_logout' id='logout'>" . config('const.btn.logout') . "</button>";
         }
         if($uri == "facility_mng"){
-          echo "<p class='page-name'>RSTモニタシステム(施設管理者登録)</p>";
+          echo config('const.title') . config('const.page_title.facility_mng') . "<button class='btn_logout' id='logout'>" . config('const.btn.logout') . "</button>";
+        }
+        if($uri == "viewer"){
+          echo config('const.title') . config('const.page_title.viewer') . "<button class='btn_logout' id='logout'>" . config('const.btn.logout') . "</button>";
+        }
+        if($uri == "patient"){
+          echo config('const.title') . config('const.page_title.patient') . "<button class='btn_logout' id='logout'>" . config('const.btn.logout') . "</button>";
         }
       ?>
     </div>

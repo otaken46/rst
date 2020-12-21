@@ -13,10 +13,26 @@
 .modal-content{
     background-color: white;
     width: 500px;
-    height: 540px;
+    height: 570px;
     margin: 5% auto;
 }
 select {
     width: 200px;
     height: 30px;
+}
+.tableleft{
+    position: absolute;
+    right: 10px;
+}
+table.ex_table {
+    border-collapse: collapse;
+    border: 0;
+}
+table.ex_table td {
+    border: 1px solid #222;
+    padding: 3px;
+}
+table.ex_table td.ex_border_e {
+    border: 0;
+    width: 20px;
 }

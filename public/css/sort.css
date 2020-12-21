@@ -1,0 +1,52 @@
+.sorttbl{
+    border-collapse: collapse;
+    width: 1024px;
+    display: table;
+    font-size: inherit;
+}
+.sorttbl tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+
+.sorttbl th:first-child,
+.sorttbl td:first-child{
+    padding-left: 16px;
+}
+.sorttbl td,
+.sorttbl th{
+    padding: 8px 8px;
+    display: table-cell;
+    vertical-align: top;
+}
+.sorttbl th{
+    color: #fff!important;
+    background-color: #4672c4!important;
+}
+
+/*--- list css ---*/
+
+.sort-btn{
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: #FFFFFF;
+    background-color: #4CAF50;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+ul.sortlist{
+    list-style-type: none;
+}
+ul.sortlist li{
+    padding: 7px;
+    border-bottom: dotted 1px black;
+}

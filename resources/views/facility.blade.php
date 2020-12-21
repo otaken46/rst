@@ -6,6 +6,7 @@
 <script>
 $(document).ready(function(){
     var click_flg = false;
+    var regist_flg = true;
     var regist_type = "new";
     var target_id = "";
     var facility_name = "";
@@ -19,7 +20,7 @@ $(document).ready(function(){
             var name = 
             $("#regist_facility_name").val(facility_name);
             $("#regist_facility_id").val(facility_id);
-            $("#regist_btn").text('更新');
+            $("#regist_btn").text('{{config('const.btn.update')}}');
             modal.style.display = 'block';
             regist_type = "update";
         }else{
@@ -31,50 +32,57 @@ $(document).ready(function(){
         var error_message = document.getElementById("error_message");
         $('#facility_name').val('');
         $('#facility_id').val('');
-        $("#regist_btn").text('登録');
+        $("#regist_btn").text('{{config('const.btn.regist')}}');
         error_message.style.display = "none";
     });
     $('#facility_management_btn').on('click', function() {
         window.location.href = "{{ url('/facility_mng')}}"; 
     });
     $('#regist_btn').on('click', function() {
-        var err = true;
-        var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-        var error_message = document.getElementById("error_message");
-        facility_name = $('#regist_facility_name').val();
-        facility_id = $('#regist_facility_id').val();
-        if(facility_name == "" || (facility_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_name))){
-            $("#error_message").text('入力してください。※記号入力不可');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(facility_id == ""　&& (err)){
-            $("#error_message").text('施設IDを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(err){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ action('FacilityController@regist') }}",
-                type: 'POST',
-                data:{'facility_name':facility_name,'facility_id':facility_id, 'regist_type':regist_type, 'target_id':target_id},
-                dataType:'json'
-            })
-            // Ajaxリクエストが成功した場合
-            .done(function(data) {
-                if (data.result == "OK") {
-                    location.reload();
-                }
-            })
-            // Ajaxリクエストが失敗した場合
-            .fail(function(data) {
-                alert("接続失敗");
-            });
+        if(regist_flg){
+            regist_flg = false;
+            var err = true;
+            var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
+            var error_message = document.getElementById("error_message");
+            facility_name = $('#regist_facility_name').val();
+            facility_id = $('#regist_facility_id').val();
+            if(facility_name == "" || (facility_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_name))){
+                $("#error_message").text('{{config('const.msg.input')}}{{config('const.msg.symbol')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(facility_id == ""　&& (err)){
+                $("#error_message").text('{{config('const.label.facility_id')}}{{config('const.text.input')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(err){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ action('FacilityController@regist') }}",
+                    type: 'POST',
+                    data:{'facility_name':facility_name,'facility_id':facility_id, 'regist_type':regist_type, 'target_id':target_id},
+                    dataType:'json'
+                })
+                // Ajaxリクエストが成功した場合
+                .done(function(data) {
+                    if (data.result == "OK") {
+                        regist_flg = true;
+                        location.reload();
+                    }
+                })
+                // Ajaxリクエストが失敗した場合
+                .fail(function(data) {
+                    alert("接続失敗");
+                    regist_flg = true;
+                });
+            }else{
+                regist_flg = true;
+            }
         }
     });
     $("#data tr").click(function() {
@@ -97,22 +105,22 @@ $(document).ready(function(){
 </script>
     <div align="center">
     <div class="btn-area">
-        <button class="btn1" id="facility_btn">施設登録</button>
-        <button class="btn1" id="facility_management_btn">施設管理者登録</a>
-        <button class="btn2 marginleft400" id="facility_edit_btn">編集</a>
+        <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
+        <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
+        <button class="btn2" id="facility_edit_btn">{{config('const.btn.edit')}}</button>
     </div>
     <table border="1" id="data">
         <tr>
-            <th class="width320" rowspan="2">施設名</th>
-            <th class="width160" rowspan="2">施設ID</th>
-            <th class="width120" rowspan="2">施設管理者</th>
-            <th colspan="4">患者数</th>
+            <th class="width320" rowspan="2">{{config('const.label.facility_name')}}</th>
+            <th class="width160" rowspan="2">{{config('const.label.facility_id')}}</th>
+            <th class="width120" rowspan="2">{{config('const.label.facility_manager')}}</th>
+            <th colspan="4">{{config('const.label.patient_count')}}</th>
         </tr>
         <tr>
-            <td class="width100 paddingleft5">登録済み</td>
-            <td class="width100 paddingleft5">設置済み</td>
-            <td class="width100 paddingleft5">モニタ中</td>
-            <td class="width100 paddingleft5">治療済み</td>
+            <td class="width100 paddingleft5">{{config('const.label.regist_status')}}</td>
+            <td class="width100 paddingleft5">{{config('const.label.setting_status')}}</td>
+            <td class="width100 paddingleft5">{{config('const.label.monitor_status')}}</td>
+            <td class="width100 paddingleft5">{{config('const.label.treatment_status')}}</td>
         </tr>
         <tbody>
             @php
@@ -166,14 +174,14 @@ $(document).ready(function(){
     <div id="modal" class="modal">
         <div class="modal-content">
             <div align="center" class="paddingleft10 paddingtop10">
-                <p>施設名<br>
-                <input class="paddingleft10" type="text" id="regist_facility_name" maxlength='20' placeholder='施設名を入力してください'><br><br>
-                施設ID<br>
-                <input class="paddingleft10" type="text" id="regist_facility_id" maxlength='20' placeholder='施設IDを入力してください'><br>
+                <p>{{config('const.label.facility_name')}}<br>
+                <input class="paddingleft10" type="text" id="regist_facility_name" maxlength='20' placeholder='{{config('const.label.facility_name')}}{{config('const.text.input')}}'><br><br>
+                {{config('const.label.facility_id')}}<br>
+                <input class="paddingleft10" type="text" id="regist_facility_id" maxlength='20' placeholder='{{config('const.label.facility_id')}}{{config('const.text.input')}}'><br>
                 <span id="error_message"></span><br>
                 </p>
-                <button class="btn1" id="regist_btn">登録</button>
-                <button class="btn1" id="cancel_btn">キャンセル</button>
+                <button class="btn1" id="regist_btn">{{config('const.btn.regist')}}</button>
+                <button class="btn1" id="cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
         </div>
     </div>

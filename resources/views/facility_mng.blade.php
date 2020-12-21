@@ -1,11 +1,10 @@
 @extends('layouts.master')
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/facility_mng.css') }}">
-<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
-<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script>
 $(document).ready(function(){
     var click_flg = false;
+    var regist_flg = true;
     var regist_type = "new";
     var target_id = "";
     var facility_id = "";
@@ -25,11 +24,11 @@ $(document).ready(function(){
         facility_id = $(this).val();
         target_id  = $(this).val();
         $('table#data tr').remove();
-        str = '<tr><th class="width200">施設管理者名</th>';
-        str += '<th class="width150">施設管理者ID</th>';
-        str += '<th class="width150">パスワード</th>';
-        str += '<th class="width120">連絡担当</th>';
-        str += '<th class="width180">eメールアドレス</th></tr>';
+        str = '<tr><th class="width200">{{config('const.label.facility_manager_name')}}</th>';
+        str += '<th class="width150">{{config('const.label.facility_manager_id')}}</th>';
+        str += '<th class="width150">{{config('const.label.password')}}</th>';
+        str += '<th class="width120">{{config('const.label.contact')}}</th>';
+        str += '<th class="width180">{{config('const.label.mail_address')}}</th></tr>';
         $("#data").append(str);
         $.each(facility_mng, function(key, value) {            
             if(facility_id == value['facility_id']){
@@ -39,7 +38,7 @@ $(document).ready(function(){
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
                 str += "   <td class = 'paddingleft10' id='password'>" + value['password'] +"</td>";
                 if(value['contact'] == 1){contact_str = "〇";}
-                str += "   <td class = 'paddingleft10' id='contact'>" + contact_str +"</td>";
+                str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
                 str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
                 str += "</tr>";
                 $("#data").append(str);
@@ -60,9 +59,14 @@ $(document).ready(function(){
             $("#regist_facility_mng_name").val(facility_mng_name);
             $("#regist_facility_mng_id").val(facility_mng_id);
             $("#regist_password").val(password);
-            $("#regist_contact").val(contact);
+            if(contact == "{{config('const.text.circle')}}"){
+                $("#regist_contact").val('1');
+
+            }else{
+                $("#regist_contact").val('0');
+            }
             $("#regist_mail_address").val(mail_address);
-            $("#regist_btn").text('更新');
+            $("#regist_btn").text('{{config('const.btn.update')}}');
             modal.style.display = 'block';
             regist_type = "update";
         }else{
@@ -72,72 +76,85 @@ $(document).ready(function(){
     $('#cancel_btn').on('click', function() {
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
+        $("#regist_facility_mng_name").val('');
+        $("#regist_facility_mng_id").val('');
+        $("#regist_password").val('');
+        $("#regist_contact").val('0');
+        $("#regist_mail_address").val('');
+        $("#regist_btn").text('{{config('const.btn.regist')}}');
         error_message.style.display = "none";
     });
     $('#facility_management_btn').on('click', function() {
-        faclity_name = "施設名/施設ID　" + $('#facility_name option:selected').text();
+        faclity_name = "{{config('const.label.facility_name_id')}}" + $('#facility_name option:selected').text();
         $('#faclity_name_val').text(faclity_name);
         facility_id = $('#facility_name option:selected').val();
         modal.style.display = 'block';
     });
     $('#regist_btn').on('click', function() {
-        var err = true;
-        facility_id = $('#facility_name option:selected').val();
-        facility_mng_name = $('#regist_facility_mng_name').val();
-        facility_mng_id = $('#regist_facility_mng_id').val();
-        password = $('#regist_password').val();
-        contact = $('#regist_contact').val();
-        mail_address = $('#regist_mail_address').val();
-        var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-        if(facility_mng_name == "" || (facility_mng_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_mng_name))){
-            $("#error_message").text('施設管理者名を入力してください。※記号入力不可');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(facility_mng_id == ""　&& (err)){
-            $("#error_message").text('施設管理者IDを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(password == ""　&& (err)){
-            $("#error_message").text('パスワードを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(mail_address == ""　&& (err)){
-            $("#error_message").text('eメールアドレスを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(err){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ action('FacilityMngController@regist') }}",
-                type: 'POST',
-                data:{
-                    'facility_mng_name':facility_mng_name,
-                    'facility_mng_id':facility_mng_id,
-                    'password':password,'contact':contact,
-                    'mail_address':mail_address,
-                    'regist_type':regist_type,
-                    'facility_id':facility_id,
-                    'target_id':target_id},
-                dataType:'json'
-            })
-            // Ajaxリクエストが成功した場合
-            .done(function(data) {
-                if (data.result == "OK") {
-                    location.reload();
-                }
-            })
-            // Ajaxリクエストが失敗した場合
-            .fail(function(data) {
-                alert("接続失敗");
-            });
+        if(regist_flg){
+            regist_flg = false;
+            var err = true;
+            facility_id = $('#facility_name option:selected').val();
+            facility_mng_name = $('#regist_facility_mng_name').val();
+            facility_mng_id = $('#regist_facility_mng_id').val();
+            password = $('#regist_password').val();
+            contact = $('#regist_contact').val();
+            mail_address = $('#regist_mail_address').val();
+            var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
+            if(facility_mng_name == "" || (facility_mng_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_mng_name))){
+                $("#error_message").text('{{config('const.label.facility_manager_name')}}{{config('const.text.input')}}{{config('const.msg.symbol')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(facility_mng_id == ""　&& (err)){
+                $("#error_message").text('{{config('const.label.facility_manager_id')}}{{config('const.text.input')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(password == ""　&& (err)){
+                $("#error_message").text('{{config('const.label.password')}}{{config('const.text.input')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(mail_address == ""　&& (err)){
+                $("#error_message").text('{{config('const.label.mail_address')}}{{config('const.text.input')}}');
+                error_message.style.display = "inline";
+                err = false;
+            }
+            if(err){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ action('FacilityMngController@regist') }}",
+                    type: 'POST',
+                    data:{
+                        'facility_mng_name':facility_mng_name,
+                        'facility_mng_id':facility_mng_id,
+                        'password':password,'contact':contact,
+                        'mail_address':mail_address,
+                        'regist_type':regist_type,
+                        'facility_id':facility_id,
+                        'target_id':target_id},
+                    dataType:'json'
+                })
+                // Ajaxリクエストが成功した場合
+                .done(function(data) {
+                    if (data.result == "OK") {
+                        regist_flg = true;
+                        location.reload();
+                    }
+                })
+                // Ajaxリクエストが失敗した場合
+                .fail(function(data) {
+                    alert("接続失敗");
+                    regist_flg = true;
+                });
+            }else{
+                regist_flg = true;
+            }
         }
     });
     $(document).on('click','#data tr', function() {
@@ -149,7 +166,7 @@ $(document).ready(function(){
                 $("#facility_edit_btn").css('background-color', '#4672c4');
                 target_id = $(this).closest('tr').find('#target_id').val();
                 facility_mng_name = $(this).closest('tr').find('#facility_manager_name').text();
-                password = $(this).closest('tr').find('#password').text();
+                password = $(this).closest('tr').find('#password').val();
                 contact = $(this).closest('tr').find('#contact').text();
                 mail_address = $(this).closest('tr').find('#mail_address').text();
                 click_flg = true;
@@ -162,12 +179,12 @@ $(document).ready(function(){
 </script>
     <div align="center">
     <div class="btn-area">
-        <button class="btn1" id="facility_btn">施設登録</button>
-        <button class="btn1" id="facility_management_btn">施設管理者登録</a>
-        <button class="btn2 marginleft400" id="facility_edit_btn">編集</a>
+        <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
+        <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
+        <button class="btn2 marginleft400" id="facility_edit_btn">{{config('const.btn.edit')}}</button>
     </div>
     <div>
-        <span>施設名</span>
+        <span>{{config('const.label.facility_name')}}</span>
         @if(isset($facility[0]->id))
             <select id="facility_name">
                 @foreach ($facility as $val)
@@ -176,28 +193,26 @@ $(document).ready(function(){
             </select>
         @else
             <select>
-                <option>施設を登録してください</option>
+                <option>{{config('const.msg.facility_regist')}}</option>
             </select>
         @endif
     </div>
     <table border="1" id="data">
             <tr>
-                <th class="width200">施設管理者名</th>
-                <th class="width150">施設管理者ID</th>
-                <th class="width150">パスワード</th>
-                <th class="width120">連絡担当</th>
-                <th class="width180">eメールアドレス</th>
+                <th class="width400">{{config('const.label.facility_manager_name')}}</th>
+                <th class="width200">{{config('const.label.facility_manager_id')}}</th>
+                <th class="width100">{{config('const.label.contact')}}</th>
+                <th class="width400">{{config('const.label.mail_address')}}</th>
             </tr>
             @php
                 $cnt = 0;
                 foreach ($facility_mng as $val){
                     if($facility[0]->id == $val->facility_id){
                         echo "<tr>";
-                            echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "></td>";
+                            echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
                             echo "<td class = 'paddingleft10' id='facility_manager_id'>" . $val->facility_manager_id . "</td>";
-                            echo "<td class = 'paddingleft10' id='password'>" . $val->password . "</td>";
                             if($val->contact != 0){
-                                echo "<td class = 'paddingleft10' id='contact'>〇</td>";
+                                echo "<td class = 'textcenter' id='contact'>" . config('const.text.circle') . "</td>";
                             }else{
                                 echo "<td></td>";
                             }
@@ -209,7 +224,7 @@ $(document).ready(function(){
                 while ($cnt < 15){
                     echo "<tr>";
                         $count = 0;
-                        while ($count < 5){
+                        while ($count < 4){
                             echo "<td></td>";
                             $count++;
                         }
@@ -223,23 +238,23 @@ $(document).ready(function(){
         <div class="modal-content paddingtop10">
             <span class="paddingleft10 " id="faclity_name_val">aaa</span><br>
              <div align="center" class="paddingleft10">
-                <p>施設管理者名<br>
+                <p>{{config('const.label.facility_manager_name')}}<br>
                 <input class="paddingleft10" type="text" id="regist_facility_mng_name" maxlength='20' placeholder='施設管理者名を入力してください'><br><br>
-                施設管理者ID<br>
+                {{config('const.label.facility_manager_id')}}<br>
                 <input class="paddingleft10" type="text" id="regist_facility_mng_id" maxlength='20' placeholder='施設管理者IDを入力してください'><br><br>
-                パスワード<br>
+                {{config('const.label.password')}}<br>
                 <input class="paddingleft10" type="text" id="regist_password" maxlength='20' placeholder='パスワードを入力してください'><br><br>
-                連絡担当<br>
+                {{config('const.label.contact')}}<br>
                 <select id="regist_contact">
                         <option value="0" selected>なし</option>
-                        <option value="1" >〇</option>
+                        <option value="1" >{{config('const.text.circle')}}</option>
                 </select><br><br>
-                eメールアドレス<br>
+                {{config('const.label.mail_address')}}<br>
                 <input class="paddingleft10" type="text" id="regist_mail_address" maxlength='256' placeholder='eメールアドレスを入力してください'><br>
                 <span id="error_message"></span><br>
                 </p>
-                <button class="btn1" id="regist_btn">登録</button>
-                <button class="btn1" id="cancel_btn">キャンセル</button>
+                <button class="btn1" id="regist_btn">{{config('const.btn.regist')}}</button>
+                <button class="btn1" id="cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
         </div>
     </div>
