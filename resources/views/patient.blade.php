@@ -25,50 +25,35 @@ $(document).ready(function(){
     $('#viewer_btn').on('click', function() {
         window.location.href = "{{ url('/viewer')}}";
     });
-    $('#viewer_name').change(function() {
-        var count = 0;
-        var contact_str = "";
-        var str = "";
-        facility_id = $(this).val();
-        target_id  = $(this).val();
-        $('table#data tr').remove();
-        str = '<tr><th class="width200">施設管理者名</th>';
-        str += '<th class="width150">施設管理者ID</th>';
-        str += '<th class="width150">パスワード</th>';
-        str += '<th class="width120">連絡担当</th>';
-        str += '<th class="width180">eメールアドレス</th></tr>';
-        $("#data").append(str);
-        $.each(viewer, function(key, value) {            
-            if(facility_id == value['facility_id']){
-                str = "";
-                str += "<tr>";
-                str += "   <td class = 'paddingleft10' id='viewer_name'>" + value['viewer_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"></td>";
-                str += "   <td class = 'paddingleft10' id='viewer_id'>" + value['viewer_id'] +"</td>";
-                str += "   <td class = 'paddingleft10' id='password'>" + value['password'] +"</td>";
-                if(value['contact'] == 1){contact_str = "〇";}
-                str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
-                str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
-                str += "</tr>";
-                $("#data").append(str);
-                count += 1;
-            }
-        });
-        for( ; count < 15; count++){
-            str = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
-            $("#data").append(str);
-        }
-        $("#facility_edit_btn").css('background-color', '#a7a7a7');
-    });
     $('#facility_edit_btn').on('click', function() {
         var val = $("#facility_edit_btn").css('background-color');
         if(click_flg){
             $("#regist_patient_name").val(patient_name);
             $("#regist_patient_id").val(patient_id);
             $("#regist_password").val(password);
-            $("#regist_regist_status").val(regist_status);
-            $("#regist_setting_status").val(setting_status);
-            $("#regist_monitor_status").val(monitor_status);
-            $("#regist_treatment_status").val(treatment_status);
+            if(regist_status == "{{config('const.text.circle')}}"){
+                $("#regist_regist_status").val('1');
+            }else{
+                $("#regist_regist_status").val('0');
+            }
+            if(setting_status == "{{config('const.text.circle')}}"){
+                $("#regist_setting_status").val('1');
+
+            }else{
+                $("#regist_setting_status").val('0');
+            }
+            if(monitor_status == "{{config('const.text.circle')}}"){
+                $("#regist_monitor_status").val('1');
+
+            }else{
+                $("#regist_monitor_status").val('0');
+            }
+            if(treatment_status == "{{config('const.text.circle')}}"){
+                $("#regist_treatment_status").val('1');
+
+            }else{
+                $("#regist_treatment_status").val('0');
+            }
             $("#regist_doctor").val(doctor);
             $("#regist_btn").text('更新');
             modal.style.display = 'block';
@@ -170,10 +155,10 @@ $(document).ready(function(){
                 target_id = $(this).closest('tr').find('#target_id').val();
                 patient_id = $(this).closest('tr').find('#patient_id').val();
                 password = $(this).closest('tr').find('#password').val();
-                regist_status = $(this).closest('tr').find('#regist_status').val();
-                setting_status = $(this).closest('tr').find('#setting_status').val();
-                monitor_status = $(this).closest('tr').find('#monitor_status').val();
-                treatment_status = $(this).closest('tr').find('#treatment_status').val();
+                regist_status = $(this).closest('tr').find('#regist_status').text();
+                setting_status = $(this).closest('tr').find('#setting_status').text();
+                monitor_status = $(this).closest('tr').find('#monitor_status').text();
+                treatment_status = $(this).closest('tr').find('#treatment_status').text();
                 doctor = $(this).closest('tr').find('#doctor').text();
                 click_flg = true;
         }else{
@@ -235,10 +220,7 @@ $(document).ready(function(){
                 $cnt = 0;
                 foreach ($patient as $val){
                     echo "<tr class='item'>";
-                        echo "<td class = 'paddingleft10' id='patient_name'>" . $val->patient_name . 
-                            "<input type='hidden' id='target_id' value=" . $val->id . ">
-                             <input type='hidden' id='patient_id' value=" . $val->patient_id . ">
-                             <input type='hidden' id='password' value=" . $val->password . "></td>";
+                        echo "<td class = 'paddingleft10' id='patient_name'>" . $val->patient_name . "</td>";
                         echo "<td class = 'paddingleft10' id='create_date'>" .  date('Y年m月d日',  strtotime($val->create_date)) . "</td>";
                         if($val->regist_status != 0){
                             echo "<td class = 'textcenter' id='regist_status' value=" . $val->regist_status . ">〇</td>";
@@ -261,6 +243,9 @@ $(document).ready(function(){
                             echo "<td></td>";
                         }
                         echo "<td class = 'paddingleft10' id='doctor'>" . $val->doctor . "</td>";
+                        echo   "<input type='hidden' id='target_id' value=" . $val->id . ">
+                             <input type='hidden' id='patient_id' value=" . $val->patient_id . ">
+                             <input type='hidden' id='password' value=" . $val->password . ">";
                     echo "</tr>";
                     $cnt++;
                 }

@@ -19,40 +19,6 @@ $(document).ready(function(){
     $('#viewer_btn').on('click', function() {
         modal.style.display = 'block';
     });
-    $('#viewer_name').change(function() {
-        var count = 0;
-        var contact_str = "";
-        var str = "";
-        facility_id = $(this).val();
-        target_id  = $(this).val();
-        $('table#data tr').remove();
-        str = '<tr><th class="width200">施設管理者名</th>';
-        str += '<th class="width150">施設管理者ID</th>';
-        str += '<th class="width150">パスワード</th>';
-        str += '<th class="width120">連絡担当</th>';
-        str += '<th class="width180">eメールアドレス</th></tr>';
-        $("#data").append(str);
-        $.each(viewer, function(key, value) {            
-            if(facility_id == value['facility_id']){
-                str = "";
-                str += "<tr>";
-                str += "   <td class = 'paddingleft10' id='viewer_name'>" + value['viewer_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"></td>";
-                str += "   <td class = 'paddingleft10' id='viewer_id'>" + value['viewer_id'] +"</td>";
-                str += "   <td class = 'paddingleft10' id='password'>" + value['password'] +"</td>";
-                if(value['contact'] == 1){contact_str = "〇";}
-                str += "   <td class = 'paddingleft10' id='contact'>" + contact_str +"</td>";
-                str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
-                str += "</tr>";
-                $("#data").append(str);
-                count += 1;
-            }
-        });
-        for( ; count < 15; count++){
-            str = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
-            $("#data").append(str);
-        }
-        $("#facility_edit_btn").css('background-color', '#a7a7a7');
-    });
     $('#facility_edit_btn').on('click', function() {
         var val = $("#facility_edit_btn").css('background-color');
         if(click_flg){
