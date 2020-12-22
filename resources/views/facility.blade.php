@@ -1,8 +1,6 @@
 @extends('layouts.master')
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/facility.css') }}">
-<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
-<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script>
 $(document).ready(function(){
     var click_flg = false;
@@ -27,6 +25,15 @@ $(document).ready(function(){
             $("#facility_edit_btn").css('outline','none');
         }
     });
+    $('#facility_delete_btn').on('click', function() {
+        if(click_flg){
+            $('#faclity_name').text(facility_name +'{{config('const.text.delete')}}');
+            delmodal.style.display = 'block';
+            regist_type = "delete";
+        }else{
+            $("#facility_edit_btn").css('outline','none');
+        }
+    });
     $('#cancel_btn').on('click', function() {
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
@@ -35,6 +42,9 @@ $(document).ready(function(){
         $("#regist_btn").text('{{config('const.btn.regist')}}');
         error_message.style.display = "none";
     });
+    $('#delete_cancel_btn').on('click', function() {
+        delmodal.style.display = 'none';
+    })
     $('#facility_management_btn').on('click', function() {
         window.location.href = "{{ url('/facility_mng')}}"; 
     });
@@ -92,12 +102,14 @@ $(document).ready(function(){
         if(!selected && (val != undefined)){
                 $(this).addClass("highlight");
                 $("#facility_edit_btn").css('background-color', '#4672c4');
+                $("#facility_delete_btn").css('background-color', '#4672c4');
                 target_id = $(this).closest('tr').find('#target_id').val();
                 facility_id = $(this).closest('tr').find('#facility_id').text();
                 facility_name = $(this).closest('tr').find('#facility_name').text();
                 click_flg = true;
         }else{
             $("#facility_edit_btn").css('background-color', '#a7a7a7');
+            $("#facility_delete_btn").css('background-color', '#a7a7a7');
             click_flg = false;
         }
     });
@@ -108,6 +120,7 @@ $(document).ready(function(){
         <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
         <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
         <button class="btn2" id="facility_edit_btn">{{config('const.btn.edit')}}</button>
+        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <table border="1" id="data">
         <tr>
@@ -182,6 +195,17 @@ $(document).ready(function(){
                 </p>
                 <button class="btn1" id="regist_btn">{{config('const.btn.regist')}}</button>
                 <button class="btn1" id="cancel_btn">{{config('const.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+    <div id="delmodal" class="delmodal">
+        <div class="delmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="faclity_name"></span><br>
+                </p>
+                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
         </div>
     </div>

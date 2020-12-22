@@ -39,11 +39,11 @@ class LoginController extends Controller
                 $request->session()->put('id', $request->id);
                 return redirect('/viewer');
             }else{
-                $errors ="err_002";
+                $errors = config('const.msg.err_001');
                 return view('login_facility', compact('id','pass','errors'));
             }
         }else{
-            $errors ="err_001";
+            $errors = config('const.msg.err_001');
             return view('login_facility', compact('id','pass','errors'));
         }
     }

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('not_access');
 });
 Route::get('login_facility','LoginController@facility_index');
 Route::post('login_facility','LoginController@user_check');

@@ -3,8 +3,6 @@
 <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
 <link rel="stylesheet" href="{{ asset('css/sort.css') }}">
 <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
-<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
-<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/sort.js') }}"></script>
 <script>
 $(document).ready(function(){
@@ -24,6 +22,15 @@ $(document).ready(function(){
     var facility_id = facility[0]['id'];
     $('#viewer_btn').on('click', function() {
         window.location.href = "{{ url('/viewer')}}";
+    });
+    $('#facility_delete_btn').on('click', function() {
+        if(click_flg){
+            $('#faclity_mng_name').text(patient_name +'{{config('const.text.delete')}}');
+            delmodal.style.display = 'block';
+            regist_type = "delete";
+        }else{
+            $("#facility_edit_btn").css('outline','none');
+        }
     });
     $('#facility_edit_btn').on('click', function() {
         var val = $("#facility_edit_btn").css('background-color');
@@ -75,6 +82,9 @@ $(document).ready(function(){
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
         error_message.style.display = "none";
+    });
+     $('#delete_cancel_btn').on('click', function() {
+        delmodal.style.display = 'none';
     });
     $('#patient_btn').on('click', function() {
         modal.style.display = 'block';
@@ -152,6 +162,7 @@ $(document).ready(function(){
         if(!selected && (patient_name != "")){
                 $(this).addClass("highlight");
                 $("#facility_edit_btn").css('background-color', '#4672c4');
+                $("#facility_delete_btn").css('background-color', '#4672c4');
                 target_id = $(this).closest('tr').find('#target_id').val();
                 patient_id = $(this).closest('tr').find('#patient_id').val();
                 password = $(this).closest('tr').find('#password').val();
@@ -163,6 +174,7 @@ $(document).ready(function(){
                 click_flg = true;
         }else{
             $("#facility_edit_btn").css('background-color', '#a7a7a7');
+            $("#facility_delete_btn").css('background-color', '#a7a7a7');
             click_flg = false;
         }
     });
@@ -173,16 +185,17 @@ $(document).ready(function(){
         <button class="btn1" id="viewer_btn">閲覧者登録</button>
         <button class="btn1" id="patient_btn">患者登録</button>
         <button class="btn2" id="facility_edit_btn">編集</button>
+        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <div class="btn-area">
         <table class="width1024 ex_table">
-        <td class="width400 paddingleft10">施設名</td>
-        <td class="width200 paddingleft10">施設ID</td>
+        <td class="width400"><span class = "paddingleft10">施設名</span></td>
+        <td class="width200"><span class = "paddingleft10">施設ID</span></td>
         <th class="width400"></th>
-        <td class="width120 paddingleft10">登録済み</td>
-        <td class="width120 paddingleft10">設置済み</td>
-        <td class="width120 paddingleft10">モニタ中</td>
-        <td class="width120 paddingleft10">治療済み</td>
+        <td class="width120"><span class = "paddingleft10">登録済み</span></td>
+        <td class="width120"><span class = "paddingleft10">設置済み</span></td>
+        <td class="width120"><span class = "paddingleft10">モニタ中</span></td>
+        <td class="width120"><span class = "paddingleft10">治療済み</span></td>
         <tr>
             <td>
                 <span class = "paddingleft10">{{$facility[0]['facility_name']}}</span>
@@ -330,6 +343,17 @@ $(document).ready(function(){
             <span id="error_message"></span><br>
             <button class="btn1" id="regist_btn">登録</button>
             <button class="btn1" id="cancel_btn">キャンセル</button>
+            </div>
+        </div>
+    </div>
+    <div id="delmodal" class="delmodal">
+        <div class="delmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="faclity_mng_name"></span><br>
+                </p>
+                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
         </div>
     </div>

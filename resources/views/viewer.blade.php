@@ -1,8 +1,6 @@
 @extends('layouts.master')
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/viewer.css') }}">
-<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
-<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script>
 $(document).ready(function(){
     var click_flg = false;
@@ -33,6 +31,15 @@ $(document).ready(function(){
             $("#facility_edit_btn").css('outline','none');
         }
     });
+    $('#facility_delete_btn').on('click', function() {
+        if(click_flg){
+            $('#faclity_mng_name').text(viewer_name +'{{config('const.text.delete')}}');
+            delmodal.style.display = 'block';
+            regist_type = "delete";
+        }else{
+            $("#facility_edit_btn").css('outline','none');
+        }
+    });
     $('#cancel_btn').on('click', function() {
         $("#regist_viewer_name").val('');
         $("#regist_viewer_id").val('');
@@ -42,6 +49,9 @@ $(document).ready(function(){
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
         error_message.style.display = "none";
+    });
+    $('#delete_cancel_btn').on('click', function() {
+        delmodal.style.display = 'none';
     });
     $('#patient_btn').on('click', function() {
         window.location.href = "{{ url('/patient')}}";
@@ -111,6 +121,7 @@ $(document).ready(function(){
         if(!selected && (viewer_id != "")){
                 $(this).addClass("highlight");
                 $("#facility_edit_btn").css('background-color', '#4672c4');
+                $("#facility_delete_btn").css('background-color', '#4672c4');
                 target_id = $(this).closest('tr').find('#target_id').val();
                 viewer_name = $(this).closest('tr').find('#viewer_name').text();
                 password = $(this).closest('tr').find('#password').val();
@@ -119,6 +130,7 @@ $(document).ready(function(){
                 click_flg = true;
         }else{
             $("#facility_edit_btn").css('background-color', '#a7a7a7');
+            $("#facility_delete_btn").css('background-color', '#a7a7a7');
             click_flg = false;
         }
     });
@@ -129,6 +141,7 @@ $(document).ready(function(){
         <button class="btn1" id="viewer_btn">閲覧者登録</button>
         <button class="btn1" id="patient_btn">患者登録</button>
         <button class="btn2" id="facility_edit_btn">編集</button>
+        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <div class="btn-area">
         <table border="1" class="width400">
@@ -188,6 +201,17 @@ $(document).ready(function(){
                 </p>
                 <button class="btn1" id="regist_btn">登録</button>
                 <button class="btn1" id="cancel_btn">キャンセル</button>
+            </div>
+        </div>
+    </div>
+    <div id="delmodal" class="delmodal">
+        <div class="delmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="faclity_mng_name"></span><br>
+                </p>
+                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
         </div>
     </div>

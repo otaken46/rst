@@ -19,7 +19,7 @@ class FacilityMngController extends Controller
     }
     public function regist (Request $request) 
     {
-        if($request['facility_mng_name'] != ""){
+        if($request['regist_type'] != ""){
             Log::debug($request);
             DB::beginTransaction();
             try {
@@ -50,6 +50,16 @@ class FacilityMngController extends Controller
                         'contact' => $request['contact'],
                         'mail_address' => $request['mail_address'],
                         'update_date' => now(),
+                    ]);
+                    $res = ['result'=>'OK'];
+                }
+                if($request['regist_type'] == "delete"){
+                    $facility_mng_mst = new FacilityManagerMst();
+                    Log::debug("hogehoge3");
+                    $sql_result = $facility_mng_mst
+                    ->where('id', $request['target_id'])
+                    ->save([
+                        'delete_date' => now(),
                     ]);
                     $res = ['result'=>'OK'];
                 }

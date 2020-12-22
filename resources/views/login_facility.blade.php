@@ -13,7 +13,7 @@
         <div  align="center">
             <div class="width1028">
                 <h1><span>RSTモニタシステム(登録)</span></h1>
-                <table border="0">
+                <table border="0" class="layout-fixed">
                 <tr>
                     <th class="textleft">ID</th>
                 </tr>
@@ -27,14 +27,16 @@
                     <td><input name="pass" placeholder="パスワード" type="password" @if($pass<>"") value={{$pass}} @endif/></td>
                 </tr>
                 <tr>
-                    <td class="paddingtop20 textcenter"><button class="btn1">ログイン</button></td>
+                    <td>
+                        @if($errors<>"")
+                            {{$errors}}
+                        @endif
+                    <td><br>
                 </tr>
-                </table>
+                </table><br>
             </div>
+                <button class="btn1">ログイン</button>
         </div>
-        @if($errors<>"")
-            {{$errors}}
-        @endif
     </form>
     </body>
 </html>

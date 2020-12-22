@@ -50,6 +50,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($this->isHttpException($exception)) {
+            if($exception->getStatusCode() == 404){
+                return redirect('/');
+            }
+        }else{
+            if($exception instanceof \Illuminate\Session\TokenMismatchException){
+                $message = config('const.tkn_missmuch');
+                $res = ['result'=>'NG','message'=>$message];
+                $result = json_encode($res);
+                return response($result);
+            }
+        }
         return parent::render($request, $exception);
     }
 }
