@@ -19,6 +19,7 @@ class FacilityMngController extends Controller
     }
     public function regist (Request $request) 
     {
+        Log::debug($request);
         if($request['regist_type'] != ""){
             Log::debug($request);
             DB::beginTransaction();
@@ -28,8 +29,8 @@ class FacilityMngController extends Controller
                     $facility_mng_mst = new FacilityManagerMst();
                     $sql_result = $facility_mng_mst->insert([
                         'facility_id' => $request['facility_id'],
-                        'facility_manager_name' => $request['facility_mng_name'],
-                        'facility_manager_id' => $request['facility_mng_id'],
+                        'facility_manager_name' => $request['facility_manager_name'],
+                        'facility_manager_id' => $request['facility_manager_id'],
                         'password' => $request['password'],
                         'contact' => $request['contact'],
                         'mail_address' => $request['mail_address'],
@@ -44,8 +45,8 @@ class FacilityMngController extends Controller
                     ->where('id', $request['target_id'])
                     ->where('facility_id', $request['facility_id'])
                     ->update([
-                        'facility_manager_name' => $request['facility_mng_name'],
-                        'facility_manager_id' => $request['facility_mng_id'],
+                        'facility_manager_name' => $request['facility_manager_name'],
+                        'facility_manager_id' => $request['facility_manager_id'],
                         'password' => $request['password'],
                         'contact' => $request['contact'],
                         'mail_address' => $request['mail_address'],

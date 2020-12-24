@@ -46,12 +46,14 @@ class ViewerController extends Controller
                 }
                 if($request['regist_type'] == "update"){
                     Log::debug("2222");
+                    Log::debug($request);
                     $viewer_mst = new ViewerMst();
                     $sql_result = $viewer_mst
                     ->where('id', $request['target_id'])
                     ->update([
                         'facility_id' => $request['facility_id'],
                         'viewer_name' => $request['viewer_name'],
+                        'viewer_id' => $request['viewer_id'],
                         'password' => $request['password'],
                         'mail_address' => $request['mail_address'],
                         'update_date' => now(),

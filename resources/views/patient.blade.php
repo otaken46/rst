@@ -6,9 +6,6 @@
 <script src="{{ asset('js/sort.js') }}"></script>
 <script>
 $(document).ready(function(){
-    var click_flg = false;
-    var regist_type = "new";
-    var target_id = "";
     var patient_name = "";
     var patient_id = "";
     var password = "";
@@ -23,50 +20,28 @@ $(document).ready(function(){
     $('#viewer_btn').on('click', function() {
         window.location.href = "{{ url('/viewer')}}";
     });
-    $('#facility_delete_btn').on('click', function() {
+    $('#delete_btn').on('click', function() {
         if(click_flg){
             $('#faclity_mng_name').text(patient_name +'{{config('const.text.delete')}}');
             delmodal.style.display = 'block';
             regist_type = "delete";
         }else{
-            $("#facility_edit_btn").css('outline','none');
+            $("#edit_btn").css('outline','none');
         }
     });
-    $('#facility_edit_btn').on('click', function() {
-        var val = $("#facility_edit_btn").css('background-color');
-        if(click_flg){
-            $("#regist_patient_name").val(patient_name);
-            $("#regist_patient_id").val(patient_id);
-            $("#regist_password").val(password);
-            if(regist_status == "{{config('const.text.circle')}}"){
-                $("#regist_regist_status").val('1');
-            }else{
-                $("#regist_regist_status").val('0');
-            }
-            if(setting_status == "{{config('const.text.circle')}}"){
-                $("#regist_setting_status").val('1');
-
-            }else{
-                $("#regist_setting_status").val('0');
-            }
-            if(monitor_status == "{{config('const.text.circle')}}"){
-                $("#regist_monitor_status").val('1');
-
-            }else{
-                $("#regist_monitor_status").val('0');
-            }
-            if(treatment_status == "{{config('const.text.circle')}}"){
-                $("#regist_treatment_status").val('1');
-
-            }else{
-                $("#regist_treatment_status").val('0');
-            }
-            $("#regist_doctor").val(doctor);
-            $("#regist_btn").text('更新');
-            modal.style.display = 'block';
+    $('#edit_btn').on('click', function() {
+        ids = {'regist_patient_name':patient_name,
+            'regist_patient_id':patient_id,
+            'regist_password':password,
+            'regist_doctor':doctor};
+        circles = {'regist_regist_status':regist_status,
+            'regist_setting_status':setting_status,
+            'regist_monitor_status':monitor_status,
+            'regist_treatment_status':treatment_status}
+        words = ['{{config('const.btn.update')}}', '{{config('const.text.circle')}}'];
+        var type = edit_btn_click(click_flg, ids, words, circles);
+        if(type){
             regist_type = "update";
-        }else{
-            $("#facility_edit_btn").css('outline','none');
         }
     });
     $('#cancel_btn').on('click', function() {
@@ -99,27 +74,10 @@ $(document).ready(function(){
         monitor_status = $('#regist_monitor_status').val();
         treatment_status = $('#regist_treatment_status').val();
         doctor = $('#regist_doctor').val();
-        var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-        if(patient_name == "" || (patient_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(patient_name))){
-            $("#error_message").text('患者名を入力してください。※記号入力不可');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(patient_id == ""　&& (err)){
-            $("#error_message").text('患者IDを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(password == ""　&& (err)){
-            $("#error_message").text('パスワードを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(doctor == ""　&& (err)){
-            $("#error_message").text('担当医を入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
+        err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
+        if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
+        if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+        if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}
         if(err){
             $.ajaxSetup({
                 headers: {
@@ -156,27 +114,19 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        var selected = $(this).hasClass("highlight");
-        patient_name = $(this).closest('tr').find('#patient_name').text();
-        $("#data tr").removeClass("highlight");
-        if(!selected && (patient_name != "")){
-                $(this).addClass("highlight");
-                $("#facility_edit_btn").css('background-color', '#4672c4');
-                $("#facility_delete_btn").css('background-color', '#4672c4');
-                target_id = $(this).closest('tr').find('#target_id').val();
-                patient_id = $(this).closest('tr').find('#patient_id').val();
-                password = $(this).closest('tr').find('#password').val();
-                regist_status = $(this).closest('tr').find('#regist_status').text();
-                setting_status = $(this).closest('tr').find('#setting_status').text();
-                monitor_status = $(this).closest('tr').find('#monitor_status').text();
-                treatment_status = $(this).closest('tr').find('#treatment_status').text();
-                doctor = $(this).closest('tr').find('#doctor').text();
-                click_flg = true;
-        }else{
-            $("#facility_edit_btn").css('background-color', '#a7a7a7');
-            $("#facility_delete_btn").css('background-color', '#a7a7a7');
-            click_flg = false;
-        }
+        ids = {'target_id':'val', 'patient_name':'txt', 'patient_id':'val', 'password':'val', 'regist_status':'txt', 'setting_status':'txt', 'monitor_status':'txt', 'treatment_status':'txt', 'doctor':'txt'};
+        var arr_select = select_data(this,ids);
+        target_id = arr_select['target_id'];
+        patient_name = arr_select['patient_name'];
+        patient_id = arr_select['patient_id'];
+        password = arr_select['password'];
+        regist_status = arr_select['regist_status'];
+        setting_status = arr_select['setting_status'];
+        monitor_status = arr_select['monitor_status'];
+        treatment_status = arr_select['treatment_status'];
+        doctor = arr_select['doctor'];
+        click_flg = arr_select['click_flg'];
+        target_id = arr_select['target_id'];
     });
 });
 </script>
@@ -184,8 +134,8 @@ $(document).ready(function(){
     <div class="btn-area">
         <button class="btn1" id="viewer_btn">閲覧者登録</button>
         <button class="btn1" id="patient_btn">患者登録</button>
-        <button class="btn2" id="facility_edit_btn">編集</button>
-        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
+        <button class="btn2" id="edit_btn">編集</button>
+        <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <div class="btn-area">
         <table class="width1024 ex_table">

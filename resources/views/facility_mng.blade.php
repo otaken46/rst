@@ -3,13 +3,9 @@
 <link rel="stylesheet" href="{{ asset('css/facility_mng.css') }}">
 <script>
 $(document).ready(function(){
-    var click_flg = false;
-    var regist_flg = true;
-    var regist_type = "new";
-    var target_id = "";
     var facility_id = "";
-    var facility_mng_name = "";
-    var facility_mng_id = "";
+    var facility_manager_name = "";
+    var facility_manager_id = "";
     var password = "";
     var contact = "";
     var mail_address = "";
@@ -47,43 +43,36 @@ $(document).ready(function(){
             str = "<tr><td></td><td></td><td></td><td></td></tr>";
             $("#data").append(str);
         }
-        $("#facility_edit_btn").css('background-color', '#a7a7a7');
+        $("#edit_btn").css('background-color', '#a7a7a7');
     });
-    $('#facility_edit_btn').on('click', function() {
-        facility_name = $('#facility_name option:selected').text();
-        if(click_flg){
+    $('#edit_btn').on('click', function() {
+        ids = {'regist_facility_manager_name':facility_manager_name,
+            'regist_facility_manager_id':facility_manager_id,
+            'regist_password':password,
+            'regist_mail_address':mail_address};
+        circles = {'regist_contact':contact}
+        words = ['{{config('const.btn.update')}}', '{{config('const.text.circle')}}'];
+        var type = edit_btn_click(click_flg, ids, words, circles);
+        if(type){
+            facility_name = $('#facility_name option:selected').text();
             $('#faclity_name_val').text(facility_name);
-            $("#regist_facility_mng_name").val(facility_mng_name);
-            $("#regist_facility_mng_id").val(facility_mng_id);
-            $("#regist_password").val(password);
-            if(contact == "{{config('const.text.circle')}}"){
-                $("#regist_contact").val('1');
-
-            }else{
-                $("#regist_contact").val('0');
-            }
-            $("#regist_mail_address").val(mail_address);
-            $("#regist_btn").text('{{config('const.btn.update')}}');
-            modal.style.display = 'block';
             regist_type = "update";
-        }else{
-            $("#facility_edit_btn").css('outline','none');
         }
     });
-    $('#facility_delete_btn').on('click', function() {
+    $('#delete_btn').on('click', function() {
         if(click_flg){
-            $('#faclity_mng_name').text(facility_mng_name +'{{config('const.text.delete')}}');
+            $('#faclity_mng_name').text(facility_manager_name +'{{config('const.text.delete')}}');
             delmodal.style.display = 'block';
             regist_type = "delete";
         }else{
-            $("#facility_edit_btn").css('outline','none');
+            $("#edit_btn").css('outline','none');
         }
     });
     $('#cancel_btn').on('click', function() {
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
-        $("#regist_facility_mng_name").val('');
-        $("#regist_facility_mng_id").val('');
+        $("#regist_facility_manager_name").val('');
+        $("#regist_facility_manager_id").val('');
         $("#regist_password").val('');
         $("#regist_contact").val('0');
         $("#regist_mail_address").val('');
@@ -104,32 +93,15 @@ $(document).ready(function(){
             regist_flg = false;
             var err = true;
             facility_id = $('#facility_name option:selected').val();
-            facility_mng_name = $('#regist_facility_mng_name').val();
-            facility_mng_id = $('#regist_facility_mng_id').val();
+            facility_manager_name = $('#regist_facility_manager_name').val();
+            facility_manager_id = $('#regist_facility_manager_id').val();
             password = $('#regist_password').val();
             contact = $('#regist_contact').val();
             mail_address = $('#regist_mail_address').val();
-            var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-            if(facility_mng_name == "" || (facility_mng_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_mng_name))){
-                $("#error_message").text('{{config('const.label.facility_manager_name')}}{{config('const.text.input')}}{{config('const.msg.symbol')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
-            if(facility_mng_id == ""　&& (err)){
-                $("#error_message").text('{{config('const.label.facility_manager_id')}}{{config('const.text.input')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
-            if(password == ""　&& (err)){
-                $("#error_message").text('{{config('const.label.password')}}{{config('const.text.input')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
-            if(mail_address == ""　&& (err)){
-                $("#error_message").text('{{config('const.label.mail_address')}}{{config('const.text.input')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
+            err = data_check("name", facility_manager_name, '{{config('const.label.facility_manager_name')}}{{config('const.msg.err_003')}}');
+            if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
+            if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+            if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
             if(err){
                 $.ajaxSetup({
                     headers: {
@@ -140,8 +112,8 @@ $(document).ready(function(){
                     url: "{{ action('FacilityMngController@regist') }}",
                     type: 'POST',
                     data:{
-                        'facility_mng_name':facility_mng_name,
-                        'facility_mng_id':facility_mng_id,
+                        'facility_manager_name':facility_manager_name,
+                        'facility_manager_id':facility_manager_id,
                         'password':password,'contact':contact,
                         'mail_address':mail_address,
                         'regist_type':regist_type,
@@ -179,8 +151,8 @@ $(document).ready(function(){
                     url: "{{ action('FacilityMngController@regist') }}",
                     type: 'POST',
                     data:{
-                        'facility_mng_name':"",
-                        'facility_mng_id':"",
+                        'facility_manager_name':"",
+                        'facility_manager_id':"",
                         'password':"",
                         'contact':"",
                         'mail_address':"",
@@ -207,24 +179,15 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        var selected = $(this).hasClass("highlight");
-        facility_mng_id = $(this).closest('tr').find('#facility_manager_id').text();
-        $("#data tr").removeClass("highlight");
-        if(!selected && (facility_mng_id != "")){
-                $(this).addClass("highlight");
-                $("#facility_edit_btn").css('background-color', '#4672c4');
-                $("#facility_delete_btn").css('background-color', '#4672c4');
-                target_id = $(this).closest('tr').find('#target_id').val();
-                facility_mng_name = $(this).closest('tr').find('#facility_manager_name').text();
-                password = $(this).closest('tr').find('#password').val();
-                contact = $(this).closest('tr').find('#contact').text();
-                mail_address = $(this).closest('tr').find('#mail_address').text();
-                click_flg = true;
-        }else{
-            $("#facility_edit_btn").css('background-color', '#a7a7a7');
-            $("#facility_delete_btn").css('background-color', '#a7a7a7');
-            click_flg = false;
-        }
+        ids = {'target_id':'val', 'facility_manager_name':'txt', 'facility_manager_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt'};
+        var arr_select = select_data(this,ids);
+        target_id = arr_select['target_id'];
+        facility_manager_name = arr_select['facility_manager_name'];
+        facility_manager_id = arr_select['facility_manager_id'];
+        password = arr_select['password'];
+        contact = arr_select['contact'];
+        mail_address = arr_select['mail_address'];
+        click_flg = arr_select['click_flg'];
     });
 });
 </script>
@@ -232,8 +195,8 @@ $(document).ready(function(){
     <div class="btn-area">
         <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
         <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
-        <button class="btn2" id="facility_edit_btn">{{config('const.btn.edit')}}</button>
-        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
+        <button class="btn2" id="edit_btn">{{config('const.btn.edit')}}</button>
+        <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <div>
         <span>{{config('const.label.facility_name')}}</span>
@@ -291,9 +254,9 @@ $(document).ready(function(){
             <span class="paddingleft10 " id="faclity_name_val">aaa</span><br>
              <div align="center" class="paddingleft10">
                 <p>{{config('const.label.facility_manager_name')}}<br>
-                <input class="paddingleft10" type="text" id="regist_facility_mng_name" maxlength='20' placeholder='施設管理者名を入力してください'><br><br>
+                <input class="paddingleft10" type="text" id="regist_facility_manager_name" maxlength='20' placeholder='施設管理者名を入力してください'><br><br>
                 {{config('const.label.facility_manager_id')}}<br>
-                <input class="paddingleft10" type="text" id="regist_facility_mng_id" maxlength='20' placeholder='施設管理者IDを入力してください'><br><br>
+                <input class="paddingleft10" type="text" id="regist_facility_manager_id" maxlength='20' placeholder='施設管理者IDを入力してください'><br><br>
                 {{config('const.label.password')}}<br>
                 <input class="paddingleft10" type="text" id="regist_password" maxlength='20' placeholder='パスワードを入力してください'><br><br>
                 {{config('const.label.contact')}}<br>

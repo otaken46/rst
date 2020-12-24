@@ -3,42 +3,33 @@
 <link rel="stylesheet" href="{{ asset('css/facility.css') }}">
 <script>
 $(document).ready(function(){
-    var click_flg = false;
-    var regist_flg = true;
-    var regist_type = "new";
-    var target_id = "";
     var facility_name = "";
     var facility_id = "";
     $('#facility_btn').on('click', function() {
         modal.style.display = 'block';
     });
-    $('#facility_edit_btn').on('click', function() {
-        var val = $("#facility_edit_btn").css('background-color');
-        if(click_flg){
-            var name = 
-            $("#regist_facility_name").val(facility_name);
-            $("#regist_facility_id").val(facility_id);
-            $("#regist_btn").text('{{config('const.btn.update')}}');
-            modal.style.display = 'block';
+    $('#edit_btn').on('click', function() {
+        ids = {'regist_facility_name':facility_name, 'regist_facility_id':facility_id};
+        words = ['{{config('const.btn.update')}}', '{{config('const.text.circle')}}'];
+        var type = edit_btn_click(click_flg,ids,words);
+        if(type){
             regist_type = "update";
-        }else{
-            $("#facility_edit_btn").css('outline','none');
         }
     });
-    $('#facility_delete_btn').on('click', function() {
+    $('#delete_btn').on('click', function() {
         if(click_flg){
             $('#faclity_name').text(facility_name +'{{config('const.text.delete')}}');
             delmodal.style.display = 'block';
             regist_type = "delete";
         }else{
-            $("#facility_edit_btn").css('outline','none');
+            $("#edit_btn").css('outline','none');
         }
     });
     $('#cancel_btn').on('click', function() {
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
-        $('#facility_name').val('');
-        $('#facility_id').val('');
+        $('#regist_facility_name').val('');
+        $('#regist_facility_id').val('');
         $("#regist_btn").text('{{config('const.btn.regist')}}');
         error_message.style.display = "none";
     });
@@ -52,20 +43,10 @@ $(document).ready(function(){
         if(regist_flg){
             regist_flg = false;
             var err = true;
-            var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-            var error_message = document.getElementById("error_message");
             facility_name = $('#regist_facility_name').val();
             facility_id = $('#regist_facility_id').val();
-            if(facility_name == "" || (facility_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(facility_name))){
-                $("#error_message").text('{{config('const.msg.input')}}{{config('const.msg.symbol')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
-            if(facility_id == ""　&& (err)){
-                $("#error_message").text('{{config('const.label.facility_id')}}{{config('const.text.input')}}');
-                error_message.style.display = "inline";
-                err = false;
-            }
+            err = data_check("facility_name", facility_name, '{{config('const.label.facility_name')}}{{config('const.text.input')}}{{config('const.msg.symbol')}}');
+            if(err){err = data_check("id_pass", facility_id, '{{config('const.label.facility_id')}}{{config('const.msg.err_004')}}');}
             if(err){
                 $.ajaxSetup({
                     headers: {
@@ -96,22 +77,12 @@ $(document).ready(function(){
         }
     });
     $("#data tr").click(function() {
-        var selected = $(this).hasClass("highlight");
-        var val = $(this).closest('tr').find('input').val();
-        $("#data tr").removeClass("highlight");
-        if(!selected && (val != undefined)){
-                $(this).addClass("highlight");
-                $("#facility_edit_btn").css('background-color', '#4672c4');
-                $("#facility_delete_btn").css('background-color', '#4672c4');
-                target_id = $(this).closest('tr').find('#target_id').val();
-                facility_id = $(this).closest('tr').find('#facility_id').text();
-                facility_name = $(this).closest('tr').find('#facility_name').text();
-                click_flg = true;
-        }else{
-            $("#facility_edit_btn").css('background-color', '#a7a7a7');
-            $("#facility_delete_btn").css('background-color', '#a7a7a7');
-            click_flg = false;
-        }
+        ids = {'target_id':'val', 'facility_id':'txt', 'facility_name':'txt'};
+        var arr_select = select_data(this,ids);
+        target_id = arr_select['target_id'];
+        facility_id = arr_select['facility_id'];
+        facility_name = arr_select['facility_name'];
+        click_flg = arr_select['click_flg'];
     });
 });
 </script>
@@ -119,8 +90,8 @@ $(document).ready(function(){
     <div class="btn-area">
         <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
         <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
-        <button class="btn2" id="facility_edit_btn">{{config('const.btn.edit')}}</button>
-        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
+        <button class="btn2" id="edit_btn">{{config('const.btn.edit')}}</button>
+        <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <table border="1" id="data">
         <tr>

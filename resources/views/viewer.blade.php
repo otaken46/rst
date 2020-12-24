@@ -3,9 +3,6 @@
 <link rel="stylesheet" href="{{ asset('css/viewer.css') }}">
 <script>
 $(document).ready(function(){
-    var click_flg = false;
-    var regist_type = "new";
-    var target_id = "";
     var viewer_name = "";
     var viewer_id = "";
     var password = "";
@@ -17,27 +14,24 @@ $(document).ready(function(){
     $('#viewer_btn').on('click', function() {
         modal.style.display = 'block';
     });
-    $('#facility_edit_btn').on('click', function() {
-        var val = $("#facility_edit_btn").css('background-color');
-        if(click_flg){
-            $("#regist_viewer_name").val(viewer_name);
-            $("#regist_viewer_id").val(viewer_id);
-            $("#regist_password").val(password);
-            $("#regist_mail_address").val(mail_address);
-            $("#regist_btn").text('更新');
-            modal.style.display = 'block';
+    $('#edit_btn').on('click', function() {
+        ids = {'regist_viewer_name':viewer_name,
+            'regist_viewer_id':viewer_id,
+            'regist_password':password,
+            'regist_mail_address':mail_address};
+        words = ['{{config('const.btn.update')}}'];
+        var type = edit_btn_click(click_flg, ids, words);
+        if(type){
             regist_type = "update";
-        }else{
-            $("#facility_edit_btn").css('outline','none');
         }
     });
-    $('#facility_delete_btn').on('click', function() {
+    $('#delete_btn').on('click', function() {
         if(click_flg){
             $('#faclity_mng_name').text(viewer_name +'{{config('const.text.delete')}}');
             delmodal.style.display = 'block';
             regist_type = "delete";
         }else{
-            $("#facility_edit_btn").css('outline','none');
+            $("#edit_btn").css('outline','none');
         }
     });
     $('#cancel_btn').on('click', function() {
@@ -62,27 +56,10 @@ $(document).ready(function(){
         viewer_id = $('#regist_viewer_id').val();
         password = $('#regist_password').val();
         mail_address = $('#regist_mail_address').val();
-        var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-        if(viewer_name == "" || (viewer_name.match(/^[ 　\r\n\t]*$/)) || (reg.test(viewer_name))){
-            $("#error_message").text('閲覧者名を入力してください。※記号入力不可');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(viewer_id == ""　&& (err)){
-            $("#error_message").text('閲覧者IDを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(password == ""　&& (err)){
-            $("#error_message").text('パスワードを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
-        if(mail_address == ""　&& (err)){
-            $("#error_message").text('eメールアドレスを入力してください。');
-            error_message.style.display = "inline";
-            err = false;
-        }
+        err = data_check("name", viewer_name, '{{config('const.label.viewer_name')}}{{config('const.msg.err_003')}}');
+        if(err){err = data_check("id_pass", viewer_id, '{{config('const.label.viewer_id')}}{{config('const.msg.err_004')}}');}
+        if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+            if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
         if(err){
             $.ajaxSetup({
                 headers: {
@@ -115,24 +92,15 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        var selected = $(this).hasClass("highlight");
-        viewer_id = $(this).closest('tr').find('#viewer_id').text();
-        $("#data tr").removeClass("highlight");
-        if(!selected && (viewer_id != "")){
-                $(this).addClass("highlight");
-                $("#facility_edit_btn").css('background-color', '#4672c4');
-                $("#facility_delete_btn").css('background-color', '#4672c4');
-                target_id = $(this).closest('tr').find('#target_id').val();
-                viewer_name = $(this).closest('tr').find('#viewer_name').text();
-                password = $(this).closest('tr').find('#password').val();
-                contact = $(this).closest('tr').find('#contact').text();
-                mail_address = $(this).closest('tr').find('#mail_address').text();
-                click_flg = true;
-        }else{
-            $("#facility_edit_btn").css('background-color', '#a7a7a7');
-            $("#facility_delete_btn").css('background-color', '#a7a7a7');
-            click_flg = false;
-        }
+        ids = {'target_id':'val', 'viewer_name':'txt', 'viewer_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt'};
+        var arr_select = select_data(this,ids);
+        target_id = arr_select['target_id'];
+        viewer_name = arr_select['viewer_name'];
+        viewer_id = arr_select['viewer_id'];
+        password = arr_select['password'];
+        contact = arr_select['contact'];
+        mail_address = arr_select['mail_address'];
+        click_flg = arr_select['click_flg'];
     });
 });
 </script>
@@ -140,8 +108,8 @@ $(document).ready(function(){
     <div class="btn-area">
         <button class="btn1" id="viewer_btn">閲覧者登録</button>
         <button class="btn1" id="patient_btn">患者登録</button>
-        <button class="btn2" id="facility_edit_btn">編集</button>
-        <button class="btn3" id="facility_delete_btn">{{config('const.btn.delete')}}</button>
+        <button class="btn2" id="edit_btn">編集</button>
+        <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <div class="btn-area">
         <table border="1" class="width400">

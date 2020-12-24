@@ -37,6 +37,12 @@ return [
         'contact' => '連絡担当',
         'mail_address' => 'eメールアドレス',
         'facility_name_id' => '施設名/施設ID  ',
+        'viewer_name' => '閲覧者名',
+        'viewer_id' => '閲覧者ID',
+        'patient_name' => '患者名',
+        'patient_id' => '患者ID',
+        'regist_date' => '登録年月日',
+        'doctor' => '担当医',
     ),
     'text'=>array(
         'circle' => '〇',
@@ -49,6 +55,8 @@ return [
         'facility_regist' => '施設を登録してください',
         'err_001' => 'ID、パスワードが正しくありません。',
         'err_002' => 'パスワードが正しくありません。',
+        'err_003' => 'は全角カナで入力してください',
+        'err_004' => 'は半角英数で入力してください',
     ),
     //トークンミスマッチ
     'tkn_missmuch' => "セッションが切れました。<br>お手数ですがシェアアプリを<br>再起動してください。",

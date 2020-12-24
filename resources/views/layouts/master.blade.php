@@ -10,7 +10,15 @@
 <body>
 <script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
 <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('js/function.js') }}"></script>
 <script>
+var ids = {};
+var words = [];
+var circles ={};
+var click_flg = false;
+var regist_flg = true;
+var regist_type = "new";
+var target_id = "";
 $(document).ready(function(){
   $('#logout').on('click', function() {
         window.location.href = "{{ url('/logout')}}";
