@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Log;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Log::debug('デバッグメッセージ2999');
 Route::get('/', function () {
     return view('not_access');
 });
@@ -27,3 +27,10 @@ Route::post('viewer','ViewerController@regist');
 Route::get('patient','PatientController@index');
 Route::post('patient','PatientController@regist');
 Route::get('logout','LoginController@logout');
+Route::get('logout_viewer','LoginController@logout_viewer');
+Route::get('login_viewer','LoginController@viewer_index');
+Route::post('login_viewer','LoginController@viewer_check');
+Route::get('list_patient','ListPatientController@index');
+Route::post('list_patient','ListPatientController@regist');
+Route::get('chart_patient','ChartPatientController@index');
+Route::post('chart_patient','ChartPatientController@regist');

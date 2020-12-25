@@ -8,7 +8,7 @@
     <title>{{config('const.title')}}</title>
 </head>
 <body>
-<script src="{{asset('/js/jquery-3.5.0.min.js')}}"></script>
+<script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
 <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/function.js') }}"></script>
 <script>

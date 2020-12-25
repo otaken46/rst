@@ -56,10 +56,7 @@ class Handler extends ExceptionHandler
             }
         }else{
             if($exception instanceof \Illuminate\Session\TokenMismatchException){
-                $message = config('const.tkn_missmuch');
-                $res = ['result'=>'NG','message'=>$message];
-                $result = json_encode($res);
-                return response($result);
+                return redirect('/');
             }
         }
         return parent::render($request, $exception);
