@@ -26,8 +26,8 @@ class ListPatientController extends Controller
             if(isset($viewer_mst_data[0]['id'])){
                 $facility_name = $viewer_mst_data[0]['facility_name'];
                 $patient_mst_data = DB::select('SELECT DISTINCT
-                    rst.patient_mst.patient_name
-                    , rst.patient_mst.patient_id
+                    db_rst.patient_mst.patient_name
+                    , db_rst.patient_mst.patient_id
                     , tbl3.tbl3_id
                     , tbl3.tbl3_patient_id
                     , tbl3.tbl3_doc_date
@@ -39,7 +39,7 @@ class ListPatientController extends Controller
                     , tbl3.tbl3_total_taido_pc
                     , tbl3.tbl3_note
                 FROM
-                    rst.patient_mst 
+                    db_rst.patient_mst 
                     LEFT JOIN ( 
                         SELECT
                             tbl1.id as tbl3_id
@@ -53,8 +53,8 @@ class ListPatientController extends Controller
                             , tbl1.total_taido_pc as tbl3_total_taido_pc
                             , tbl1.note as tbl3_note
                         FROM
-                            rst.final_output7 AS tbl1 
-                            LEFT JOIN rst.final_output7 AS tbl2 
+                            db_rst.final_output7 AS tbl1 
+                            LEFT JOIN db_rst.final_output7 AS tbl2 
                                 ON ( 
                                     tbl1.patient_id = tbl2.patient_id 
                                     AND tbl1.doc_date < tbl2.doc_date
@@ -62,9 +62,9 @@ class ListPatientController extends Controller
                         WHERE
                             tbl2.id IS NULL
                     ) AS tbl3 
-                        ON tbl3.tbl3_patient_id = rst.patient_mst.patient_id 
+                        ON tbl3.tbl3_patient_id = db_rst.patient_mst.patient_id 
                 WHERE
-                    rst.patient_mst.facility_id = ? 
+                    db_rst.patient_mst.facility_id = ? 
                     AND tbl3.tbl3_doc_date IS NOT NULL', [$viewer_mst_data[0]['id']]);
                 $cnt = 0;
                 $date ="";
