@@ -61,15 +61,15 @@
   ーーーーーーーーーーーーーーーーーーーー
       ※ ↓リストを表示するためのダミーのデータです
       ※ バックエンドとの連携後、削除してください
-  -->
-  <script type="text/javascript" src="{{asset('/js/flont/_sampleUserDataList.js')}}"></script>
+  
+  <script type="text/javascript" src="{{asset('/js/flont/_sampleUserDataList.js')}}"></script>-->
     <!--
   ーーーーーーーーーーーーーーーーーーーー
-
+-->
   <script type="text/javascript">
   var data = @json($list_patient);
   var flag_pink = [5, 9, 14, 18, 22];
-  var flag_yellow = [7, 15, 20];-->
+  var flag_yellow = [7, 15, 20];
   </script>
   <!-- ライブラリ：ベース -->
   <script type="text/javascript" src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
