@@ -44,7 +44,7 @@ class ChartPatientController extends Controller
                 $chart_patient[$date]['note'] = $val['note'];
             }
             Log::debug("222");
-            $new_date = date('Y/m/d h:i',  strtotime($val['doc_date']));
+            $new_date = date('Y/m/d h:i',  strtotime($new_date));
             return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient'));
         }else{
             $errors = '';

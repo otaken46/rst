@@ -61,7 +61,7 @@ function chartDataSet(date = "today") {
     }
     for(var cnt = 90; cnt > 0 ;cnt--){
         if(cnt == 90){
-            today.setDate(today.getDate() - cnt);
+            today.setDate(today.getDate() - (cnt - 1));
         }else{
             today.setDate(today.getDate() + 1);
         }
