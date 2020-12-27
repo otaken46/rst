@@ -118,6 +118,10 @@
       ※ ↓グラフと数値リストを表示するためのダミーのデータです
       ※ バックエンドとの連携後、削除してください
   -->
+  <script type="text/javascript">
+  var data = @json($chart_patient);
+  var old_date = '{{$old_date}}';
+  </script>
   <script type="text/javascript" src="{{asset('/js/flont/_sampleChartDataY.js')}}"></script>
   <!--
   ーーーーーーーーーーーーーーーーーーーー
@@ -160,11 +164,14 @@
       ※ バックエンドとの連携後、削除してください
   -->
   <script type="text/javascript">
+    $(document).ready(function(){
+       $("#chart_idName").text('{{$patient_id}}');
+    });
     $(document).on("click", "#title_name", function(){
-       location.href = "list.html"
+       window.location.href = "{{ url('/list_patient')}}";
     });
     $(document).on("click", "#logout", function(){
-      location.href = "login.html"
+      window.location.href = "{{ url('/logout_viewer')}}";
     });
   </script>
   <!--

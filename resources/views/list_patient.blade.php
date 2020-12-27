@@ -94,7 +94,9 @@
        $("#list_userName").text('{{$facility_name}}');
      });
      $(document).on("click", ".list_row", function(){
-       location.href = "chart.html"
+       var patient_id = $(this).closest('tr').find('.sorting_1').text();
+       var url = "{{url('/chart_patient')}}" + "?patient_id=" + patient_id;
+       window.location.href = url;
      });
      $(document).on("click", "#logout", function(){
        window.location.href = "{{ url('/logout_viewer')}}";

@@ -120,6 +120,7 @@ function exchangeDropdownText(jQueryElm){
 //グラフを再描画して、数値リストを作成する関数
 function reDraw() {
   currentDate = flatpickr.formatDate(latestDatePicker.selectedDates[0], "Y-m-d");
+  chartDataSet(currentDate);
   $.when(
     setStartEndDates(currentDate) //表示する日付と属性の値を変更する
   ).done(function() {

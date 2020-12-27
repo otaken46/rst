@@ -8,7 +8,6 @@ use App\Http\Models\ViewerMst;
 use App\Http\Models\FacilityManagerMst;
 use App\Http\Models\FacilityMst;
 use App\Http\Models\PatientMst;
-use App\Http\Models\FinalOutput7Mst;
 use Illuminate\Support\Facades\Log;
 
 class ListPatientController extends Controller
