@@ -20,15 +20,19 @@ class ChartPatientController extends Controller
             $chart_data =  FinalOutput::where('patient_id',$patient_id)->get();
             $chart_patient = array();
             $old_date = "";
-            
+            $new_date = "";
             foreach($chart_data as $val){
                 $date = date('Y-m-d',  strtotime($val['doc_date']));
                 if($old_date == ""){
                     $old_date = $date;
+                    $new_date = $val['doc_date'];
                 }else{
                     if($old_date > $date){
                         $old_date = $date;
                     }
+                }
+                if($val['doc_date'] > $new_date){
+                    $new_date = $val['doc_date'];
                 }
                 $chart_patient[$date]['mean_respr'] = round($val['mean_respr'],0);
                 $chart_patient[$date]['mean_cvr'] = round($val['mean_cvr'],0);
@@ -40,8 +44,8 @@ class ChartPatientController extends Controller
                 $chart_patient[$date]['note'] = $val['note'];
             }
             Log::debug("222");
-            Log::debug($old_date);
-            return view('chart_patient', compact('patient_id','old_date','chart_patient'));
+            $new_date = date('Y/m/d h:i',  strtotime($val['doc_date']));
+            return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient'));
         }else{
             $errors = '';
             $id = '';

@@ -15,10 +15,10 @@
 
 <body class="p_chart">
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light justify-content-between">
-    <a id="title_name" href="javascript:void(0)"><i class="fas fa-arrow-left"></i><span class="pr-2">患者ID：<span id="chart_idName">00001</span></span><span class="font-weight-normal chart_updateText d-none d-sm-inline">(<span id="chart_upDate">2021/12/19 7:02</span> 更新)</span></a>
+    <a id="title_name" href="javascript:void(0)"><i class="fas fa-arrow-left"></i><span class="pr-2">患者ID：<span id="chart_idName">00001</span></span><span class="font-weight-normal chart_updateText d-none d-sm-inline">(<span id="chart_upDate">{{$new_date}}</span> 更新)</span></a>
     <ul class="navbar-nav flex-row">
       <li class="nav-item mr-3 d-none d-sm-block">
-        <span class="nav-link disabled">医療機関：<span id="list_userName">〇〇〇〇病院</span></span>
+        <span class="nav-link disabled">医療機関：<span id="list_userName">{{ Session::get('facility_name') }}</span></span>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">メニュー</a>
