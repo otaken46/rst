@@ -47,6 +47,7 @@ $(document).ready(function(){
                 if(err){err = data_check("id_pass", facility_id, '{{config('const.label.facility_id')}}{{config('const.msg.err_004')}}');}
             }
             if(err){
+                error_message.style.display = "none";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

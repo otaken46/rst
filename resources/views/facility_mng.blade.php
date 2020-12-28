@@ -10,25 +10,17 @@ $(document).ready(function(){
     var contact = "";
     var mail_address = "";
     var facility_mng = @json($facility_mng);
-    $('#facility_btn').on('click', function() {
-        window.location.href = "{{ url('/facility')}}";
-    });
-    $('#facility_name').change(function() {
-        var count = 0;
-        var contact_str = "";
-        var str = "";
-        facility_id = $(this).val();
-        target_id  = $(this).val();
-        $('table#data tr').remove();
-        str = '<tr><th class="width300">{{config('const.label.facility_manager_name')}}</th>';
-        str += '<th class="width230">{{config('const.label.facility_manager_id')}}</th>';
-        str += '<th class="width94">{{config('const.label.contact')}}</th>';
-        str += '<th class="width400">{{config('const.label.mail_address')}}</th></tr>';
-        $("#data").append(str);
-        $.each(facility_mng, function(key, value) {            
+    var count = 0;
+    var contact_str = "";
+    var str = "";
+    if('{{$default_facility_id}}' != ""){
+        facility_id = '{{$default_facility_id}}';
+        $('#facility_name').val("{{$default_facility_id}}");
+        $('table#data #item').remove();
+        $.each(facility_mng, function(key, value) {
             if(facility_id == value['facility_id']){
                 str = "";
-                str += "<tr>";
+                str += "<tr id='item' class='item'>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
                 if(value['contact'] == 1){contact_str = "〇";}
@@ -40,7 +32,35 @@ $(document).ready(function(){
             }
         });
         for( ; count < 15; count++){
-            str = "<tr><td></td><td></td><td></td><td></td></tr>";
+            str = "<tr id='item'><td></td><td></td><td></td><td></td></tr>";
+            $("#data").append(str);
+        }
+    }
+    $('#facility_btn').on('click', function() {
+        window.location.href = "{{ url('/facility')}}";
+    });
+    $('#facility_name').change(function() {
+        count = 0;
+        contact_str = "";
+        str = "";
+        facility_id = $(this).val();
+        $('table#data #item').remove();
+        $.each(facility_mng, function(key, value) {
+            if(facility_id == value['facility_id']){
+                str = "";
+                str += "<tr id ='item' class='item'>";
+                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
+                str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
+                if(value['contact'] == 1){contact_str = "〇";}
+                str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
+                str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
+                str += "</tr>";
+                $("#data").append(str);
+                count += 1;
+            }
+        });
+        for( ; count < 15; count++){
+            str = "<tr id ='item'><td></td><td></td><td></td><td></td></tr>";
             $("#data").append(str);
         }
         $("#edit_btn").css('background-color', '#a7a7a7');
@@ -56,6 +76,7 @@ $(document).ready(function(){
         if(type){
             facility_name = $('#facility_name option:selected').text();
             $('#faclity_name_val').text(facility_name);
+            $("#regist_facility_manager_id").prop('disabled', true);
             regist_type = "update";
         }
     });
@@ -77,32 +98,37 @@ $(document).ready(function(){
         $("#regist_contact").val('0');
         $("#regist_mail_address").val('');
         $("#regist_btn").text('{{config('const.btn.regist')}}');
+        $("#regist_facility_manager_id").prop('disabled', false);
         error_message.style.display = "none";
     });
     $('#delete_cancel_btn').on('click', function() {
         delmodal.style.display = 'none';
     });
     $('#facility_management_btn').on('click', function() {
+        regist_type = "new";
         faclity_name = "{{config('const.label.facility_name_id')}}" + $('#facility_name option:selected').text();
         $('#faclity_name_val').text(faclity_name);
         facility_id = $('#facility_name option:selected').val();
         modal.style.display = 'block';
     });
-    $('#regist_btn').on('click', function() {
+    $('#regist_btn,#delete_exe_btn').on('click', function() {
         if(regist_flg){
             regist_flg = false;
             var err = true;
-            facility_id = $('#facility_name option:selected').val();
-            facility_manager_name = $('#regist_facility_manager_name').val();
-            facility_manager_id = $('#regist_facility_manager_id').val();
-            password = $('#regist_password').val();
-            contact = $('#regist_contact').val();
-            mail_address = $('#regist_mail_address').val();
-            err = data_check("name", facility_manager_name, '{{config('const.label.facility_manager_name')}}{{config('const.msg.err_003')}}');
-            if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
-            if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
-            if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
+            if(regist_type != "delete"){
+                facility_id = $('#facility_name option:selected').val();
+                facility_manager_name = $('#regist_facility_manager_name').val();
+                facility_manager_id = $('#regist_facility_manager_id').val();
+                password = $('#regist_password').val();
+                contact = $('#regist_contact').val();
+                mail_address = $('#regist_mail_address').val();
+                err = data_check("name", facility_manager_name, '{{config('const.label.facility_manager_name')}}{{config('const.msg.err_003')}}');
+                if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
+                if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+                if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
+            }
             if(err){
+                error_message.style.display = "none";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -125,57 +151,28 @@ $(document).ready(function(){
                 .done(function(data) {
                     if (data.result == "OK") {
                         regist_flg = true;
-                        location.reload();
                     }
+                    $('#result').text(data.message);
+                    resultmodal.style.display = 'block';
                 })
                 // Ajaxリクエストが失敗した場合
                 .fail(function(data) {
-                    alert("接続失敗");
-                    regist_flg = true;
+                    regist_flg = false;
+                    $('#result').text('{{config('const.result.ACCESS_NG')}}');
+                    resultmodal.style.display = 'block';
                 });
             }else{
                 regist_flg = true;
             }
         }
     });
-    $('#delete_btn').on('click', function() {
+    $("#result_btn").click(function() {
         if(regist_flg){
-            regist_flg = false;
-            if(target_id !=""){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: "{{ action('FacilityMngController@regist') }}",
-                    type: 'POST',
-                    data:{
-                        'facility_manager_name':"",
-                        'facility_manager_id':"",
-                        'password':"",
-                        'contact':"",
-                        'mail_address':"",
-                        'regist_type':regist_type,
-                        'facility_id':"",
-                        'target_id':target_id},
-                    dataType:'json'
-                })
-                // Ajaxリクエストが成功した場合
-                .done(function(data) {
-                    if (data.result == "OK") {
-                        regist_flg = true;
-                        location.reload();
-                    }
-                })
-                // Ajaxリクエストが失敗した場合
-                .fail(function(data) {
-                    alert("接続失敗");
-                    regist_flg = true;
-                });
-            }else{
-                regist_flg = true;
-            }
+            url = "{{url('/facility_mng')}}" + "?facility_id=" + facility_id;
+            window.location.href = url;
+        }else{
+            regist_flg = true;
+            resultmodal.style.display = 'none';
         }
     });
     $(document).on('click','#data tr', function() {
@@ -212,18 +209,18 @@ $(document).ready(function(){
             </select>
         @endif
     </div>
-    <table border="1" id="data" class="layout-fixed">
+    <table border="1" id="data" class="sorttbl">
             <tr>
-                <th class="width300">{{config('const.label.facility_manager_name')}}</th>
-                <th class="width230">{{config('const.label.facility_manager_id')}}</th>
-                <th class="width94">{{config('const.label.contact')}}</th>
-                <th class="width400">{{config('const.label.mail_address')}}</th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width300">{{config('const.label.facility_manager_name')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width230">{{config('const.label.facility_manager_id')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width94">{{config('const.label.contact')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width400">{{config('const.label.mail_address')}}<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;
                 foreach ($facility_mng as $val){
                     if($facility[0]->id == $val->facility_id){
-                        echo "<tr>";
+                        echo "<tr id ='item' class='item'>";
                             echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
                             echo "<td class = 'paddingleft10' id='facility_manager_id'>" . $val->facility_manager_id . "</td>";
                             if($val->contact != 0){
@@ -237,7 +234,7 @@ $(document).ready(function(){
                     }
                 }
                 while ($cnt < 15){
-                    echo "<tr>";
+                    echo "<tr id ='item'>";
                         $count = 0;
                         while ($count < 4){
                             echo "<td></td>";
@@ -279,8 +276,18 @@ $(document).ready(function(){
                 <p>
                 <span id="faclity_mng_name"></span><br>
                 </p>
-                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_exe_btn">{{config('const.btn.delete')}}</button>
                 <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+    <div id="resultmodal" class="resultmodal">
+        <div class="resultmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="result"></span><br>
+                </p>
+                <button class="btn1" id="result_btn">OK</button>
             </div>
         </div>
     </div>

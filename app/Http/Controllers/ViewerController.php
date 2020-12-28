@@ -14,14 +14,17 @@ class ViewerController extends Controller
 {
     public function index (Request $request) 
     {
-//        $user_id = $request->session()->get('id');
-        Log::debug('hoge');
-        $facility = FacilityManagerMst::select('facility_mst.id','facility_mst.facility_id','facility_mst.facility_name')
-        ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
-        ->where('facility_manager_id', $request->session()->get('id'))->get();
-        Log::debug($facility);
-        $viewer = ViewerMst::where('facility_id',$facility[0]['id'])->get();
-        Log::debug($facility);
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+            $facility = FacilityManagerMst::select('facility_mst.id','facility_mst.facility_id','facility_mst.facility_name')
+            ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
+            ->where('facility_manager_id', $request->session()->get('id'))->get();
+            $viewer = ViewerMst::where('delete_date', NULL)->where('facility_id',$facility[0]['id'])->get();
+        }else{
+            $errors = '';
+            $id = '';
+            $pass = '';
+            return view('login_facility', compact('id','pass','errors'));
+        }
         return view('viewer', compact('viewer','facility'));
     }
     public function regist (Request $request) 
@@ -30,40 +33,61 @@ class ViewerController extends Controller
             DB::beginTransaction();
             try {
                 $sql_result = 0;
+                $message = "";
                 if($request['regist_type'] == "new"){
-                    Log::debug("1111");
-                    Log::debug($request);
-                    $viewer_mst = new ViewerMst();
-                    $sql_result = $viewer_mst->insert([
-                        'facility_id' => $request['facility_id'],
-                        'viewer_name' => $request['viewer_name'],
-                        'viewer_id' => $request['viewer_id'],
-                        'mail_address' => $request['mail_address'],
-                        'password' => $request['password'],
-                        'create_date' => now(),
-                    ]);
-                    $res = ['result'=>'OK'];
+                    $message = config('const.btn.regist');
+                    $dupe = $this::dupe_id_check($request['viewer_id']);
+                    if($dupe){
+                        $viewer_mst = new ViewerMst();
+                        $sql_result = $viewer_mst->insert([
+                            'facility_id' => $request['facility_id'],
+                            'viewer_name' => $request['viewer_name'],
+                            'viewer_id' => $request['viewer_id'],
+                            'mail_address' => $request['mail_address'],
+                            'password' => $request['password'],
+                            'create_date' => now(),
+                        ]);
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{ 
+                        $sql_result = 1;
+                        $res = ['result'=>'NG','message'=>config('const.label.viewer_id') . config('const.result.DUPE_ID')];
+                    }
                 }
                 if($request['regist_type'] == "update"){
-                    Log::debug("2222");
-                    Log::debug($request);
+                    $message = config('const.btn.update');
+                    $dupe = $this::dupe_id_check($request['viewer_id']);
+                    if($dupe){
+                        $viewer_mst = new ViewerMst();
+                        $sql_result = $viewer_mst
+                        ->where('id', $request['target_id'])
+                        ->update([
+                            'facility_id' => $request['facility_id'],
+                            'viewer_name' => $request['viewer_name'],
+                            'viewer_id' => $request['viewer_id'],
+                            'password' => $request['password'],
+                            'mail_address' => $request['mail_address'],
+                            'update_date' => now(),
+                        ]);
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        $sql_result = 1;
+                        $res = ['result'=>'NG','message'=>config('const.label.viewer_id') . config('const.result.DUPE_ID')];
+                    }
+                }
+                if($request['regist_type'] == "delete"){
+                    $message = config('const.btn.delete');
                     $viewer_mst = new ViewerMst();
                     $sql_result = $viewer_mst
                     ->where('id', $request['target_id'])
                     ->update([
-                        'facility_id' => $request['facility_id'],
-                        'viewer_name' => $request['viewer_name'],
-                        'viewer_id' => $request['viewer_id'],
-                        'password' => $request['password'],
-                        'mail_address' => $request['mail_address'],
-                        'update_date' => now(),
+                        'delete_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>$message . config('const.result.NG')];
                 $result = json_encode($res);
                 return $result;
             }
@@ -71,12 +95,14 @@ class ViewerController extends Controller
                 $result = json_encode($res);
                 return $result;
             }else{
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>config('const.result.DB_NG')];
                 $result = json_encode($res);
                 return $result;
             }
         }else{
-
+            $res = ['result'=>'NG','message'=>config('const.result.NAME_NG')];
+            $result = json_encode($res);
+            return $result;
         }
     }
 }

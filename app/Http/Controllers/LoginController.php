@@ -37,6 +37,8 @@ class LoginController extends Controller
             $request->session()->put('id', $request->id);
         }
         if($pass == config('const.admin_pass')){
+            $request->session()->put('id', $request->id);
+            $request->session()->put('pass', $request->pass);
             return redirect('/facility');
         }
         $facility_mng_mst = new FacilityManagerMst();
@@ -46,6 +48,7 @@ class LoginController extends Controller
             $sql_result = FacilityManagerMst::where('facility_manager_id', $id)->where('password', $pass)->get();
             if(isset($sql_result[0]['id'])){
                 $request->session()->put('id', $request->id);
+                $request->session()->put('pass', $request->pass);
                 return redirect('/viewer');
             }else{
                 $errors = config('const.msg.err_001');

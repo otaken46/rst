@@ -61,53 +61,74 @@ $(document).ready(function(){
     $('#patient_btn').on('click', function() {
         modal.style.display = 'block';
     });
-    $('#regist_btn').on('click', function() {
-        var err = true;
-        patient_name = $('#regist_patient_name').val();
-        patient_id = $('#regist_patient_id').val();
-        password = $('#regist_password').val();
-        regist_status = $('#regist_regist_status').val();
-        setting_status = $('#regist_setting_status').val();
-        monitor_status = $('#regist_monitor_status').val();
-        treatment_status = $('#regist_treatment_status').val();
-        doctor = $('#regist_doctor').val();
-        err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
-        if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
-        if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
-        if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}
-        if(err){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ action('PatientController@regist') }}",
-                type: 'POST',
-                data:{
-                    'patient_name':patient_name,
-                    'patient_id':patient_id,
-                    'password':password,
-                    'regist_status':regist_status,
-                    'setting_status':setting_status,
-                    'monitor_status':monitor_status,
-                    'treatment_status':treatment_status,
-                    'doctor':doctor,
-                    'regist_type':regist_type,
-                    'facility_id':facility_id,
-                    'target_id':target_id},
-                dataType:'json'
-            })
-            // Ajaxリクエストが成功した場合
-            .done(function(data) {
-                if (data.result == "OK") {
-                    location.reload();
-                }
-            })
-            // Ajaxリクエストが失敗した場合
-            .fail(function(data) {
-                alert("接続失敗");
-            });
+    $('#regist_btn,#delete_exe_btn').on('click', function() {
+        // 連打対策
+        if(regist_flg){
+            regist_flg = false;
+            var err = true;
+            if(regist_type != "delete"){
+                patient_name = $('#regist_patient_name').val();
+                patient_id = $('#regist_patient_id').val();
+                password = $('#regist_password').val();
+                regist_status = $('#regist_regist_status').val();
+                setting_status = $('#regist_setting_status').val();
+                monitor_status = $('#regist_monitor_status').val();
+                treatment_status = $('#regist_treatment_status').val();
+                doctor = $('#regist_doctor').val();
+                err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
+                if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
+                if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+                if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}
+            }
+            if(err){
+                error_message.style.display = "none";
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ action('PatientController@regist') }}",
+                    type: 'POST',
+                    data:{
+                        'patient_name':patient_name,
+                        'patient_id':patient_id,
+                        'password':password,
+                        'regist_status':regist_status,
+                        'setting_status':setting_status,
+                        'monitor_status':monitor_status,
+                        'treatment_status':treatment_status,
+                        'doctor':doctor,
+                        'regist_type':regist_type,
+                        'facility_id':facility_id,
+                        'target_id':target_id},
+                    dataType:'json'
+                })
+                // Ajaxリクエストが成功した場合
+                .done(function(data) {
+                    if (data.result == "OK") {
+                        regist_flg = true;
+                    }
+                    $('#result').text(data.message);
+                    resultmodal.style.display = 'block';
+                })
+                // Ajaxリクエストが失敗した場合
+                .fail(function(data) {
+                    regist_flg = false;
+                    $('#result').text('{{config('const.result.ACCESS_NG')}}');
+                    resultmodal.style.display = 'block';
+                });
+            }else{
+                regist_flg = true;
+            }
+        }
+    });
+    $("#result_btn").click(function() {
+        if(regist_flg){
+            location.reload();
+        }else{
+            regist_flg = true;
+            resultmodal.style.display = 'none';
         }
     });
     $(document).on('click','#data tr', function() {
@@ -299,8 +320,18 @@ $(document).ready(function(){
                 <p>
                 <span id="faclity_mng_name"></span><br>
                 </p>
-                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_exe_btn">{{config('const.btn.delete')}}</button>
                 <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+    <div id="resultmodal" class="resultmodal">
+        <div class="resultmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="result"></span><br>
+                </p>
+                <button class="btn1" id="result_btn">OK</button>
             </div>
         </div>
     </div>

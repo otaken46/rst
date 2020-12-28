@@ -10,64 +10,80 @@ use Illuminate\Support\Facades\Log;
 
 class FacilityMngController extends Controller
 {
-    public function index () 
+    public function index (Request $request) 
     {
-        $facility = FacilityMst::get();
-        $facility_mng = FacilityManagerMst::get();
-
-        return view('facility_mng', compact('facility_mng','facility'));
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+            $default_facility_id = "";
+            if($request->input('facility_id') != NULL){
+                $default_facility_id = $request->input('facility_id');
+            }
+            $facility = FacilityMst::where('delete_date', NULL)->get();
+            $facility_mng = FacilityManagerMst::where('delete_date', NULL)->get();
+        }else{
+            $errors = '';
+            $id = '';
+            $pass = '';
+            return view('login_facility', compact('id','pass','errors'));
+        }
+        return view('facility_mng', compact('facility_mng', 'facility', 'default_facility_id'));
     }
     public function regist (Request $request) 
     {
-        Log::debug($request);
         if($request['regist_type'] != ""){
             Log::debug($request);
             DB::beginTransaction();
             try {
                 $sql_result = 0;
+                $message = "";
                 if($request['regist_type'] == "new"){
-                    $facility_mng_mst = new FacilityManagerMst();
-                    $sql_result = $facility_mng_mst->insert([
-                        'facility_id' => $request['facility_id'],
-                        'facility_manager_name' => $request['facility_manager_name'],
-                        'facility_manager_id' => $request['facility_manager_id'],
-                        'password' => $request['password'],
-                        'contact' => $request['contact'],
-                        'mail_address' => $request['mail_address'],
-                        'create_date' => now(),
-                    ]);
-                    $res = ['result'=>'OK'];
+                    $message = config('const.btn.regist');
+                    $dupe = $this::dupe_id_check($request['facility_manager_id']);
+                    if($dupe){
+                        $sql_result = FacilityManagerMst::insert([
+                            'facility_id' => $request['facility_id'],
+                            'facility_manager_name' => $request['facility_manager_name'],
+                            'facility_manager_id' => $request['facility_manager_id'],
+                            'password' => $request['password'],
+                            'contact' => $request['contact'],
+                            'mail_address' => $request['mail_address'],
+                            'create_date' => now(),
+                        ]);
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{ 
+                        $sql_result = 1;
+                        $res = ['result'=>'NG','message'=>config('const.label.facility_manager_id') . config('const.result.DUPE_ID')];                        
+                    }
                 }
                 if($request['regist_type'] == "update"){
+                    Log::debug("5555");
+                    $message = config('const.btn.update');
                     $facility_mng_mst = new FacilityManagerMst();
-                    Log::debug("hogehoge2");
                     $sql_result = $facility_mng_mst
                     ->where('id', $request['target_id'])
                     ->where('facility_id', $request['facility_id'])
                     ->update([
                         'facility_manager_name' => $request['facility_manager_name'],
-                        'facility_manager_id' => $request['facility_manager_id'],
                         'password' => $request['password'],
                         'contact' => $request['contact'],
                         'mail_address' => $request['mail_address'],
                         'update_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 if($request['regist_type'] == "delete"){
+                    $message = config('const.btn.delete');
                     $facility_mng_mst = new FacilityManagerMst();
-                    Log::debug("hogehoge3");
                     $sql_result = $facility_mng_mst
                     ->where('id', $request['target_id'])
-                    ->save([
+                    ->update([
                         'delete_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>$message . config('const.result.NG')];
                 $result = json_encode($res);
                 return $result;
             }
@@ -75,12 +91,14 @@ class FacilityMngController extends Controller
                 $result = json_encode($res);
                 return $result;
             }else{
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>config('const.result.DB_NG')];
                 $result = json_encode($res);
                 return $result;
             }
         }else{
-
+            $res = ['result'=>'NG','message'=>config('const.result.NAME_NG')];
+            $result = json_encode($res);
+            return $result;
         }
     }
 }
