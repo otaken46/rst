@@ -63,19 +63,6 @@ class FacilityController extends Controller
                         $res = ['result'=>'NG','message'=>config('const.label.facility_id') . config('const.result.DUPE_ID')];
                     }
                 }
-                if($request['regist_type'] == "update"){
-                    Log::debug("2222");
-                    $message = config('const.btn.update');
-                    $facility_mst = new FacilityMst();
-                    $sql_result = $facility_mst
-                    ->where('id', $request['target_id'])
-                    ->update([
-                        'facility_name' => $request['facility_name'],
-                        'facility_id' => $request['facility_id'],
-                        'update_date' => now(),
-                    ]);
-                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
-                }
                 if($request['regist_type'] == "delete"){
                     Log::debug("333");
                     $message = config('const.btn.delete');

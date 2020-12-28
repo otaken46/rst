@@ -14,21 +14,11 @@ $(document).ready(function(){
             modal.style.display = 'block';
         }
     });
-    $('#edit_btn').on('click', function() {
-        ids = {'regist_facility_name':facility_name, 'regist_facility_id':facility_id};
-        words = ['{{config('const.btn.update')}}', '{{config('const.text.circle')}}'];
-        var type = edit_btn_click(click_flg,ids,words);
-        if(type){
-            regist_type = "update";
-        }
-    });
     $('#delete_btn').on('click', function() {
         if(click_flg){
             $('#faclity_name').text(facility_name +'{{config('const.text.delete')}}');
             delmodal.style.display = 'block';
             regist_type = "delete";
-        }else{
-            $("#edit_btn").css('outline','none');
         }
     });
     $('#cancel_btn').on('click', function() {
@@ -109,7 +99,6 @@ $(document).ready(function(){
     <div class="btn-area">
         <button class="btn1" id="facility_btn">{{config('const.btn.facility')}}</button>
         <button class="btn1" id="facility_management_btn">{{config('const.btn.facility_mng')}}</button>
-        <button class="btn2" id="edit_btn">{{config('const.btn.edit')}}</button>
         <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
     <table border="1" id="data" class="sorttbl">
@@ -117,7 +106,7 @@ $(document).ready(function(){
             <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width320 tbl-heder" rowspan="2">{{config('const.label.facility_name')}}<i class="fa fa-sort"></i></th>
             <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width160 tbl-heder" rowspan="2">{{config('const.label.facility_id')}}<i class="fa fa-sort"></i></th>
             <td class="width120 tbl-heder" rowspan="2">{{config('const.label.facility_manager')}}</td>
-            <td class="tbl-heder" colspan="4">{{config('const.label.patient_count')}}</td>
+            <td class="width120 tbl-heder" colspan="4">{{config('const.label.patient_count')}}</td>
         </tr>
         </tr> 
             <td class="width100 paddingleft5 tbl-heder">{{config('const.label.regist_status')}}</td>

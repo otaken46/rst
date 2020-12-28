@@ -58,7 +58,7 @@ function data_check(type, input_data, text){
     }
   }
   if(type == "id_pass"){
-    if(input_data.trim().length == 0 || (/\s/.test(input_data)) || !(input_data.match(/^[0-9a-zA-Z_\-]*$/))){
+    if(input_data.trim().length <= 4 || (/\s/.test(input_data)) || !(input_data.match(/^[0-9a-zA-Z_\-]*$/))){
       result = false;
     }
   }
