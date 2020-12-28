@@ -6,7 +6,13 @@ $(document).ready(function(){
     var facility_name = "";
     var facility_id = "";
     $('#facility_btn').on('click', function() {
-        modal.style.display = 'block';
+        if('{{$facility_count}}' == '{{config('const.max_facility')}}'){
+            regist_flg = false;
+            $('#result').text('{{$facility_count}}{{config('const.msg.err_005')}}');
+            resultmodal.style.display = 'block';
+        }else{
+            modal.style.display = 'block';
+        }
     });
     $('#edit_btn').on('click', function() {
         ids = {'regist_facility_name':facility_name, 'regist_facility_id':facility_id};
@@ -39,14 +45,17 @@ $(document).ready(function(){
     $('#facility_management_btn').on('click', function() {
         window.location.href = "{{ url('/facility_mng')}}"; 
     });
-    $('#regist_btn').on('click', function() {
+    $('#regist_btn,#delete_exe_btn').on('click', function() {
+        // 連打対策
         if(regist_flg){
             regist_flg = false;
             var err = true;
-            facility_name = $('#regist_facility_name').val();
-            facility_id = $('#regist_facility_id').val();
-            err = data_check("facility_name", facility_name, '{{config('const.label.facility_name')}}{{config('const.text.input')}}{{config('const.msg.symbol')}}');
-            if(err){err = data_check("id_pass", facility_id, '{{config('const.label.facility_id')}}{{config('const.msg.err_004')}}');}
+            if(regist_type != "delete"){
+                facility_name = $('#regist_facility_name').val();
+                facility_id = $('#regist_facility_id').val();
+                err = data_check("facility_name", facility_name, '{{config('const.label.facility_name')}}{{config('const.text.input')}}{{config('const.msg.symbol')}}');
+                if(err){err = data_check("id_pass", facility_id, '{{config('const.label.facility_id')}}{{config('const.msg.err_004')}}');}
+            }
             if(err){
                 $.ajaxSetup({
                     headers: {
@@ -63,17 +72,27 @@ $(document).ready(function(){
                 .done(function(data) {
                     if (data.result == "OK") {
                         regist_flg = true;
-                        location.reload();
                     }
+                    $('#result').text(data.message);
+                    resultmodal.style.display = 'block';
                 })
                 // Ajaxリクエストが失敗した場合
                 .fail(function(data) {
-                    alert("接続失敗");
-                    regist_flg = true;
+                    regist_flg = false;
+                    $('#result').text('{{config('const.result.ACCESS_NG')}}');
+                    resultmodal.style.display = 'block';
                 });
             }else{
                 regist_flg = true;
             }
+        }
+    });
+    $("#result_btn").click(function() {
+        if(regist_flg){
+            location.reload();
+        }else{
+            regist_flg = true;
+            resultmodal.style.display = 'none';
         }
     });
     $("#data tr").click(function() {
@@ -93,25 +112,24 @@ $(document).ready(function(){
         <button class="btn2" id="edit_btn">{{config('const.btn.edit')}}</button>
         <button class="btn3" id="delete_btn">{{config('const.btn.delete')}}</button>
     </div>
-    <table border="1" id="data">
+    <table border="1" id="data" class="sorttbl">
         <tr>
-            <th class="width320" rowspan="2">{{config('const.label.facility_name')}}</th>
-            <th class="width160" rowspan="2">{{config('const.label.facility_id')}}</th>
-            <th class="width120" rowspan="2">{{config('const.label.facility_manager')}}</th>
-            <th colspan="4">{{config('const.label.patient_count')}}</th>
+            <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width320 tbl-heder" rowspan="2">{{config('const.label.facility_name')}}<i class="fa fa-sort"></i></th>
+            <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width160 tbl-heder" rowspan="2">{{config('const.label.facility_id')}}<i class="fa fa-sort"></i></th>
+            <td class="width120 tbl-heder" rowspan="2">{{config('const.label.facility_manager')}}</td>
+            <td class="tbl-heder" colspan="4">{{config('const.label.patient_count')}}</td>
         </tr>
-        <tr>
-            <td class="width100 paddingleft5">{{config('const.label.regist_status')}}</td>
-            <td class="width100 paddingleft5">{{config('const.label.setting_status')}}</td>
-            <td class="width100 paddingleft5">{{config('const.label.monitor_status')}}</td>
-            <td class="width100 paddingleft5">{{config('const.label.treatment_status')}}</td>
+        </tr> 
+            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.regist_status')}}</td>
+            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.setting_status')}}</td>
+            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.monitor_status')}}</td>
+            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.treatment_status')}}</td>
         </tr>
-        <tbody>
             @php
                 $cnt = 0;
                 foreach ($facility as $val){
-                    echo "<tr>";
-                        echo "<td class = 'paddingleft10' id='facility_name'>" . $val->facility_name . "<input type='hidden' id='target_id' value=". $val->id . "></input></td>";
+                    echo "<tr class='item'>";
+                        echo "<td class = 'paddingleft10' id='facility_name'>" . $val->facility_name ."</td>";
                         echo "<td class = 'paddingleft10' id='facility_id'>" . $val->facility_id . "</td>";
                         if(isset($val->mng_count)){
                             echo "<td class = 'textright'>" . $val->mng_count . "</td>";
@@ -138,6 +156,7 @@ $(document).ready(function(){
                         }else{
                             echo "<td></td>";
                         }
+                        echo "<input type='hidden' id='target_id' value=". $val->id . "></input>";
                     echo "</tr>";
                     $cnt++;
                 }
@@ -152,7 +171,6 @@ $(document).ready(function(){
                     $cnt++;
                 }
             @endphp
-        </tbody>
     </table>
     </div>
     <div id="modal" class="modal">
@@ -175,8 +193,18 @@ $(document).ready(function(){
                 <p>
                 <span id="faclity_name"></span><br>
                 </p>
-                <button class="btn1" id="delete_btn">{{config('const.btn.delete')}}</button>
+                <button class="btn1" id="delete_exe_btn">{{config('const.btn.delete')}}</button>
                 <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+    <div id="resultmodal" class="resultmodal">
+        <div class="resultmodal-content paddingtop10">
+             <div align="center" class="paddingleft10">
+                <p>
+                <span id="result"></span><br>
+                </p>
+                <button class="btn1" id="result_btn">OK</button>
             </div>
         </div>
     </div>

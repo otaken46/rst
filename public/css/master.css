@@ -248,3 +248,20 @@ input {
     height: 150px;
     margin: 5% auto;
 }
+.resultmodal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.resultmodal-content{
+    background-color: white;
+    width: 300px;
+    height: 100px;
+    margin: 8% auto;
+}

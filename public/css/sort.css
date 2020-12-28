@@ -9,6 +9,8 @@
     vertical-align: inherit;
     border-color: inherit;
     border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     cursor: pointer;
 }
 
@@ -16,11 +18,11 @@
 .sorttbl td:first-child{
     padding-left: 16px;
 }
-.sorttbl td,
+.sorttbl td ,
 .sorttbl th{
     padding: 8px 8px;
     display: table-cell;
-    vertical-align: top;
+    vertical-align: middle;
 }
 .sorttbl th{
     color: #fff!important;

@@ -13,7 +13,8 @@ class FacilityController extends Controller
 {
     public function index () 
     {
-        $facility = FacilityMst::get();
+        $facility = FacilityMst::where('delete_date', NULL)->get();
+        $facility_count = FacilityMst::where('delete_date', NULL)->count();
         if(isset($facility[0]->id)){
             $data = $facility;
             $cnt = 0;
@@ -36,26 +37,35 @@ class FacilityController extends Controller
                 $cnt++;
             }
         }
-        return view('facility', compact('facility'));
+        return view('facility', compact('facility','facility_count'));
     }
     public function regist (Request $request) 
     {
+        Log::debug($request);
         if($request['facility_name'] != ""){
             DB::beginTransaction();
             try {
                 $sql_result = 0;
+                $message = "";
                 if($request['regist_type'] == "new"){
                     Log::debug("1111");
+                    $message = config('const.btn.regist');
                     $facility_mst = new FacilityMst();
-                    $sql_result = $facility_mst->insert([
-                        'facility_name' => $request['facility_name'],
-                        'facility_id' => $request['facility_id'],
-                        'create_date' => now(),
-                    ]);
-                    $res = ['result'=>'OK'];
+                    $sql_result = $facility_mst->where('facility_id', $request['facility_id'])->where('delete_date', NULL)->count();
+                    if($sql_result == 0){
+                        $sql_result = $facility_mst->insert([
+                            'facility_name' => $request['facility_name'],
+                            'facility_id' => $request['facility_id'],
+                            'create_date' => now(),
+                        ]);
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        $res = ['result'=>'NG','message'=>config('const.label.facility_id') . config('const.result.DUPE_ID')];
+                    }
                 }
                 if($request['regist_type'] == "update"){
                     Log::debug("2222");
+                    $message = config('const.btn.update');
                     $facility_mst = new FacilityMst();
                     $sql_result = $facility_mst
                     ->where('id', $request['target_id'])
@@ -64,12 +74,23 @@ class FacilityController extends Controller
                         'facility_id' => $request['facility_id'],
                         'update_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                }
+                if($request['regist_type'] == "delete"){
+                    Log::debug("333");
+                    $message = config('const.btn.delete');
+                    $facility_mst = new FacilityMst();
+                    $sql_result = $facility_mst
+                    ->where('id', $request['target_id'])
+                    ->update([
+                        'delete_date' => now(),
+                    ]);
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>$message . config('const.result.NG')];
                 $result = json_encode($res);
                 return $result;
             }
@@ -77,12 +98,14 @@ class FacilityController extends Controller
                 $result = json_encode($res);
                 return $result;
             }else{
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>config('const.result.DB_NG')];
                 $result = json_encode($res);
                 return $result;
             }
         }else{
-
+            $res = ['result'=>'NG','message'=>config('const.result.NAME_NG')];
+            $result = json_encode($res);
+            return $result;
         }
     }
 }

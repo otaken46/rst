@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/master.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/sort.css') }}">
+　<link rel="stylesheet" href="{{ asset('_vendors/fontawesome/css/all.min.css') }}">
     <title>{{config('const.title')}}</title>
 </head>
 <body>
 <script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
 <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/function.js') }}"></script>
+<script src="{{ asset('js/sort.js') }}"></script>
 <script>
 var ids = {};
 var words = [];
