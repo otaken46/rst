@@ -51,7 +51,8 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if($this->isHttpException($exception)) {
-            if($exception->getStatusCode() == 404){
+            if($exception->getStatusCode() == 404 || $exception->getStatusCode() == 405){
+                //405はpostかget形式で定義していない場合になるAPIのURL直接ブラウザ表示対応
                 return redirect('/');
             }
         }else{
