@@ -30,13 +30,13 @@ class UploadFileController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $file_name_flont = str_replace("." . $extension,'',$file_name);
 
-                if($file_name_flont == "dummy"){
-                    $err = false;
-                    $result = "RST_004";
-                }
-                if($extension != "json" && ($err)){
+                if($extension != "json"){
                     $err = false;
                     $result = "RST_003";
+                }
+                if($file_name_flont == "dummy" && ($err)){
+                    $err = false;
+                    $result = "RST_004";
                 }
                 if($err){
                     $file_name = $id . "_" . $pass;
