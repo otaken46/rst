@@ -199,8 +199,6 @@ class Kernel extends ConsoleKernel
                         DB::rollback();
                     }
                 }
-                Log::debug($files);
-                Log::debug('ファイルは存在します。');
             }
         })->dailyAt('21:35');
     }
