@@ -51,6 +51,7 @@ class Kernel extends ConsoleKernel
                     try {
                         $manage = new Manage();
                         Log::debug($data);
+                        Log::debug("1111");
                         $sql_result = $manage->insert([
                             'patient_id' => $data['Record']['Manage']['ID'],
                             'doc_date' => $data['Record']['Manage']['DocDate'],
@@ -59,6 +60,7 @@ class Kernel extends ConsoleKernel
                             'upload_datetime' => $data['Record']['Manage']['UploadDatetime'],
                             'create_date' => now(),
                         ]);
+                        Log::debug("2222");
                         $upload_data = new UploadData();
                         $sql_result = $upload_data->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
@@ -72,6 +74,7 @@ class Kernel extends ConsoleKernel
                             'input_sample_num' => $data['Record']['Data']['InputSampleNum'],
                             'create_date' => now(),
                         ]);
+                        Log::debug("3333");
                         $deviceInfo = new DeviceInfo();
                         $sql_result = $deviceInfo->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
@@ -85,7 +88,7 @@ class Kernel extends ConsoleKernel
                             'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
                             'create_date' => now(),
                         ]);
-
+                        Log::debug("4444");
                         $final_output = new FinalOutput();
                         $sql_result = $final_output->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
@@ -101,6 +104,7 @@ class Kernel extends ConsoleKernel
                             'create_date' => now(),
                             'update_date' => NULL,
                         ]);
+                        Log::debug("5555");
                         $hr_final = new HrFinal();
                         $sql_result = $hr_final->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
@@ -111,6 +115,7 @@ class Kernel extends ConsoleKernel
                             'xmin2_max_rsi' => $data['Record']['Data']['HRfinal']['Xmin2_maxRSI'],
                             'create_date' => now(),
                         ]);
+                        Log::debug("6666");
                         $sel_pwmtx_series = new SePwmtxSeriesOne();
                         $hf = "";
                         $resp_hz = "";
@@ -138,6 +143,7 @@ class Kernel extends ConsoleKernel
                             'respmx' => $respmx,
                             'create_date' => now(),
                         ]);
+                        Log::debug("7777");
                         $sel_pwmtx_series = new SePwmtxSeriesTwo();
                         $max_n = "";
                         $csr = "";
@@ -165,6 +171,7 @@ class Kernel extends ConsoleKernel
                             'csr_max_respmax' => $csr_max_respmax,
                             'create_date' => now(),
                         ]);
+                        Log::debug("8888");
                         $sel_pwmtx_series = new SePwmtxSeriesThree();
                         $rsi1 = "";
                         $lng_pwsel2 = "";
@@ -201,7 +208,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('22:16');
+        })->dailyAt('22:23');
     }
 
     /**
