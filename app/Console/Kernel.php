@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
                     DB::beginTransaction();
                     try {
                         $manage = new Manage();
-                        
+                        Log::debug($data);
                         $sql_result = $manage->insert([
                             'patient_id' => $data['Record']['Manage']['ID'],
                             'doc_date' => $data['Record']['Manage']['DocDate'],
@@ -199,8 +199,10 @@ class Kernel extends ConsoleKernel
                         DB::rollback();
                     }
                 }
+                Log::debug($files);
+                Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('22:05');
+        })->dailyAt('22:10');
     }
 
     /**
