@@ -39,8 +39,9 @@ class UploadFileController extends Controller
                     $result = "RST_004";
                 }
                 if($err){
-                    $file_name = $id . "_" . $pass;
-                    $request->file('file')->storeAs('public',$file_name);
+                    $file_name = $id . "_" . $pass . ".json";
+                    //ファイル保存
+                    $request->file('file')->storeAs('public/upload_file',$file_name);
                     $result = "RST_001";
                 }
             }else{

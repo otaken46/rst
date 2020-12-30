@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
@@ -25,10 +26,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
-            Log::debug('毎分ログ出力hogeテスト - closure');
-        })->dailyAt('13:00');
+            $path = storage_path('app/public/upload_file/*.json');
+            // 拡張子.jsonが付いたファイルを配列化し変数に格納
+            $files = glob($path); 
+            // 配列に値が入っているかチェック
+            if (empty($files)) {
+                Log::debug('ファイルが見つかりません！');
+            } else {
+                foreach($files as $val){
+                    $json = file_get_contents($val);
+                    $data = json_decode($json, true);
+                    Log::debug($data);
+                    File::delete($val);
+                }
+                Log::debug($files);
+                Log::debug('ファイルは存在します。');
+            }
+        })->dailyAt('15:00');
     }
 
     /**
