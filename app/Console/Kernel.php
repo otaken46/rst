@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
-            Log::debug('毎分ログ出力テスト - closure');
-        })->everyMinute();
+            Log::debug('毎分ログ出力hogeテスト - closure');
+        })->dailyAt('13:00');
     }
 
     /**
