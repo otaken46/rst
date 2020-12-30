@@ -192,9 +192,8 @@ class Kernel extends ConsoleKernel
                             'xmin2' => $xmin2,
                             'create_date' => now(),
                         ]);
-
-                        File::delete($val);
                         DB::commit();
+                        File::delete($val);
                     } catch (\Exception $e) {
                         DB::rollback();
                     }
@@ -202,7 +201,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('22:10');
+        })->dailyAt('22:16');
     }
 
     /**
