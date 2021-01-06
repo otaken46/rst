@@ -47,8 +47,8 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
-                    DB::beginTransaction();
-                    try {
+                    // DB::beginTransaction();
+                    // try {
                         $manage = new Manage();
                         Log::debug("1111");
                         $sql_result = $manage->insert([
@@ -91,12 +91,9 @@ class Kernel extends ConsoleKernel
                             'fw_version' => $data['Record']['Data']['DeviceInfo']['FwVersion'],
                             'app_id' => $data['Record']['Data']['DeviceInfo']['AppID'],
                             'app_version' => $data['Record']['Data']['DeviceInfo']['AppVersion'],
-                            'connection_error_count' => NULL,
-                            'sensor_error_count' => NULL,
-                            'module_error_count' => NULL,
-                            // 'connection_error_count' => $data['Record']['Data']['DeviceInfo']['ConnectionErrorCount'],
-                            // 'sensor_error_count' => $data['Record']['Data']['DeviceInfo']['SensorErrorCount'],
-                            // 'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
+                            'connection_error_count' => $data['Record']['Data']['DeviceInfo']['ConnectionErrorCount'],
+                            'sensor_error_count' => $data['Record']['Data']['DeviceInfo']['SensorErrorCount'],
+                            'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
                             'create_date' => now(),
                         ]);
                         Log::debug("4444");
@@ -210,16 +207,16 @@ class Kernel extends ConsoleKernel
                             'xmin2' => $xmin2,
                             'create_date' => now(),
                         ]);
-                        DB::commit();
+                        // DB::commit();
                         File::delete($val);
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                    }
+                    // } catch (\Exception $e) {
+                    //     DB::rollback();
+                    // }
                 }
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:30');
+        })->dailyAt('09:40');
     }
 
     /**
