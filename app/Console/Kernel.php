@@ -219,7 +219,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:24');
+        })->dailyAt('09:30');
     }
 
     /**
