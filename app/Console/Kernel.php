@@ -213,10 +213,10 @@ class Kernel extends ConsoleKernel
                     //     DB::rollback();
                     // }
                 }
-                Log::debug($files);
+                // Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:40');
+        })->dailyAt('09:46');
     }
 
     /**
