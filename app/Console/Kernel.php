@@ -47,11 +47,9 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
-                    File::delete($val);
                     DB::beginTransaction();
                     try {
                         $manage = new Manage();
-                        Log::debug($data);
                         Log::debug("1111");
                         $sql_result = $manage->insert([
                             'patient_id' => $data['Record']['Manage']['ID'],
@@ -77,6 +75,15 @@ class Kernel extends ConsoleKernel
                         ]);
                         Log::debug("3333");
                         $deviceInfo = new DeviceInfo();
+                        Log::debug($data['Record']['Data']['ID']);
+                        Log::debug($data['Record']['Data']['DocDate']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['SensorID']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['FwVersion']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['AppID']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['AppVersion']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['ConnectionErrorCount']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['SensorErrorCount']);
+                        Log::debug($data['Record']['Data']['DeviceInfo']['ModuleErrorCount']);
                         $sql_result = $deviceInfo->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
                             'doc_date' => $data['Record']['Data']['DocDate'],
@@ -209,7 +216,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:08');
+        })->dailyAt('09:14');
     }
 
     /**
