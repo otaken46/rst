@@ -47,8 +47,7 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
-                    // DB::beginTransaction();
-                    // try {
+                    try {
                         $manage = new Manage();
                         Log::debug("1111");
                         $sql_result = $manage->insert([
@@ -75,15 +74,6 @@ class Kernel extends ConsoleKernel
                         ]);
                         Log::debug("3333");
                         $deviceInfo = new DeviceInfo();
-                        Log::debug($data['Record']['Data']['ID']);
-                        Log::debug($data['Record']['Data']['DocDate']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['SensorID']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['FwVersion']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['AppID']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['AppVersion']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['ConnectionErrorCount']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['SensorErrorCount']);
-                        Log::debug($data['Record']['Data']['DeviceInfo']['ModuleErrorCount']);
                         $sql_result = $deviceInfo->insert([
                             'patient_id' => $data['Record']['Data']['ID'],
                             'doc_date' => $data['Record']['Data']['DocDate'],
@@ -207,16 +197,13 @@ class Kernel extends ConsoleKernel
                             'xmin2' => $xmin2,
                             'create_date' => now(),
                         ]);
-                        // DB::commit();
                         File::delete($val);
-                    // } catch (\Exception $e) {
-                    //     DB::rollback();
-                    // }
+                    } catch (\Exception $e) {
+                        report($e);
+                    }
                 }
-                // Log::debug($files);
-                Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:46');
+        })->dailyAt('10:04');
     }
 
     /**
