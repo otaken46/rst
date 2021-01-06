@@ -200,10 +200,11 @@ class Kernel extends ConsoleKernel
                         File::delete($val);
                     } catch (\Exception $e) {
                         report($e);
+                        File::delete($val);
                     }
                 }
             }
-        })->dailyAt('10:04');
+        })->dailyAt('10:10');
     }
 
     /**
