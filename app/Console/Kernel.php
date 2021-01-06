@@ -91,9 +91,12 @@ class Kernel extends ConsoleKernel
                             'fw_version' => $data['Record']['Data']['DeviceInfo']['FwVersion'],
                             'app_id' => $data['Record']['Data']['DeviceInfo']['AppID'],
                             'app_version' => $data['Record']['Data']['DeviceInfo']['AppVersion'],
-                            'connection_error_count' => $data['Record']['Data']['DeviceInfo']['ConnectionErrorCount'],
-                            'sensor_error_count' => $data['Record']['Data']['DeviceInfo']['SensorErrorCount'],
-                            'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
+                            'connection_error_count' => NULL,
+                            'sensor_error_count' => NULL,
+                            'module_error_count' => NULL,
+                            // 'connection_error_count' => $data['Record']['Data']['DeviceInfo']['ConnectionErrorCount'],
+                            // 'sensor_error_count' => $data['Record']['Data']['DeviceInfo']['SensorErrorCount'],
+                            // 'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
                             'create_date' => now(),
                         ]);
                         Log::debug("4444");
@@ -216,7 +219,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('09:14');
+        })->dailyAt('09:24');
     }
 
     /**
