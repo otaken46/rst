@@ -47,6 +47,7 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
+                    File::delete($val);
                     DB::beginTransaction();
                     try {
                         $manage = new Manage();
@@ -208,7 +209,7 @@ class Kernel extends ConsoleKernel
                 Log::debug($files);
                 Log::debug('ファイルは存在します。');
             }
-        })->dailyAt('22:43');
+        })->dailyAt('09:08');
     }
 
     /**
