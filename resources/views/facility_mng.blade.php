@@ -20,6 +20,7 @@ $(document).ready(function(){
         $.each(facility_mng, function(key, value) {
             if(facility_id == value['facility_id']){
                 str = "";
+                contact_str = "";
                 str += "<tr id='item' class='item'>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";

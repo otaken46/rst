@@ -148,6 +148,9 @@ button.btn3:hover {
 .width1024 {
     width:1024px;
 }
+.width850 {
+    width:850px;
+}
 .width650 {
     width:650px;
 }
@@ -184,14 +187,20 @@ button.btn3:hover {
 .width150 {
     width:150px;
 }
-.width94 {
-    width:94px;
-}
 .width120 {
     width:120px;
 }
 .width100 {
     width:100px;
+}
+.width94 {
+    width:94px;
+}
+.width80 {
+    width:80px;
+}
+.width20 {
+    width:20px;
 }
 .paddingleft10 {
     padding-left: 10px;

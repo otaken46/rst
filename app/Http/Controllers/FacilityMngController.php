@@ -17,8 +17,8 @@ class FacilityMngController extends Controller
             if($request->input('facility_id') != NULL){
                 $default_facility_id = $request->input('facility_id');
             }
-            $facility = FacilityMst::where('delete_date', NULL)->get();
-            $facility_mng = FacilityManagerMst::where('delete_date', NULL)->get();
+            $facility = FacilityMst::where('delete_date', NULL)->orderBy('create_date', 'asc')->get();
+            $facility_mng = FacilityManagerMst::where('delete_date', NULL)->orderBy('create_date', 'asc')->get();
         }else{
             $errors = '';
             $id = '';

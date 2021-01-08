@@ -23,8 +23,9 @@ class PatientController extends Controller
             $statuscount['setting_status'] = 0;
             $statuscount['monitor_status'] = 0;
             $statuscount['treatment_status'] = 0;
+            $regist_status = 0;
             foreach($patient as $val){
-                if($val['regist_status'] == 1){$statuscount['regist_status'] =  $statuscount['regist_status'] + 1;}
+                $statuscount['regist_status'] = $regist_status = $regist_status + 1;
                 if($val['setting_status'] == 1){$statuscount['setting_status'] =  $statuscount['setting_status'] + 1;}
                 if($val['monitor_status'] == 1){$statuscount['monitor_status'] =  $statuscount['monitor_status'] + 1;}
                 if($val['treatment_status'] == 1){$statuscount['treatment_status'] =  $statuscount['treatment_status'] + 1;}
@@ -54,7 +55,6 @@ class PatientController extends Controller
                             'patient_name' => $request['patient_name'],
                             'patient_id' => $request['patient_id'],
                             'password' => $request['password'],
-                            'regist_status' => $request['regist_status'],
                             'setting_status' => $request['setting_status'],
                             'monitor_status' => $request['monitor_status'],
                             'treatment_status' => $request['treatment_status'],
@@ -79,7 +79,6 @@ class PatientController extends Controller
                             'patient_name' => $request['patient_name'],
                             'patient_id' => $request['patient_id'],
                             'password' => $request['password'],
-                            'regist_status' => $request['regist_status'],
                             'setting_status' => $request['setting_status'],
                             'monitor_status' => $request['monitor_status'],
                             'treatment_status' => $request['treatment_status'],

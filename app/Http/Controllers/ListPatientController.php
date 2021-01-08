@@ -37,6 +37,7 @@ class ListPatientController extends Controller
                     , tbl3.tbl3_mean_hr
                     , tbl3.tbl3_total_taido_pc
                     , tbl3.tbl3_note
+                    , tbl3.tbl3_time_in_bed
                 FROM
                     db_rst.patient_mst 
                     LEFT JOIN ( 
@@ -51,6 +52,7 @@ class ListPatientController extends Controller
                             , tbl1.mean_hr as tbl3_mean_hr
                             , tbl1.total_taido_pc as tbl3_total_taido_pc
                             , tbl1.note as tbl3_note
+                            , tbl1.time_in_bed as tbl3_time_in_bed
                         FROM
                             db_rst.final_output7 AS tbl1 
                             LEFT JOIN db_rst.final_output7 AS tbl2 
@@ -75,11 +77,11 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['患者ID'] = $val['patient_id'];
                     $list_patient[$cnt]['患者名'] = $val['patient_name'];
                     $list_patient[$cnt]['最終更新'] = date('yy/m/d',  strtotime($val['tbl3_doc_date']));
-                    $list_patient[$cnt]['RST'] = sprintf('%.1F', floatval($val['tbl3_mean_respr']));
-                    $list_patient[$cnt]['心拍数'] = sprintf('%.2F', floatval($val['tbl3_mean_cvr']));
-                    $list_patient[$cnt]['呼吸数'] = sprintf('%.1F', floatval($val['tbl3_max_xhr2']));
-                    $list_patient[$cnt]['CSRグレード'] = sprintf('%.1F', floatval($val['tbl3_total_taido_pc']));
-                    $list_patient[$cnt]['臥床時間'] = sprintf('%.1F', floatval($val['tbl3_note']));
+                    $list_patient[$cnt]['RST'] = sprintf('%.1F', floatval($val['tbl3_mean_rsi']));
+                    $list_patient[$cnt]['心拍数'] = sprintf('%.2F', floatval($val['tbl3_mean_hr']));
+                    $list_patient[$cnt]['呼吸数'] = sprintf('%.1F', floatval($val['tbl3_mean_respr']));
+                    $list_patient[$cnt]['CSRグレード'] = sprintf('%.1F', floatval($val['tbl3_mean_cvr']));
+                    $list_patient[$cnt]['臥床時間'] = sprintf('%.1F', floatval($val['tbl3_time_in_bed']));
                     $cnt++;
                 }
             }else{

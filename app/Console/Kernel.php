@@ -67,7 +67,7 @@ class Kernel extends ConsoleKernel
                             'analyze_datetime' => $data['Record']['Data']['AnalyzeDatetime'],
                             'first_sample_datetime' => $data['Record']['Data']['FirstSampleDatetime'],
                             'last_sample_datetime' => $data['Record']['Data']['LastSampleDatetime'],
-                            'timeIn_bed' => $data['Record']['Data']['TimeInBed'],
+                            'time_in_bed' => $data['Record']['Data']['TimeInBed'],
                             'input_file_num' => $data['Record']['Data']['InputFileNum'],
                             'input_sample_num' => $data['Record']['Data']['InputSampleNum'],
                             'create_date' => now(),
@@ -99,6 +99,7 @@ class Kernel extends ConsoleKernel
                             'total_taido_pc' => $data['Record']['Data']['FinalOutput7']['TotalTaidoPC'],
                             'exl_noise_pc' => $data['Record']['Data']['FinalOutput7']['ExlNoisePC'],
                             'note' => NULL,
+                            'time_in_bed' => $data['Record']['Data']['TimeInBed'],
                             'create_date' => now(),
                             'update_date' => NULL,
                         ]);

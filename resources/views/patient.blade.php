@@ -94,7 +94,6 @@ $(document).ready(function(){
                         'patient_name':patient_name,
                         'patient_id':patient_id,
                         'password':password,
-                        'regist_status':regist_status,
                         'setting_status':setting_status,
                         'monitor_status':monitor_status,
                         'treatment_status':treatment_status,
@@ -132,7 +131,7 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        ids = {'target_id':'val', 'patient_name':'txt', 'patient_id':'val', 'password':'val', 'regist_status':'txt', 'setting_status':'txt', 'monitor_status':'txt', 'treatment_status':'txt', 'doctor':'txt'};
+        ids = {'target_id':'val', 'patient_name':'txt', 'patient_id':'txt', 'password':'val', 'regist_status':'txt', 'setting_status':'txt', 'monitor_status':'txt', 'treatment_status':'txt', 'doctor':'txt'};
         var arr_select = select_data(this,ids);
         target_id = arr_select['target_id'];
         patient_name = arr_select['patient_name'];
@@ -160,10 +159,10 @@ $(document).ready(function(){
         <td class="width400"><span class = "paddingleft10">施設名</span></td>
         <td class="width200"><span class = "paddingleft10">施設ID</span></td>
         <th class="width400"></th>
-        <td class="width120"><span class = "paddingleft10">登録済み</span></td>
-        <td class="width120"><span class = "paddingleft10">設置済み</span></td>
-        <td class="width120"><span class = "paddingleft10">モニタ中</span></td>
-        <td class="width120"><span class = "paddingleft10">治療済み</span></td>
+        <td class="width120 textcenter"><span>登録済み</span></td>
+        <td class="width120 textcenter"><span>設置済み</span></td>
+        <td class="width120 textcenter"><span>中断</span></td>
+        <td class="width120 textcenter"><span>終了</span></td>
         <tr>
             <td>
                 <span class = "paddingleft10">{{$facility[0]['facility_name']}}</span>
@@ -187,53 +186,51 @@ $(document).ready(function(){
         </tr>
         </table>
     </div>
-    <table border="1" id="data" class="width1024 margintop30 sorttbl">
+    <table border="1" id="data" class="font-size-small width1024 margintop30 sorttbl">
             <tr>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width400">患者名 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width250">登録年月日 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width150">登録済み <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width150">設置済み <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(5)')" class="width150">モニタ中 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(6)')" class="width150">治療済み <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(7)')" class="width400">担当医 <i class="fa fa-sort"></i></th>
+                <td class="width20 tbl-heder">NO</td>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width300">患者名 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(3)')" class="width180">患者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(4)')" class="width180">登録年月日 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(5)')" class="width80">設置 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(6)')" class="width80">中断<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width80">終了 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width300">担当医 <i class="fa fa-sort"></i></th>
             </tr>
             @php
-                $cnt = 0;
+                $cnt = 1;
                 foreach ($patient as $val){
                     echo "<tr class='item'>";
+                        echo "<td class = 'textcenter' id='row_no'>" . $cnt . "</td>";
                         echo "<td class = 'paddingleft10' id='patient_name'>" . $val->patient_name . "</td>";
+                        echo "<td class = 'paddingleft10' id='patient_id'>" . $val->patient_id . "</td>";
                         echo "<td class = 'paddingleft10' id='create_date'>" .  date('Y年m月d日',  strtotime($val->create_date)) . "</td>";
-                        if($val->regist_status != 0){
-                            echo "<td class = 'textcenter' id='regist_status' value=" . $val->regist_status . ">〇</td>";
-                        }else{
-                            echo "<td></td>";
-                        }
                         if($val->setting_status != 0){
-                            echo "<td class = 'textcenter' id='setting_status' value=" . $val->setting_status . ">〇</td>";
+                            echo "<td class = 'textcenter' id='setting_status' value=" . $val->setting_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if($val->monitor_status != 0){
-                            echo "<td class = 'textcenter' id='monitor_status' value=" . $val->monitor_status . ">〇</td>";
+                            echo "<td class = 'textcenter' id='monitor_status' value=" . $val->monitor_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if($val->treatment_status != 0){
-                            echo "<td class = 'textcenter' id='treatment_status' value=" . $val->treatment_status . ">〇</td>";
+                            echo "<td class = 'textcenter' id='treatment_status' value=" . $val->treatment_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         echo "<td class = 'paddingleft10' id='doctor'>" . $val->doctor . "</td>";
                         echo   "<input type='hidden' id='target_id' value=" . $val->id . ">
-                             <input type='hidden' id='patient_id' value=" . $val->patient_id . ">
                              <input type='hidden' id='password' value=" . $val->password . ">";
                     echo "</tr>";
                     $cnt++;
                 }
+                $cnt--;
                 while ($cnt < 15){
                     echo "<tr>";
                         $count = 0;
-                        while ($count < 7){
+                        while ($count < 8){
                             echo "<td></td>";
                             $count++;
                         }
@@ -266,15 +263,6 @@ $(document).ready(function(){
                         </td>
                     </tr>
                     <tr>
-                        <td class="paddingtop15">登録済み</td>
-                        <td class="paddingtop15">
-                            <select id="regist_regist_status">
-                            <option value="0" selected>なし</option>
-                            <option value="1" >〇</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="paddingtop15">設置済み</td>
                         <td class="paddingtop15">
                             <select id="regist_setting_status">
@@ -284,7 +272,7 @@ $(document).ready(function(){
                         </td>
                     </tr>
                     <tr>
-                        <td class="paddingtop15">モニタ中</td>
+                        <td class="paddingtop15">中断</td>
                         <td class="paddingtop15">
                             <select id="regist_monitor_status">
                             <option value="0" selected>なし</option>
@@ -293,7 +281,7 @@ $(document).ready(function(){
                         </td>
                     </tr>
                     <tr>
-                        <td class="paddingtop15">治療済み</td>
+                        <td class="paddingtop15">終了</td>
                         <td class="paddingtop15">
                             <select id="regist_treatment_status">
                                     <option value="0" selected>なし</option>

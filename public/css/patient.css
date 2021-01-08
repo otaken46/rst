@@ -36,3 +36,11 @@ table.ex_table td.ex_border_e {
     border: 0;
     width: 20px;
 }
+.font-size-small{
+    font-size: small;
+}
+.tbl-heder{
+    color: white;
+    background-color: #4672c4!important;
+    text-align: center;
+}

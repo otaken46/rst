@@ -34,6 +34,14 @@
                     <td><br>
                 </tr>
                 </table><br>
+                <table border="0" class="layout-fixed">
+                <tr>
+                    <th class="textleft">・パスワードを忘れた場合は、施設管理者にお問い合わせください</th>
+                </tr>
+                <tr>
+                    <th class="textleft">・ログインに連続５回失敗するとログインできなくなります</th>
+                </tr>
+                </table><br>
             </div>
                 <button class="btn1">ログイン</button>
         </div>

@@ -33,7 +33,12 @@ $(document).ready(function(){
         delmodal.style.display = 'none';
     })
     $('#facility_management_btn').on('click', function() {
-        window.location.href = "{{ url('/facility_mng')}}"; 
+        if(target_id == "" || target_id == undefined){
+            window.location.href = "{{ url('/facility_mng')}}"; 
+        }else{
+            url = "{{url('/facility_mng')}}" + "?facility_id=" + target_id;
+            window.location.href = url;
+        }
     });
     $('#regist_btn,#delete_exe_btn').on('click', function() {
         // 連打対策
