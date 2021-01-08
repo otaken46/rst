@@ -15,6 +15,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public static function dupe_id_check($id){
+        Log::debug('testda');
+        Log::debug($id);
         $sql_result = FacilityManagerMst::where('facility_manager_id', $id)->where('delete_date', NULL)->count();
         if($sql_result == 0){
             $sql_result = ViewerMst::where('viewer_id', $id)->where('delete_date', NULL)->count();

@@ -47,6 +47,7 @@ class PatientController extends Controller
                 $message = "";
                 if($request['regist_type'] == "new"){
                     $message = config('const.btn.regist');
+                    Log::debug($request['viewer_id']);
                     $dupe = $this::dupe_id_check($request['viewer_id']);
                     if($dupe){
                         $patient_mst = new PatientMst();
