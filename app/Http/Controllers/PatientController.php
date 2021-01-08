@@ -47,8 +47,7 @@ class PatientController extends Controller
                 $message = "";
                 if($request['regist_type'] == "new"){
                     $message = config('const.btn.regist');
-                    Log::debug($request['viewer_id']);
-                    $dupe = $this::dupe_id_check($request['viewer_id']);
+                    $dupe = $this::dupe_id_check($request['patient_id']);
                     if($dupe){
                         $patient_mst = new PatientMst();
                         $sql_result = $patient_mst->insert([
@@ -70,7 +69,7 @@ class PatientController extends Controller
                 }
                 if($request['regist_type'] == "update"){
                     $message = config('const.btn.update');
-                    $dupe = $this::dupe_id_check($request['viewer_id']);
+                    $dupe = $this::dupe_id_check($request['patient_id']);
                     if($dupe){
                         $patient_mst = new PatientMst();
                         $sql_result = $patient_mst
