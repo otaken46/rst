@@ -35,7 +35,11 @@ class ViewerController extends Controller
                 $sql_result = 0;
                 $message = "";
                 if($request['regist_type'] == "new"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST008");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST008");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.regist');
                     $dupe = $this::dupe_id_check($request['viewer_id']);
                     if($dupe){
@@ -48,16 +52,24 @@ class ViewerController extends Controller
                             'password' => $request['password'],
                             'create_date' => now(),
                         ]);
-                        $this::operation_result($log_id,"success");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"success");
+                        }
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                     }else{
-                        $this::operation_result($log_id,"fail dupe id");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"fail dupe id");
+                        }
                         $sql_result = 1;
                         $res = ['result'=>'NG','message'=>config('const.label.viewer_id') . config('const.result.DUPE_ID')];
                     }
                 }
                 if($request['regist_type'] == "update"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST009");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST009");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.update');
                     $viewer_mst = new ViewerMst();
                     $sql_result = $viewer_mst
@@ -69,11 +81,17 @@ class ViewerController extends Controller
                         'mail_address' => $request['mail_address'],
                         'update_date' => now(),
                     ]);
-                    $this::operation_result($log_id,"success");
+                    if($log_id != ""){
+                        $this::operation_result($log_id,"success");
+                    }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 if($request['regist_type'] == "delete"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST010");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST010");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.delete');
                     $viewer_mst = new ViewerMst();
                     $sql_result = $viewer_mst
@@ -81,7 +99,9 @@ class ViewerController extends Controller
                     ->update([
                         'delete_date' => now(),
                     ]);
-                    $this::operation_result($log_id,"success");
+                    if($log_id != ""){
+                        $this::operation_result($log_id,"success");
+                    }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();

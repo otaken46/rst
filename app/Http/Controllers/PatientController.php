@@ -46,7 +46,11 @@ class PatientController extends Controller
                 $sql_result = 0;
                 $message = "";
                 if($request['regist_type'] == "new"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST011");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST011");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.regist');
                     $dupe = $this::dupe_id_check($request['patient_id']);
                     if($dupe){
@@ -62,16 +66,24 @@ class PatientController extends Controller
                             'doctor' => $request['doctor'],
                             'create_date' => now(),
                         ]);
-                        $this::operation_result($log_id,"success");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"success");
+                        }
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                     }else{
-                        $this::operation_result($log_id,"fail dupe id");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"fail dupe id");
+                        }
                         $sql_result = 1;
                         $res = ['result'=>'NG','message'=>config('const.label.patient_id') . config('const.result.DUPE_ID')];
                     }
                 }
                 if($request['regist_type'] == "update"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST012");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST012");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.update');
                     $patient_mst = new PatientMst();
                     $sql_result = $patient_mst
@@ -86,11 +98,17 @@ class PatientController extends Controller
                         'doctor' => $request['doctor'],
                         'update_date' => now(),
                     ]);
-                    $this::operation_result($log_id,"success");
+                    if($log_id != ""){
+                        $this::operation_result($log_id,"success");
+                    }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 if($request['regist_type'] == "delete"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST013");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST013");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.delete');
                     $patient_mst = new PatientMst();
                     $sql_result = $patient_mst
@@ -98,7 +116,9 @@ class PatientController extends Controller
                     ->update([
                         'delete_date' => now(),
                     ]);
-                    $this::operation_result($log_id,"success");
+                    if($log_id != ""){
+                        $this::operation_result($log_id,"success");
+                    }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();

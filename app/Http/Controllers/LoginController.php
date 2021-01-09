@@ -134,13 +134,17 @@ class LoginController extends Controller
     }
     public function logout (Request $request) 
     {
-        $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+        if($request->session()->get('id') != NULL){
+            $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+        }
         session()->flush();
         return redirect('login_facility');
     }
     public function logout_viewer (Request $request) 
     {
-        $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+        if($request->session()->get('id') != NULL){
+            $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+        }
         session()->flush();
         return redirect('login_viewer');
     }

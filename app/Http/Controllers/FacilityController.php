@@ -56,7 +56,11 @@ class FacilityController extends Controller
                 $sql_result = 0;
                 $message = "";
                 if($request['regist_type'] == "new"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST002");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST002");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.regist');
                     $facility_mst = new FacilityMst();
                     $sql_result = $facility_mst->where('facility_id', $request['facility_id'])->where('delete_date', NULL)->count();
@@ -67,14 +71,22 @@ class FacilityController extends Controller
                             'create_date' => now(),
                         ]);
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
-                        $this::operation_result($log_id,"success");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"success");
+                        }
                     }else{
                         $res = ['result'=>'NG','message'=>config('const.label.facility_id') . config('const.result.DUPE_ID')];
-                        $this::operation_result($log_id,"fail dupe id");
+                        if($log_id != ""){
+                            $this::operation_result($log_id,"fail dupe id");
+                        }
                     }
                 }
                 if($request['regist_type'] == "delete"){
-                    $log_id = $this::operation_log($request->session()->get('id'),"RST003");
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST003");
+                    }else{
+                        $log_id = "";
+                    }
                     $message = config('const.btn.delete');
                     $facility_mst = new FacilityMst();
                     $sql_result = $facility_mst
@@ -106,7 +118,9 @@ class FacilityController extends Controller
                             'delete_date' => now(),
                         ]);
                     }
-                    $this::operation_result($log_id,"success");
+                    if($log_id != ""){
+                        $this::operation_result($log_id,"success");
+                    }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
