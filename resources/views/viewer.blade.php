@@ -22,6 +22,7 @@ $(document).ready(function(){
         words = ['{{config('const.btn.update')}}'];
         var type = edit_btn_click(click_flg, ids, words);
         if(type){
+            $("#regist_viewer_id").prop('disabled', true);
             regist_type = "update";
         }
     });
@@ -42,6 +43,7 @@ $(document).ready(function(){
         $("#regist_btn").text('登録');
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
+        $("#regist_viewer_id").prop('disabled', false);
         error_message.style.display = "none";
     });
     $('#delete_cancel_btn').on('click', function() {

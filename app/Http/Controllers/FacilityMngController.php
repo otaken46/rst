@@ -30,12 +30,12 @@ class FacilityMngController extends Controller
     public function regist (Request $request) 
     {
         if($request['regist_type'] != ""){
-            Log::debug($request);
             DB::beginTransaction();
             try {
                 $sql_result = 0;
                 $message = "";
                 if($request['regist_type'] == "new"){
+                    $log_id = $this::operation_log($request->session()->get('id'),"RST004");
                     $message = config('const.btn.regist');
                     $dupe = $this::dupe_id_check($request['facility_manager_id']);
                     if($dupe){
@@ -48,14 +48,16 @@ class FacilityMngController extends Controller
                             'mail_address' => $request['mail_address'],
                             'create_date' => now(),
                         ]);
+                        $this::operation_result($log_id,"success");
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
-                    }else{ 
+                    }else{
+                        $this::operation_result($log_id,"fail dupe id");
                         $sql_result = 1;
                         $res = ['result'=>'NG','message'=>config('const.label.facility_manager_id') . config('const.result.DUPE_ID')];                        
                     }
                 }
                 if($request['regist_type'] == "update"){
-                    Log::debug("5555");
+                    $log_id = $this::operation_log($request->session()->get('id'),"RST005");
                     $message = config('const.btn.update');
                     $facility_mng_mst = new FacilityManagerMst();
                     $sql_result = $facility_mng_mst
@@ -68,9 +70,11 @@ class FacilityMngController extends Controller
                         'mail_address' => $request['mail_address'],
                         'update_date' => now(),
                     ]);
+                    $this::operation_result($log_id,"success");
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 if($request['regist_type'] == "delete"){
+                    $log_id = $this::operation_log($request->session()->get('id'),"RST006");
                     $message = config('const.btn.delete');
                     $facility_mng_mst = new FacilityManagerMst();
                     $sql_result = $facility_mng_mst
@@ -78,6 +82,7 @@ class FacilityMngController extends Controller
                     ->update([
                         'delete_date' => now(),
                     ]);
+                    $this::operation_result($log_id,"success");
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();

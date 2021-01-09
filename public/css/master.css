@@ -1,4 +1,11 @@
 @charset "utf-8";
+* {
+    margin: 0px;
+    padding: 0px;
+}
+body{
+	margin: 0;
+}
 table {
     margin-top: 10px;
     border-collapse: collapse;
@@ -13,6 +20,9 @@ th {
 }
 td {
     height:24px;
+}
+.position-fixed{
+    position: fixed;
 }
 .site-header {
     width: 1028px;
@@ -175,6 +185,9 @@ button.btn3:hover {
 .width230 {
     width:230px;
 }
+.width225 {
+    width:225px;
+}
 .width200 {
     width:200px;
 }
@@ -184,8 +197,14 @@ button.btn3:hover {
 .width160 {
     width:160px;
 }
+.width154 {
+    width:154px;
+}
 .width150 {
     width:150px;
+}
+.width145 {
+    width:145px;
 }
 .width120 {
     width:120px;
@@ -199,8 +218,17 @@ button.btn3:hover {
 .width80 {
     width:80px;
 }
+.width72 {
+    width:72px;
+}
+.width54 {
+    width:54px;
+}
 .width20 {
     width:20px;
+}
+.description {
+    width: 99999px;
 }
 .paddingleft10 {
     padding-left: 10px;

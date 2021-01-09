@@ -14,6 +14,7 @@ use App\Http\Models\HrFinal;
 use App\Http\Models\SePwmtxSeriesOne;
 use App\Http\Models\SePwmtxSeriesTwo;
 use App\Http\Models\SePwmtxSeriesThree;
+use App\Http\Models\OperationLog;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
@@ -48,6 +49,7 @@ class Kernel extends ConsoleKernel
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
                     try {
+                        $log_id = $this::operation_log($data['Record']['Manage']['ID'],"RST017");
                         $manage = new Manage();
                         Log::debug("1111");
                         $sql_result = $manage->insert([
@@ -198,6 +200,7 @@ class Kernel extends ConsoleKernel
                             'xmin2' => $xmin2,
                             'create_date' => now(),
                         ]);
+                        $this::operation_result($log_id,"success");
                         File::delete($val);
                     } catch (\Exception $e) {
                         report($e);
@@ -205,9 +208,26 @@ class Kernel extends ConsoleKernel
                     }
                 }
             }
-        })->dailyAt('10:10');
+        })->dailyAt('13:18');
     }
-
+    public static function operation_log($userid, $operation_code, $result = NULL){
+        $operation_log = new OperationLog();
+        $operation_log->insert([
+            'user_id' => $userid,
+            'operation_code' => $operation_code,
+            'result' => $result,
+            'operation_date' => now(),
+        ]);
+        $id = DB::getPdo()->lastInsertId();
+        return $id;
+    }
+    public static function operation_result($log_id, $result){
+        $operation_log = new OperationLog();
+        $operation_log->where('id', $log_id)
+        ->update([
+            'result' => $result,
+        ]);
+    }
     /**
      * Register the commands for the application.
      *

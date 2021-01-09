@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ asset('css/master.css') }}">
   <link rel="stylesheet" href="{{ asset('css/sort.css') }}">
 　<link rel="stylesheet" href="{{ asset('_vendors/fontawesome/css/all.min.css') }}">
-    <title>{{config('const.title')}}</title>
+  <title>{{config('const.title')}}</title>
 </head>
 <body>
 <script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>

@@ -44,3 +44,7 @@ table.ex_table td.ex_border_e {
     background-color: #4672c4!important;
     text-align: center;
 }
+.th-block {
+    position: sticky;
+    top: 0;
+}

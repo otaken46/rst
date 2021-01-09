@@ -38,6 +38,7 @@ $(document).ready(function(){
         words = ['{{config('const.btn.update')}}', '{{config('const.text.circle')}}'];
         var type = edit_btn_click(click_flg, ids, words, circles);
         if(type){
+            $("#regist_patient_id").prop('disabled', true);
             regist_type = "update";
         }
     });
@@ -53,6 +54,7 @@ $(document).ready(function(){
         $("#regist_btn").text('登録');
         modal.style.display = 'none';
         var error_message = document.getElementById("error_message");
+        $("#regist_patient_id").prop('disabled', false);
         error_message.style.display = "none";
     });
      $('#delete_cancel_btn').on('click', function() {
@@ -187,40 +189,42 @@ $(document).ready(function(){
         </table>
     </div>
     <table border="1" id="data" class="font-size-small width1024 margintop30 sorttbl">
+            <thead class="th-block">
             <tr>
-                <td class="width20 tbl-heder">NO</td>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width300">患者名 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(3)')" class="width180">患者ID<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(4)')" class="width180">登録年月日 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(5)')" class="width80">設置 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(6)')" class="width80">中断<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width80">終了 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width300">担当医 <i class="fa fa-sort"></i></th>
+                <td class="width54 tbl-heder th-block">NO</td>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width225 th-block">患者名 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(3)')" class="width154 th-block">患者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(4)')" class="width145 th-block">登録年月日 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(5)')" class="width72 th-block">設置 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(6)')" class="width72 th-block">中断<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width72 th-block">終了 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width230 th-block">担当医 <i class="fa fa-sort"></i></th>
             </tr>
+            </thead>
             @php
                 $cnt = 1;
                 foreach ($patient as $val){
                     echo "<tr class='item'>";
-                        echo "<td class = 'textcenter' id='row_no'>" . $cnt . "</td>";
-                        echo "<td class = 'paddingleft10' id='patient_name'>" . $val->patient_name . "</td>";
-                        echo "<td class = 'paddingleft10' id='patient_id'>" . $val->patient_id . "</td>";
-                        echo "<td class = 'paddingleft10' id='create_date'>" .  date('Y年m月d日',  strtotime($val->create_date)) . "</td>";
+                        echo "<td class = 'textcenter width54' id='row_no'>" . $cnt . "</td>";
+                        echo "<td class = 'paddingleft10 width225' id='patient_name'>" . $val->patient_name . "</td>";
+                        echo "<td class = 'paddingleft10 width154' id='patient_id'>" . $val->patient_id . "</td>";
+                        echo "<td class = 'paddingleft10 width145' id='create_date'>" .  date('Y年m月d日',  strtotime($val->create_date)) . "</td>";
                         if($val->setting_status != 0){
-                            echo "<td class = 'textcenter' id='setting_status' value=" . $val->setting_status . ">" . config('const.text.circle') . "</td>";
+                            echo "<td class = 'textcenter width72' id='setting_status' value=" . $val->setting_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if($val->monitor_status != 0){
-                            echo "<td class = 'textcenter' id='monitor_status' value=" . $val->monitor_status . ">" . config('const.text.circle') . "</td>";
+                            echo "<td class = 'textcenter width72' id='monitor_status' value=" . $val->monitor_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if($val->treatment_status != 0){
-                            echo "<td class = 'textcenter' id='treatment_status' value=" . $val->treatment_status . ">" . config('const.text.circle') . "</td>";
+                            echo "<td class = 'textcenter width72' id='treatment_status' value=" . $val->treatment_status . ">" . config('const.text.circle') . "</td>";
                         }else{
                             echo "<td></td>";
                         }
-                        echo "<td class = 'paddingleft10' id='doctor'>" . $val->doctor . "</td>";
+                        echo "<td class = 'paddingleft10 width230' id='doctor'>" . $val->doctor . "</td>";
                         echo   "<input type='hidden' id='target_id' value=" . $val->id . ">
                              <input type='hidden' id='password' value=" . $val->password . ">";
                     echo "</tr>";
