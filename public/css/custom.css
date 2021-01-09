@@ -465,6 +465,9 @@ nav.navbar {
     display: flex;
     flex-flow: row;
     margin-bottom: 0.75rem; }
+    @media screen and (max-width: 1024px) {
+      .p_chart .wrapper .chart_tools {
+        margin-bottom: 0.5rem; } }
     @media screen and (max-width: 575px) {
       .p_chart .wrapper .chart_tools {
         flex-wrap: wrap; } }
@@ -476,6 +479,14 @@ nav.navbar {
         line-height: 1.3; }
         .p_chart .wrapper .chart_tools .chart_setting .btn#chart_latestDate {
           width: 8rem; }
+          @media screen and (max-width: 1024px) {
+            .p_chart .wrapper .chart_tools .chart_setting .btn#chart_latestDate {
+              font-size: 1rem;
+              transform: scale(0.875);
+              width: calc(8rem/0.875);
+              margin-left: -0.4rem;
+              margin-right: -0.4rem;
+              padding: 7px 13.7px; } }
           @media screen and (max-width: 575px) {
             .p_chart .wrapper .chart_tools .chart_setting .btn#chart_latestDate {
               max-width: 7rem; } }
@@ -493,6 +504,9 @@ nav.navbar {
           text-align: left;
           display: inline-block;
           width: calc(100% - 10px); }
+      @media screen and (max-width: 1024px) {
+        .p_chart .wrapper .chart_tools .chart_setting .mark_triangle_down:first-of-type::after {
+          right: 1rem; } }
       .p_chart .wrapper .chart_tools .chart_setting #chart_earliestDate {
         font-size: 0.875rem;
         padding-right: 0.25rem; }
