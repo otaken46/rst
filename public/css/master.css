@@ -86,6 +86,25 @@ button.btn_logout {
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
+@media all and (-ms-high-contrast:none){
+    button.btn_logout {
+        font-size: inherit;
+        padding: 0px;
+        /* 文字色を白色に指定 */
+        color: #fff;
+        
+        position: absolute;
+        right: 20px;
+        top:0px;
+        /* ボーダーをなくす */
+        border-style: none;
+        background-color: #4672c4;
+        /* 角丸の指定 */
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+    }
+}
 button.btn_logout:hover {
     /* 透明度を20%に指定 */
     opacity: 0.8;

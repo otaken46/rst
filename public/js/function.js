@@ -27,7 +27,7 @@ function select_data(e,ids){
   }
   return select_data;
 }
-function edit_btn_click(click_flg, ids, words,circles = ""){
+function edit_btn_click(click_flg, ids, words,circles){
   if(click_flg){
     $.each(ids, function(index, value){
       text = '#' + index;

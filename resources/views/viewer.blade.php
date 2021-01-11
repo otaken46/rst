@@ -20,7 +20,7 @@ $(document).ready(function(){
             'regist_password':password,
             'regist_mail_address':mail_address};
         words = ['{{config('const.btn.update')}}'];
-        var type = edit_btn_click(click_flg, ids, words);
+        var type = edit_btn_click(click_flg, ids, words,"");
         if(type){
             $("#regist_viewer_id").prop('disabled', true);
             regist_type = "update";
