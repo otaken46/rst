@@ -169,7 +169,7 @@ $(document).ready(function(){
     </table>
     </div>
     <div id="modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content"><br>
             <div align="center" class="paddingleft10 paddingtop10">
                 <p>{{config('const.label.facility_name')}}<br>
                 <input class="paddingleft10" type="text" id="regist_facility_name" maxlength='20' placeholder='{{config('const.label.facility_name')}}{{config('const.text.input')}}'><br><br>
@@ -179,7 +179,7 @@ $(document).ready(function(){
                 </p>
                 <button class="btn1" id="regist_btn">{{config('const.btn.regist')}}</button>
                 <button class="btn1" id="cancel_btn">{{config('const.btn.cancel')}}</button>
-            </div>
+            </div><br>
         </div>
     </div>
     <div id="delmodal" class="delmodal">

@@ -303,7 +303,7 @@ $(document).ready(function(){
             <span id="error_message"></span><br><br>
             <button class="btn1" id="regist_btn">登録</button>
             <button class="btn1" id="cancel_btn">キャンセル</button>
-            </div>
+            </div><br>
         </div>
     </div>
     <div id="delmodal" class="delmodal">

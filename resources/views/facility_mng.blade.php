@@ -249,7 +249,7 @@ $(document).ready(function(){
     </div>
     <div id="modal" class="modal">
         <div class="modal-content paddingtop10">
-            <span class="paddingleft10 " id="faclity_name_val">aaa</span><br>
+            <span class="paddingleft10 " id="faclity_name_val">aaa</span><br><br>
              <div align="center" class="paddingleft10">
                 <p>{{config('const.label.facility_manager_name')}}<br>
                 <input class="paddingleft10" type="text" id="regist_facility_manager_name" maxlength='20' placeholder='施設管理者名を入力してください'><br><br>
@@ -268,7 +268,7 @@ $(document).ready(function(){
                 </p>
                 <button class="btn1" id="regist_btn">{{config('const.btn.regist')}}</button>
                 <button class="btn1" id="cancel_btn">{{config('const.btn.cancel')}}</button>
-            </div>
+            </div><br>
         </div>
     </div>
     <div id="delmodal" class="delmodal">
