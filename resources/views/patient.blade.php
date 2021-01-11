@@ -46,10 +46,10 @@ $(document).ready(function(){
         $("#regist_patient_name").val('');
         $("#regist_patient_id").val('');
         $("#regist_password").val('');
-        $("#regist_regist_status").val('');
-        $("#regist_setting_status").val('');
-        $("#regist_monitor_status").val('');
-        $("#regist_treatment_status").val('');
+        $("#regist_regist_status").val('0');
+        $("#regist_setting_status").val('0');
+        $("#regist_monitor_status").val('0');
+        $("#regist_treatment_status").val('0');
         $("#regist_doctor").val('');
         $("#regist_btn").text('登録');
         modal.style.display = 'none';
@@ -299,8 +299,8 @@ $(document).ready(function(){
                             <input class="paddingleft10" type="text" id="regist_doctor" maxlength='20' placeholder='担当医を入力してください'>
                         </td>
                     </tr>
-                </table><br>
-            <span id="error_message"></span><br>
+                </table>
+            <span id="error_message"></span><br><br>
             <button class="btn1" id="regist_btn">登録</button>
             <button class="btn1" id="cancel_btn">キャンセル</button>
             </div>
@@ -309,9 +309,9 @@ $(document).ready(function(){
     <div id="delmodal" class="delmodal">
         <div class="delmodal-content paddingtop10">
              <div align="center" class="paddingleft10">
-                <p>
-                <span id="faclity_mng_name"></span><br>
-                </p>
+                <p class="paddingtop10">
+                <span id="faclity_mng_name"></span>
+                </p><br>
                 <button class="btn1" id="delete_exe_btn">{{config('const.btn.delete')}}</button>
                 <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
@@ -320,9 +320,9 @@ $(document).ready(function(){
     <div id="resultmodal" class="resultmodal">
         <div class="resultmodal-content paddingtop10">
              <div align="center" class="paddingleft10">
-                <p>
-                <span id="result"></span><br>
-                </p>
+                <p class="paddingtop10">
+                <span id="result"></span>
+                </p><br>
                 <button class="btn1" id="result_btn">OK</button>
             </div>
         </div>

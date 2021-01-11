@@ -185,9 +185,9 @@ $(document).ready(function(){
     <div id="delmodal" class="delmodal">
         <div class="delmodal-content paddingtop10">
              <div align="center" class="paddingleft10">
-                <p>
-                <span id="faclity_name"></span><br>
-                </p>
+                <p class="paddingtop10">
+                <span id="faclity_name"></span>
+                </p><br>
                 <button class="btn1" id="delete_exe_btn">{{config('const.btn.delete')}}</button>
                 <button class="btn1" id="delete_cancel_btn">{{config('const.btn.cancel')}}</button>
             </div>
@@ -196,9 +196,9 @@ $(document).ready(function(){
     <div id="resultmodal" class="resultmodal">
         <div class="resultmodal-content paddingtop10">
              <div align="center" class="paddingleft10">
-                <p>
-                <span id="result"></span><br>
-                </p>
+                <p class="paddingtop10">
+                <span id="result"></span>
+                </p><br>
                 <button class="btn1" id="result_btn">OK</button>
             </div>
         </div>
