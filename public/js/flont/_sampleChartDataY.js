@@ -1,7 +1,6 @@
 //flatpickr 用のデータ
 //var oldestDate = "2020-08-12"; //最古のデータの日付を格納
 var oldestDate = old_date;
-var hoge = data;
 var first_view = true;
 var data_rst_30 = [];
 var data_heart_30 = [];
@@ -69,13 +68,13 @@ function chartDataSet(date = "today") {
         MM = toDoubleDigits(today.getMonth() + 1);
         DD = toDoubleDigits(today.getDate());
         str = YYYY + "-" + MM + "-" + DD;
-        if(data[str] != undefined){
-            data_rst_90.push(data[str]['mean_respr']);
-            data_heart_90.push(data[str]['mean_cvr']);
-            data_breath_90.push(data[str]['mean_rsi']);
-            data_csr_90.push(data[str]['max_xhr2']);
-            data_sleep_90.push(data[str]['mean_hr']);
-            data_memo_90.push(data[str]['note']);
+        if(chart_data[str] != undefined){
+            data_rst_90.push(chart_data[str]['mean_respr']);
+            data_heart_90.push(chart_data[str]['mean_cvr']);
+            data_breath_90.push(chart_data[str]['mean_rsi']);
+            data_csr_90.push(chart_data[str]['max_xhr2']);
+            data_sleep_90.push(chart_data[str]['mean_hr']);
+            data_memo_90.push(chart_data[str]['note']);
         }else{
             data_rst_90.push("");
             data_heart_90.push("");
@@ -85,13 +84,13 @@ function chartDataSet(date = "today") {
             data_memo_90.push("");
         }
         if(cnt < 61){
-            if(data[str] != undefined){
-                data_rst_60.push(data[str]['mean_respr']);
-                data_heart_60.push(data[str]['mean_cvr']);
-                data_breath_60.push(data[str]['mean_rsi']);
-                data_csr_60.push(data[str]['max_xhr2']);
-                data_sleep_60.push(data[str]['mean_hr']);
-                data_memo_60.push(data[str]['note']);
+            if(chart_data[str] != undefined){
+                data_rst_60.push(chart_data[str]['mean_respr']);
+                data_heart_60.push(chart_data[str]['mean_cvr']);
+                data_breath_60.push(chart_data[str]['mean_rsi']);
+                data_csr_60.push(chart_data[str]['max_xhr2']);
+                data_sleep_60.push(chart_data[str]['mean_hr']);
+                data_memo_60.push(chart_data[str]['note']);
             }else{
                 data_rst_60.push("");
                 data_heart_60.push("");
@@ -102,13 +101,13 @@ function chartDataSet(date = "today") {
             }
         }
         if(cnt < 31){
-            if(data[str] != undefined){
-                data_rst_30.push(data[str]['mean_respr']);
-                data_heart_30.push(data[str]['mean_cvr']);
-                data_breath_30.push(data[str]['mean_rsi']);
-                data_csr_30.push(data[str]['max_xhr2']);
-                data_sleep_30.push(data[str]['mean_hr']);
-                data_memo_30.push(data[str]['note']);
+            if(chart_data[str] != undefined){
+                data_rst_30.push(chart_data[str]['mean_respr']);
+                data_heart_30.push(chart_data[str]['mean_cvr']);
+                data_breath_30.push(chart_data[str]['mean_rsi']);
+                data_csr_30.push(chart_data[str]['max_xhr2']);
+                data_sleep_30.push(chart_data[str]['mean_hr']);
+                data_memo_30.push(chart_data[str]['note']);
             }else{
                 data_rst_30.push("");
                 data_heart_30.push("");

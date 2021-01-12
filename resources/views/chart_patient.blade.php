@@ -119,8 +119,9 @@
       ※ バックエンドとの連携後、削除してください
   -->
   <script type="text/javascript">
-  var data = @json($chart_patient);
+  var chart_data = @json($chart_patient);
   var old_date = '{{$old_date}}';
+  var target_id ='{{$patient_id}}';
   </script>
   <script type="text/javascript" src="{{asset('/js/flont/_sampleChartDataY.js')}}"></script>
   <!--
@@ -158,12 +159,9 @@
   <!-- 独自(ページ内のボタンなどの制御) -->
   <script type="text/javascript" src="{{asset('/js/flont/chart__custom.js')}}"></script>
   
-  <!--
-  ーーーーーーーーーーーーーーーーーーーー
-      ※ ↓画面遷移をさせるダミーの機能です
-      ※ バックエンドとの連携後、削除してください
-  -->
+ 
   <script type="text/javascript">
+    var regist_flg = true;
     $(document).ready(function(){
        $("#chart_idName").text('{{$patient_id}}');
     });
@@ -173,10 +171,50 @@
     $(document).on("click", "#logout", function(){
       window.location.href = "{{ url('/logout_viewer')}}";
     });
+    $(document).on("click", "#m_add, #m_change", function(){
+        ajax_connect("update");
+    });
+    $(document).on("click", "#memo_delete", function(){
+        ajax_connect("delete");
+    });
+    function ajax_connect(type){
+        // 連打対策
+        if(regist_flg){
+            regist_flg = false;
+            set_date = $('#memo_setDate').val();
+            set_label = $('#memo_setLabel').text();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ action('ChartPatientController@regist') }}",
+                type: 'POST',
+                data:{
+                    'target_id':target_id,
+                    'doc_date':set_date,
+                    'note':set_label,
+                    'type':type,},
+                dataType:'json'
+            })
+            // Ajaxリクエストが成功した場合
+            .done(function(data) {
+                    regist_flg = true;
+                    return;
+            })
+            // Ajaxリクエストが失敗した場合
+            .fail(function(data) {
+                regist_flg = true;
+                return;
+            });
+        }else{
+          regist_flg = true;
+          return;
+        }
+    }
   </script>
-  <!--
-  ーーーーーーーーーーーーーーーーーーーー
-  -->
+
 
 </body>
 </html>
