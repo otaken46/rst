@@ -125,8 +125,8 @@ $(document).ready(function(){
                 mail_address = $('#regist_mail_address').val();
                 err = data_check("name", facility_manager_name, '{{config('const.label.facility_manager_name')}}{{config('const.msg.err_003')}}');
                 if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
-                if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
+                if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.msg.err_008')}}');}
             }
             if(err){
                 error_message.style.display = "none";

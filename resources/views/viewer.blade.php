@@ -64,8 +64,8 @@ $(document).ready(function(){
                 mail_address = $('#regist_mail_address').val();
                 err = data_check("name", viewer_name, '{{config('const.label.viewer_name')}}{{config('const.msg.err_003')}}');
                 if(err){err = data_check("id_pass", viewer_id, '{{config('const.label.viewer_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
-                if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.text.input')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
+                if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.msg.err_008')}}');}
             }
             if(err){
                 error_message.style.display = "none";

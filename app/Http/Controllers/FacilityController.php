@@ -72,12 +72,12 @@ class FacilityController extends Controller
                         ]);
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                         if($log_id != ""){
-                            $this::operation_result($log_id,"success");
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
                         }
                     }else{
                         $res = ['result'=>'NG','message'=>config('const.label.facility_id') . config('const.result.DUPE_ID')];
                         if($log_id != ""){
-                            $this::operation_result($log_id,"fail dupe id");
+                            $this::operation_result($log_id,config('const.operation.DUPE_ID'));
                         }
                     }
                 }
@@ -119,7 +119,7 @@ class FacilityController extends Controller
                         ]);
                     }
                     if($log_id != ""){
-                        $this::operation_result($log_id,"success");
+                        $this::operation_result($log_id,config('const.operation.SUCCESS'));
                     }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }

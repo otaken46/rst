@@ -42,7 +42,8 @@ class FacilityMngController extends Controller
                     }
                     $message = config('const.btn.regist');
                     $dupe = $this::dupe_id_check($request['facility_manager_id']);
-                    if($dupe){
+                    $pass = $this::ng_password_check($request['password']);
+                    if($dupe && $pass){
                         $sql_result = FacilityManagerMst::insert([
                             'facility_id' => $request['facility_id'],
                             'facility_manager_name' => $request['facility_manager_name'],
@@ -53,15 +54,22 @@ class FacilityMngController extends Controller
                             'create_date' => now(),
                         ]);
                         if($log_id != ""){
-                            $this::operation_result($log_id,"success");
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
                         }
                         $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                     }else{
-                        if($log_id != ""){
-                            $this::operation_result($log_id,"fail dupe id");
-                        }
                         $sql_result = 1;
-                        $res = ['result'=>'NG','message'=>config('const.label.facility_manager_id') . config('const.result.DUPE_ID')];                        
+                        if($dupe){
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.NG_PASS'));
+                            }
+                            $res = ['result'=>'NG','message'=>config('const.result.NG＿PASS')];
+                        }else{
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.DUPE_ID'));
+                            }
+                            $res = ['result'=>'NG','message'=>config('const.label.facility_manager_id') . config('const.result.DUPE_ID')];
+                        }
                     }
                 }
                 if($request['regist_type'] == "update"){
@@ -70,22 +78,31 @@ class FacilityMngController extends Controller
                     }else{
                         $log_id = "";
                     }
-                    $message = config('const.btn.update');
-                    $facility_mng_mst = new FacilityManagerMst();
-                    $sql_result = $facility_mng_mst
-                    ->where('id', $request['target_id'])
-                    ->where('facility_id', $request['facility_id'])
-                    ->update([
-                        'facility_manager_name' => $request['facility_manager_name'],
-                        'password' => $request['password'],
-                        'contact' => $request['contact'],
-                        'mail_address' => $request['mail_address'],
-                        'update_date' => now(),
-                    ]);
-                    if($log_id != ""){
-                        $this::operation_result($log_id,"success");
+                    $pass = $this::ng_password_check($request['password']);
+                    if($pass){
+                        $message = config('const.btn.update');
+                        $facility_mng_mst = new FacilityManagerMst();
+                        $sql_result = $facility_mng_mst
+                        ->where('id', $request['target_id'])
+                        ->where('facility_id', $request['facility_id'])
+                        ->update([
+                            'facility_manager_name' => $request['facility_manager_name'],
+                            'password' => $request['password'],
+                            'contact' => $request['contact'],
+                            'mail_address' => $request['mail_address'],
+                            'update_date' => now(),
+                        ]);
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        }
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.NG_PASS'));
+                        }
+                        $sql_result = 1;
+                        $res = ['result'=>'NG','message'=>config('const.result.NG＿PASS')];
                     }
-                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 if($request['regist_type'] == "delete"){
                     if($request->session()->get('id') != NULL){
@@ -101,7 +118,7 @@ class FacilityMngController extends Controller
                         'delete_date' => now(),
                     ]);
                     if($log_id != ""){
-                        $this::operation_result($log_id,"success");
+                        $this::operation_result($log_id,config('const.operation.SUCCESS'));
                     }
                     $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }

@@ -35,7 +35,7 @@ class LoginController extends Controller
         if($id == config('const.admin_id') && $pass == config('const.admin_pass')){
             $request->session()->put('id', $request->id);
             $request->session()->put('pass', $request->pass);
-            $log_id = $this::operation_log($id,"RST001","success");
+            $log_id = $this::operation_log($id,"RST001",config('const.operation.SUCCESS'));
             return redirect('/facility');
         }
         $facility_mng_mst = new FacilityManagerMst();
@@ -52,7 +52,7 @@ class LoginController extends Controller
                     ->update([
                         'fail_count' => 0,
                     ]);
-                $log_id = $this::operation_log($id,"RST007","success");
+                $log_id = $this::operation_log($id,"RST007",config('const.operation.SUCCESS'));
                 return redirect('/viewer');
             }else{
                 //　ユーザーidとパスワードが正しくない
@@ -108,7 +108,7 @@ class LoginController extends Controller
                 ->update([
                     'fail_count' => 0,
                 ]);
-                $log_id = $this::operation_log($id,"RST014","success");
+                $log_id = $this::operation_log($id,"RST014",config('const.operation.SUCCESS'));
                 return redirect('/list_patient');
             }else{
                 $fail_count = $sql_result[0]['fail_count'] + 1;
@@ -135,7 +135,7 @@ class LoginController extends Controller
     public function logout (Request $request) 
     {
         if($request->session()->get('id') != NULL){
-            $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+            $log_id = $this::operation_log($request->session()->get('id'),"RST018",config('const.operation.SUCCESS'));
         }
         session()->flush();
         return redirect('login_facility');
@@ -143,7 +143,7 @@ class LoginController extends Controller
     public function logout_viewer (Request $request) 
     {
         if($request->session()->get('id') != NULL){
-            $log_id = $this::operation_log($request->session()->get('id'),"RST018","success");
+            $log_id = $this::operation_log($request->session()->get('id'),"RST018",config('const.operation.SUCCESS'));
         }
         session()->flush();
         return redirect('login_viewer');

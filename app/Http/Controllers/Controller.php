@@ -34,6 +34,15 @@ class Controller extends BaseController
             return false;
         }
     }
+    public static function ng_password_check($pass){
+        $result = true;
+        foreach(config('const.ngpass') as $val) {
+            if(strpos($pass,$val) !== false){
+                $result = false;
+            }
+        }
+            return $result;
+    }
     public static function operation_log($userid, $operation_code, $result = NULL){
         $operation_log = new OperationLog();
         $operation_log->insert([

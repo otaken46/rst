@@ -62,6 +62,11 @@ function data_check(type, input_data, text){
       result = false;
     }
   }
+  if(type == "pass"){
+    if(input_data.trim().length == 0 || !(input_data.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/))){
+      result = false;
+    }
+  }
   if(type == "mail"){
     if(input_data.trim().length == 0 || !(input_data.match(/^([a-z0-9_\.\-])+@([a-z0-9_\.\-])+[^.]$/i))){
       result = false;

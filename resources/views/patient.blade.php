@@ -79,7 +79,7 @@ $(document).ready(function(){
                 doctor = $('#regist_doctor').val();
                 err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
                 if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("id_pass", password, '{{config('const.label.password')}}{{config('const.text.input')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}
             }
             if(err){
