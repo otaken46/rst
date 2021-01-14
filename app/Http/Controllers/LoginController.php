@@ -79,10 +79,12 @@ class LoginController extends Controller
                 }
             }
         }else{
-            if($id == config('const.admin_id')){
+            if($id != "" && $id == config('const.admin_id')){
                 $log_id = $this::operation_log($id,"RST001","fail");
             }else{
-                $log_id = $this::operation_log($id,"RST007","not find id");
+                if($id != ""){
+                    $log_id = $this::operation_log($id,"RST007","not find id");
+                }
             }
             $errors = config('const.msg.err_001');
             return view('login_facility', compact('id','pass','errors'));
