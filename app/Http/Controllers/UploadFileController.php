@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 class UploadFileController extends Controller
 {
     public function getfile(Request $request) {
+Log::debug('message111');
+Log::debug($request);
         $id = $request->header('id');
         $pass =  $request->header('pass');
         if($id != NULL && $pass != NULL){
