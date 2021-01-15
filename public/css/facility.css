@@ -20,4 +20,6 @@
     background-color: #4672c4!important;
     text-align: center;
 }
-
+.bold-line{
+    border-top-width: initial;
+}

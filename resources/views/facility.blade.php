@@ -184,13 +184,13 @@ $(document).ready(function(){
                     $cnt++;
                 }
                 echo "<tr>";
-                echo "<td class = 'paddingleft10'>合計</td><td></td>";
-                echo "<td class = 'textright'>" . $mng_total . "</td>";
-                echo "<td class = 'textright'>" . $viewer_total . "</td>";
-                echo "<td class = 'textright'>" . $regist_total . "</td>";
-                echo "<td class = 'textright'>" . $setting_total . "</td>";
-                echo "<td class = 'textright'>" . $monitor_total . "</td>";
-                echo "<td class = 'textright'>" . $treatment_total . "</td>";
+                echo "<td class = 'paddingleft10 bold-line'>合計</td><td class = 'bold-line'></td>";
+                echo "<td class = 'textright bold-line'>" . $mng_total . "</td>";
+                echo "<td class = 'textright bold-line'>" . $viewer_total . "</td>";
+                echo "<td class = 'textright bold-line'>" . $regist_total . "</td>";
+                echo "<td class = 'textright bold-line'>" . $setting_total . "</td>";
+                echo "<td class = 'textright bold-line'>" . $monitor_total . "</td>";
+                echo "<td class = 'textright bold-line'>" . $treatment_total . "</td>";
                 echo "</tr>";
             @endphp
     </table>
