@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Log;
 class UploadFileController extends Controller
 {
     public function getfile(Request $request) {
-Log::debug('message111');
-Log::debug($request->header('id'));
-Log::debug($request->header('pass'));
         $id = $request->header('id');
         $pass =  $request->header('pass');
         if($id != NULL && $pass != NULL){
@@ -24,8 +21,6 @@ Log::debug($request->header('pass'));
             if($sql_result == 1){
                 $err = true;
                 // ファイル情報取得
-                Log::debug('message111');
-                Log::debug($request->file('file'));
                 $file = $request->file('file');
                 $file_name = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();

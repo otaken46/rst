@@ -208,7 +208,7 @@ class Kernel extends ConsoleKernel
                     }
                 }
             }
-        })->dailyAt('13:18');
+        })->dailyAt('02:10');
     }
     public static function operation_log($userid, $operation_code, $result = NULL){
         $operation_log = new OperationLog();
