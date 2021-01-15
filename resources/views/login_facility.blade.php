@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+        <!-- "{{config('const.version')}}" -->
         <meta charset="utf-8">
         <title>RTS</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,7 +14,7 @@
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     </head>
     <body>
-     <!-- IE対応 -->
+    <!-- IE対応 -->
     <p class="alert alert-warning alert-dismissible fade show forIE d-none" role="alert" style="z-index: 1000;">
         このブラウザ (Internet Explorer) は本システムの推奨ブラウザではないため、一部機能が制限される可能性があります。<br>
         <a target="_blank"  style="color:white; text-decoration: underline;" href="https://www.google.com/intl/ja/chrome/">Google Chrome</a> または <a target="_blank"  style="color:white; text-decoration: underline;" href="https://www.microsoft.com/ja-jp/edge">Microsoft Edge</a> のご利用をお勧めいたします。

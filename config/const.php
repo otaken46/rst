@@ -1,7 +1,6 @@
 <?php
 return [
-    'admin_id' => 'rst@yamada',
-    'admin_pass' => 'yamadaPass',
+    'version' => 'version_1.0',
     'max_facility' => '15',
     'err_001' => '入力内容が正しくありません',
     'title'=> 'RSTモニタシステム',

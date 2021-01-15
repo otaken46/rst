@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+  <!-- "{{config('const.version')}}" -->
   <meta charset="UTF-8">
   <title>患者リスト｜RST結果ビューア</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">

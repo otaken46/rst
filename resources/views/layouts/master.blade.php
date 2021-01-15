@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
+  <!-- "{{config('const.version')}}" -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <meta name="csrf-token" content="{{ csrf_token() }}">

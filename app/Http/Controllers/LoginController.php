@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\FacilityManagerMst;
 use App\Http\Models\ViewerMst;
+use App\Http\Models\SettingMst;
 use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
@@ -31,8 +32,9 @@ class LoginController extends Controller
         $sql = 0;
         $id = $request->id;
         $pass = $request->pass;
+        $setting = SettingMst::get();
         // システム管理者
-        if($id == config('const.admin_id') && $pass == config('const.admin_pass')){
+        if($id == $setting[0]['admin_id'] && $pass == $setting[0]['admin_pass']){
             $request->session()->put('id', $request->id);
             $request->session()->put('pass', $request->pass);
             $log_id = $this::operation_log($id,"RST001",config('const.operation.SUCCESS'));
@@ -41,7 +43,7 @@ class LoginController extends Controller
         $facility_mng_mst = new FacilityManagerMst();
         $sql_result = $facility_mng_mst->select('id','fail_count','account_rock')->where('facility_manager_id', $id)->get();
         //　施設管理者
-        if(isset($sql_result[0]['id']) && $id != config('const.admin_id')){
+        if(isset($sql_result[0]['id']) && $id != $setting[0]['admin_id']){
             $sql = FacilityManagerMst::where('facility_manager_id', $id)->where('password', $pass)->get();
             //　ユーザーidとパスワードが正しいかつアカウントロックされていない
             if(isset($sql[0]['id']) && $sql_result[0]['account_rock'] == 0){
@@ -79,7 +81,7 @@ class LoginController extends Controller
                 }
             }
         }else{
-            if($id != "" && $id == config('const.admin_id')){
+            if($id != "" && $id == $setting[0]['admin_id']){
                 $log_id = $this::operation_log($id,"RST001",config('const.operation.FAIL'));
             }else{
                 if($id != ""){
