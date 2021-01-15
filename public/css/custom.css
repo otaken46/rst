@@ -170,7 +170,8 @@ input.flatpickr {
   color: #222222;
   padding-top: 0.625rem;
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+  align-items: baseline; }
   .flatpickr-current-month .numInputWrapper {
     order: 1;
     width: 50%;
@@ -208,9 +209,9 @@ input.flatpickr {
 .flatpickr-days {
   width: 272.875px; }
   .flatpickr-days .dayContainer {
-    width: auto;
-    min-width: initial;
-    max-width: initial; }
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%; }
 
 .flatpickr-day {
   border-radius: 0.25rem;

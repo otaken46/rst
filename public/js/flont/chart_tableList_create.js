@@ -59,7 +59,7 @@ function createTrMemo(dataArry){ //データがメモの場合のリスト作成
   for(var i=0; i<dataArry[1].length; i++){
     if(dataArry[1][i]) {
       var memoTextClip = dataArry[1][i].slice(0,2); //先導2文字だけの文字列
-      var elem = "<td class='memoClickable' title='" + dataArry[1][i] + "'>" + memoTextClip + "</td>";
+      var elem = "<td class='memoClickable' data-date='" + arryX_moto[i] + "' data-value='" + dataArry[1][i] + "' title='" + dataArry[1][i] + "'>" + memoTextClip + "</td>";
     } else {
       elem = "<td></td>";
     }

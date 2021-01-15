@@ -9,6 +9,9 @@ if($("#list_table").css("-webkit-overflow-scrolling") === "auto"){
 //タッチ系のデバイスの時だけ、ダミーのスクロールバーを作って表示させる
 createScrollBar();
 
+//モーダル内のメモ内容ボタンの選択肢を作成
+createMemoChoices(memoChoices);
+
 /*--------------------
 モーダルの制御
 --------------------*/
@@ -25,7 +28,10 @@ $(document).on("click", "#memo_add", function(){
 $(document).on("click", "#list_table .memoClickable", function(){
   $("#memo_set").removeClass("memo_create");
   $("#memo_set").addClass("memo_edit");
-  memoSetPicker.setDate("2020-11-05"); //ピッカーの日付を指定の日にする
+  memoSetPicker.setDate($(this)[0].dataset.date); //ピッカーの日付を指定の日にする
+  $("#memo_setDate").prop('disabled', true);
+  $("#memo_setLabel span").text($(this)[0].dataset.value); //内容の初期選択肢を設定
+  $("#memo_setLabel")[0].dataset.value = $("#memo_setLabel_choices li:first-of-type")[0].dataset.value; //内容の初期選択肢のvalue値を設定
   $("#memo_set").modal("show");
 });
 //メモのモーダル内の「内容」の選択肢をクリックした時の制御
@@ -120,7 +126,6 @@ function exchangeDropdownText(jQueryElm){
 //グラフを再描画して、数値リストを作成する関数
 function reDraw() {
   currentDate = flatpickr.formatDate(latestDatePicker.selectedDates[0], "Y-m-d");
-  chartDataSet(currentDate);
   $.when(
     setStartEndDates(currentDate) //表示する日付と属性の値を変更する
   ).done(function() {
@@ -145,4 +150,15 @@ function reDraw() {
       yaxis: y_axis_setting
     },true);
   });
+}
+
+//引数からモーダル内のメモ内容の選択肢を作成
+function createMemoChoices(arry){
+  //選択肢を作成
+  for(var i=0; i<arry.length; i++){
+    $("#memo_setLabel_choices").append("<li class='dropdown-item' data-value='" + arry[i] + "'>" + arry[i] + "</li>");
+  }
+  //初期状態では選択肢の最初の項目を設定
+  $("#memo_setLabel")[0].dataset.value = arry[0];
+   $("#memo_setLabel span").text(arry[0]);
 }

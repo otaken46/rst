@@ -68,7 +68,7 @@ class LoginController extends Controller
                         'fail_count' => $fail_count,
                         'account_rock' => $account_rock,
                     ]);
-                    $log_id = $this::operation_log($id,"RST007","fail");
+                    $log_id = $this::operation_log($id,"RST007",config('const.operation.FAIL'));
                     $errors = config('const.msg.err_001');
                     return view('login_facility', compact('id','pass','errors'));
                 }else{
@@ -80,7 +80,7 @@ class LoginController extends Controller
             }
         }else{
             if($id != "" && $id == config('const.admin_id')){
-                $log_id = $this::operation_log($id,"RST001","fail");
+                $log_id = $this::operation_log($id,"RST001",config('const.operation.FAIL'));
             }else{
                 if($id != ""){
                     $log_id = $this::operation_log($id,"RST007","not find id");
@@ -124,7 +124,7 @@ class LoginController extends Controller
                     'fail_count' => $fail_count,
                     'account_rock' => $account_rock,
                 ]);
-                $log_id = $this::operation_log($id,"RST014","fail");
+                $log_id = $this::operation_log($id,"RST014",config('const.operation.FAIL'));
                 $errors = "pass";
                 return view('login_viewer', compact('id','pass','errors'));
             }

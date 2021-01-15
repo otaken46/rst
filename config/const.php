@@ -71,11 +71,13 @@ return [
         'ACCESS_NG' => '通信に失敗しました。',
         'DUPE_ID' => 'が既に使用されています。',
         'NG＿PASS' => 'パスワードを変更してください',
+        'NOT_REGIST' => '登録できない日付です。',
     ),
     'operation'=>array(
         'SUCCESS' => 'success',
         'DUPE_ID' => 'fail dupe id',
         'NG_PASS' => 'ng pass',
+        'FAIL' => 'fail',
     ),
     'ngpass'=>array(
         '123456',

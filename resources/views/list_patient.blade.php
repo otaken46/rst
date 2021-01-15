@@ -68,8 +68,10 @@
 -->
   <script type="text/javascript">
   var data = @json($list_patient);
-  var flag_pink = [5, 9, 14, 18, 22];
-  var flag_yellow = [7, 15, 20];
+//  var flag_pink = [0];
+//  var flag_yellow = [7, 15, 20];
+var flag_pink = @json($flag_pink);
+var flag_yellow = @json($flag_yellow);
   </script>
   <!-- ライブラリ：ベース -->
   <script type="text/javascript" src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>

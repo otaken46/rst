@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{{ asset('_vendors/flatpickr/css/flatpickr.min.css') }}">
   <!-- 独自 -->
   <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/chart_patient.css') }}">
 </head>
 
 <body class="p_chart">
@@ -90,29 +91,29 @@
         <div class="memo_label">
           <span class="d-inline-block mr-2">内容：</span><button type="button" id="memo_setLabel" class="btn btn-outline-secondary text-left mark_triangle_down" data-value="ペアリング失敗" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>ペアリング失敗</span></button>
           <ul class="dropdown-menu" id="memo_setLabel_choices" aria-labelledby="memo_setLabel">
-            <li class="dropdown-item" data-value="ペアリング失敗">ペアリング失敗</li>
-            <li class="dropdown-item" data-value="センサ電源OFF">センサ電源OFF</li>
-            <li class="dropdown-item" data-value="スマホバッテリー切れ">スマホバッテリー切れ</li>
-            <li class="dropdown-item" data-value="入院中、または、外泊">入院中、または、外泊</li>
-            <li class="dropdown-item" data-value="意識消失（有害事象）">意識消失（有害事象）</li>
-            <li class="dropdown-item" data-value="憎悪">憎悪</li>
-            <li class="dropdown-item" data-value="緩徐低下">緩徐低下</li>
-            <li class="dropdown-item" data-value="薬を変えた">薬を変えた</li>
-            <li class="dropdown-item" data-value="その他特別な出来事">その他特別な出来事</li>
           </ul>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
         <div><button type="button" id="memo_delete" class="btn btn-danger">削除</button></div>
         <div>
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">キャンセル</button>
+          <button type="button" id="memo_cancel" class="btn btn-outline-secondary" data-dismiss="modal">キャンセル</button>
           <button type="button" class="btn btn-primary"><span id="m_add">追加</span><span id="m_change">変更</span></button>
         </div>
       </div>
     </div>
   </div>
 </div>
-  
+<div id="resultmodal" class="resultmodal">
+    <div class="resultmodal-content paddingtop10"><br>
+          <div align="center" class="paddingleft10">
+            <p class="paddingtop10">
+            <span id="result"></span>
+            </p><br>
+            <button class="btn1" id="result_btn">OK</button>
+        </div><br>
+    </div>
+</div>
   <!--
   ーーーーーーーーーーーーーーーーーーーー
       ※ ↓グラフと数値リストを表示するためのダミーのデータです
@@ -124,6 +125,7 @@
   var target_id ='{{$patient_id}}';
   </script>
   <script type="text/javascript" src="{{asset('/js/flont/_sampleChartDataY.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/js/flont/_sampleMemoChoices.js')}}"></script>
   <!--
   ーーーーーーーーーーーーーーーーーーーー
   -->
@@ -173,9 +175,23 @@
     });
     $(document).on("click", "#m_add, #m_change", function(){
         ajax_connect("update");
+        $("#memo_setDate").prop('disabled', false);
     });
     $(document).on("click", "#memo_delete", function(){
         ajax_connect("delete");
+        $("#memo_setDate").prop('disabled', false);
+    });
+    $(document).on("click", "#memo_cancel", function(){
+        $("#memo_setDate").prop('disabled', false);
+    });
+    $("#result_btn").click(function() {
+        if(regist_flg){
+            url = "{{url('/chart_patient')}}" + "?patient_id=" + target_id;
+            window.location.href = url;
+        }else{
+            regist_flg = true;
+            resultmodal.style.display = 'none';
+        }
     });
     function ajax_connect(type){
         // 連打対策
@@ -200,12 +216,18 @@
             })
             // Ajaxリクエストが成功した場合
             .done(function(data) {
+                if (data.result == "OK") {
                     regist_flg = true;
-                    return;
+                }
+                $('#result').text(data.message);
+                resultmodal.style.display = 'block';
+                return;
             })
             // Ajaxリクエストが失敗した場合
             .fail(function(data) {
-                regist_flg = true;
+                regist_flg = false;
+                $('#result').text('{{config('const.result.ACCESS_NG')}}');
+                resultmodal.style.display = 'block';
                 return;
             });
         }else{

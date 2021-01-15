@@ -58,6 +58,7 @@ function chartDataSet(date = "today") {
     }else{
         var today = new Date(date);
     }
+    var null_array = [null];
     for(var cnt = 90; cnt > 0 ;cnt--){
         if(cnt == 90){
             today.setDate(today.getDate() - (cnt - 1));
@@ -76,12 +77,12 @@ function chartDataSet(date = "today") {
             data_sleep_90.push(chart_data[str]['mean_hr']);
             data_memo_90.push(chart_data[str]['note']);
         }else{
-            data_rst_90.push("");
-            data_heart_90.push("");
-            data_breath_90.push("");
-            data_csr_90.push("");
-            data_sleep_90.push("");
-            data_memo_90.push("");
+            data_rst_90 = data_rst_90.concat(null_array);
+            data_heart_90 = data_heart_90.concat(null_array);
+            data_breath_90 = data_breath_90.concat(null_array);
+            data_csr_90 = data_csr_90.concat(null_array);
+            data_sleep_90 = data_sleep_90.concat(null_array);
+            data_memo_90 = data_memo_90.concat(null_array);
         }
         if(cnt < 61){
             if(chart_data[str] != undefined){
@@ -92,12 +93,12 @@ function chartDataSet(date = "today") {
                 data_sleep_60.push(chart_data[str]['mean_hr']);
                 data_memo_60.push(chart_data[str]['note']);
             }else{
-                data_rst_60.push("");
-                data_heart_60.push("");
-                data_breath_60.push("");
-                data_csr_60.push("");
-                data_sleep_60.push("");
-                data_memo_60.push("");
+                data_rst_60 = data_rst_60.concat(null_array);
+                data_heart_60 = data_heart_60.concat(null_array);
+                data_breath_60 = data_breath_60.concat(null_array);
+                data_csr_60 = data_csr_60.concat(null_array);
+                data_sleep_60 = data_sleep_60.concat(null_array);
+                data_memo_60 = data_memo_60.concat(null_array);
             }
         }
         if(cnt < 31){
@@ -109,12 +110,12 @@ function chartDataSet(date = "today") {
                 data_sleep_30.push(chart_data[str]['mean_hr']);
                 data_memo_30.push(chart_data[str]['note']);
             }else{
-                data_rst_30.push("");
-                data_heart_30.push("");
-                data_breath_30.push("");
-                data_csr_30.push("");
-                data_sleep_30.push("");
-                data_memo_30.push("");
+                data_rst_30 = data_rst_30.concat(null_array);
+                data_heart_30 = data_heart_30.concat(null_array);
+                data_breath_30 = data_breath_30.concat(null_array);
+                data_csr_30 = data_csr_30.concat(null_array);
+                data_sleep_30 = data_sleep_30.concat(null_array);
+                data_memo_30 = data_memo_30.concat(null_array);
             }
         }
     }

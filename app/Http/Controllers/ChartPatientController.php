@@ -12,8 +12,6 @@ class ChartPatientController extends Controller
 {
     public function index (Request $request) 
     {
-        Log::debug("hoge");
-        
         if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL && $request->input('patient_id') != NULL){
             $patient_id = $request->input('patient_id');
             $final_output = new FinalOutput();
@@ -58,7 +56,14 @@ class ChartPatientController extends Controller
             DB::beginTransaction();
             try {
                 $sql_result = 0;
+                $message = "";
                 if($request['type'] == "update"){
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST015");
+                    }else{
+                        $log_id = "";
+                    }
+                    $message = config('const.btn.regist');
                     $final_output = new FinalOutput();
                     $sql_result = $final_output
                     ->where('patient_id', $request['target_id'])
@@ -67,9 +72,25 @@ class ChartPatientController extends Controller
                         'note' => $request['note'],
                         'update_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    if($sql_result != 0){
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        }
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.FAIL'));
+                        }
+                        $res = ['result'=>'NG','message'=>config('const.result.NOT_REGIST')];
+                    }
                 }
                 if($request['type'] == "delete"){
+                    if($request->session()->get('id') != NULL){
+                        $log_id = $this::operation_log($request->session()->get('id'),"RST019");
+                    }else{
+                        $log_id = "";
+                    }
+                    $message = config('const.btn.delete');
                     $final_output = new FinalOutput();
                     $sql_result = $final_output
                     ->where('patient_id', $request['target_id'])
@@ -78,12 +99,15 @@ class ChartPatientController extends Controller
                         'note' => NULL,
                         'update_date' => now(),
                     ]);
-                    $res = ['result'=>'OK'];
+                    if($log_id != ""){
+                        $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                    }
+                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                $res = ['result'=>'NG'];
+                $res = ['result'=>'NG','message'=>$message . config('const.result.NG')];
                 $result = json_encode($res);
                 return $result;
             }
@@ -91,12 +115,13 @@ class ChartPatientController extends Controller
                 $result = json_encode($res);
                 return $result;
             }else{
-                $res = ['result'=>'NG'];
                 $result = json_encode($res);
                 return $result;
             }
         }else{
-
+            $res = ['result'=>'NG','message'=>config('const.result.NAME_NG')];
+            $result = json_encode($res);
+            return $result;
         }
     }
 }
