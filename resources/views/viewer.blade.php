@@ -12,7 +12,13 @@ $(document).ready(function(){
     var facility = @json($facility);
     var facility_id = facility[0]['id'];
     $('#viewer_btn').on('click', function() {
-        modal.style.display = 'block';
+        if('{{$viewer_count}}' == '{{config('const.max_viewer')}}'){
+            regist_flg = false;
+            $('#result').text('{{config('const.max_viewer')}}{{config('const.msg.err_005')}}');
+            resultmodal.style.display = 'block';
+        }else{
+            modal.style.display = 'block';
+        }
     });
     $('#edit_btn').on('click', function() {
         ids = {'regist_viewer_name':viewer_name,
@@ -151,8 +157,8 @@ $(document).ready(function(){
     <table border="1" id="data" class="margintop30 width1024 sorttbl">
             <tr>
                 <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width200 tbl-heder">閲覧者名<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width150 tbl-heder">閲覧者ID<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width180 tbl-heder">eメールアドレス<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width150 tbl-heder">閲覧者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width180 tbl-heder">eメールアドレス<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;

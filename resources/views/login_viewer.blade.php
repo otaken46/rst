@@ -3,7 +3,7 @@
 <head>
   <!-- "{{config('const.version')}}" -->
   <meta charset="UTF-8">
-  <title>ログイン｜RST結果ビューア</title>
+  <title>COVID-19患者用RSTモニタリング（表示）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- ライブラリ-->
@@ -24,7 +24,7 @@
   </p>
   
   <div class="wrapper text-center">
-    <h1 class="d-block">RST解析結果表示システム</h1>
+    <h1 class="d-block">COVID-19患者用RSTモニタリング</h1>
     <form method="post" name="login_viewer" class="mb-5" action="{{ url('/login_viewer')}}">
     {{ csrf_field() }}
       <div class="form-group text-left mb-4" id="login_id">

@@ -32,7 +32,7 @@ $(document).ready(function(){
                 count += 1;
             }
         });
-        for( ; count < 15; count++){
+        for( ; count < 5; count++){
             str = "<tr id='item'><td></td><td></td><td></td><td></td></tr>";
             $("#data").append(str);
         }
@@ -42,8 +42,6 @@ $(document).ready(function(){
     });
     $('#facility_name').change(function() {
         count = 0;
-        contact_str = "";
-        str = "";
         facility_id = $(this).val();
         $('table#data #item').remove();
         $.each(facility_mng, function(key, value) {
@@ -52,6 +50,7 @@ $(document).ready(function(){
                 str += "<tr id ='item' class='item'>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
+                contact_str = "";
                 if(value['contact'] == 1){contact_str = "〇";}
                 str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
                 str += "   <td class = 'paddingleft10' id='mail_address'>" + value['mail_address'] +"</td>";
@@ -60,7 +59,7 @@ $(document).ready(function(){
                 count += 1;
             }
         });
-        for( ; count < 15; count++){
+        for( ; count < 5; count++){
             str = "<tr id ='item'><td></td><td></td><td></td><td></td></tr>";
             $("#data").append(str);
         }
@@ -106,11 +105,24 @@ $(document).ready(function(){
         delmodal.style.display = 'none';
     });
     $('#facility_management_btn').on('click', function() {
-        regist_type = "new";
-        faclity_name = "{{config('const.label.facility_name_id')}}" + $('#facility_name option:selected').text();
-        $('#faclity_name_val').text(faclity_name);
-        facility_id = $('#facility_name option:selected').val();
-        modal.style.display = 'block';
+        facility_id = $('#facility_name').val();
+        count = 0;
+        $.each(facility_mng, function(key, value) {
+            if(facility_id == value['facility_id']){
+                count += 1;
+            }
+        });
+        if(count == '{{config('const.max_facility_mng')}}'){
+            regist_flg = false;
+            $('#result').text('{{config('const.max_facility_mng')}}{{config('const.msg.err_005')}}');
+            resultmodal.style.display = 'block';
+        }else{
+            regist_type = "new";
+            faclity_name = "{{config('const.label.facility_name_id')}}" + $('#facility_name option:selected').text();
+            $('#faclity_name_val').text(faclity_name);
+            facility_id = $('#facility_name option:selected').val();
+            modal.style.display = 'block';
+        }
     });
     $('#regist_btn,#delete_exe_btn').on('click', function() {
         if(regist_flg){
@@ -234,7 +246,7 @@ $(document).ready(function(){
                         $cnt++;
                     }
                 }
-                while ($cnt < 15){
+                while ($cnt < 5){
                     echo "<tr id ='item'>";
                         $count = 0;
                         while ($count < 4){

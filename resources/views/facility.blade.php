@@ -111,42 +111,60 @@ $(document).ready(function(){
         <tr>
             <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width320 tbl-heder" rowspan="2">{{config('const.label.facility_name')}}<i class="fa fa-sort"></i></th>
             <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width160 tbl-heder" rowspan="2">{{config('const.label.facility_id')}}<i class="fa fa-sort"></i></th>
-            <td class="width120 tbl-heder" rowspan="2">{{config('const.label.facility_manager')}}</td>
-            <td class="width120 tbl-heder" colspan="4">{{config('const.label.patient_count')}}</td>
+            <td class="width100 tbl-heder" rowspan="2">{{config('const.label.facility_manager')}}</td>
+            <td class="width72 tbl-heder" rowspan="2">{{config('const.label.viewer')}}</td>
+            <td class="width72 tbl-heder" colspan="4">{{config('const.label.patient_count')}}</td>
         </tr>
         </tr> 
-            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.regist_status')}}</td>
-            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.setting_status')}}</td>
-            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.monitor_status')}}</td>
-            <td class="width100 paddingleft5 tbl-heder">{{config('const.label.treatment_status')}}</td>
+            <td class="width72 paddingleft5 tbl-heder">{{config('const.label.regist_status')}}</td>
+            <td class="width72 paddingleft5 tbl-heder">{{config('const.label.setting_status')}}</td>
+            <td class="width72 paddingleft5 tbl-heder">{{config('const.label.monitor_status')}}</td>
+            <td class="width72 paddingleft5 tbl-heder">{{config('const.label.treatment_status')}}</td>
         </tr>
             @php
                 $cnt = 0;
+                $mng_total = 0;
+                $viewer_total = 0;
+                $regist_total = 0;
+                $setting_total = 0;
+                $monitor_total = 0;
+                $treatment_total = 0;
                 foreach ($facility as $val){
                     echo "<tr class='item'>";
                         echo "<td class = 'paddingleft10' id='facility_name'>" . $val->facility_name ."</td>";
                         echo "<td class = 'paddingleft10' id='facility_id'>" . $val->facility_id . "</td>";
                         if(isset($val->mng_count)){
+                            $mng_total = $mng_total + $val->mng_count;
                             echo "<td class = 'textright'>" . $val->mng_count . "</td>";
                         }else{
                             echo "<td></td>";
                         }
+                        if(isset($val->viewer_count)){
+                            $viewer_total = $viewer_total + $val->viewer_count;
+                            echo "<td class = 'textright'>" . $val->viewer_count . "</td>";
+                        }else{
+                            echo "<td></td>";
+                        }
                         if(isset($val->regist_status)){
+                            $regist_total = $regist_total + $val->regist_status;
                             echo "<td class = 'textright'>" . $val->regist_status . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if(isset($val->setting_status)){
+                            $setting_total = $setting_total + $val->setting_status;
                             echo "<td class = 'textright'>" . $val->setting_status . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if(isset($val->monitor_status)){
+                            $monitor_total = $monitor_total + $val->monitor_status;
                             echo "<td class = 'textright'>" . $val->monitor_status . "</td>";
                         }else{
                             echo "<td></td>";
                         }
                         if(isset($val->treatment_status)){
+                            $treatment_total = $treatment_total + $val->treatment_status;
                             echo "<td class = 'textright'>" . $val->treatment_status . "</td>";
                         }else{
                             echo "<td></td>";
@@ -158,13 +176,22 @@ $(document).ready(function(){
                 while ($cnt < 15){
                     echo "<tr>";
                         $count = 0;
-                        while ($count < 7){
+                        while ($count < 8){
                             echo "<td class = 'paddingleft10'></td>";
                             $count++;
                         }
                     echo "</tr>";
                     $cnt++;
                 }
+                echo "<tr>";
+                echo "<td class = 'paddingleft10'>合計</td><td></td>";
+                echo "<td class = 'textright'>" . $mng_total . "</td>";
+                echo "<td class = 'textright'>" . $viewer_total . "</td>";
+                echo "<td class = 'textright'>" . $regist_total . "</td>";
+                echo "<td class = 'textright'>" . $setting_total . "</td>";
+                echo "<td class = 'textright'>" . $monitor_total . "</td>";
+                echo "<td class = 'textright'>" . $treatment_total . "</td>";
+                echo "</tr>";
             @endphp
     </table>
     </div>

@@ -23,6 +23,8 @@ class FacilityController extends Controller
                 foreach($data as $val){
                     $facility_id = FacilityManagerMst::where('facility_id', $val->id)->where('delete_date', NULL)->get()->count();
                     $facility[$cnt]['mng_count'] = $facility_id;
+                    $viewer_count = ViewerMst::where('facility_id', $val->id)->where('delete_date', NULL)->count();
+                    $facility[$cnt]['viewer_count'] = $viewer_count;
                     $facility[$cnt]['regist_status'] = 0;
                     $facility[$cnt]['setting_status'] = 0;
                     $facility[$cnt]['monitor_status'] = 0;

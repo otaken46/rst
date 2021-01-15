@@ -3,7 +3,7 @@
     <head>
         <!-- "{{config('const.version')}}" -->
         <meta charset="utf-8">
-        <title>RTS</title>
+        <title>COVID-19患者用RSTモニタリング（登録）</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ asset('css/login.css') }}"> 
@@ -26,7 +26,7 @@
     {{ csrf_field() }}
         <div  align="center">
             <div class="width1028">
-                <h1><span>RSTモニタシステム(登録)</span></h1>
+                <h1><span>COVID-19患者用RSTモニタリング（登録）</span></h1>
                 <table border="0" class="layout-fixed">
                 <tr>
                     <th class="textleft">ID</th>

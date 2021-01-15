@@ -19,6 +19,7 @@ class PatientController extends Controller
             ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
             ->where('facility_manager_id', $request->session()->get('id'))->get();
             $patient = PatientMst::where('facility_id',$facility[0]['id'])->where('delete_date', NULL)->get();
+            $patient_count = PatientMst::where('facility_id',$facility[0]['id'])->where('delete_date', NULL)->count();
             $statuscount['regist_status'] = 0;
             $statuscount['setting_status'] = 0;
             $statuscount['monitor_status'] = 0;
@@ -36,7 +37,7 @@ class PatientController extends Controller
             $pass = '';
             return view('login_facility', compact('id','pass','errors'));
         }
-        return view('patient', compact('patient','facility','statuscount'));
+        return view('patient', compact('patient','facility','statuscount','patient_count'));
     }
     public function regist (Request $request) 
     {

@@ -19,13 +19,14 @@ class ViewerController extends Controller
             ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
             ->where('facility_manager_id', $request->session()->get('id'))->get();
             $viewer = ViewerMst::where('delete_date', NULL)->where('facility_id',$facility[0]['id'])->get();
+            $viewer_count = ViewerMst::where('delete_date', NULL)->where('facility_id',$facility[0]['id'])->count();
         }else{
             $errors = '';
             $id = '';
             $pass = '';
             return view('login_facility', compact('id','pass','errors'));
         }
-        return view('viewer', compact('viewer','facility'));
+        return view('viewer', compact('viewer','facility', 'viewer_count'));
     }
     public function regist (Request $request) 
     {

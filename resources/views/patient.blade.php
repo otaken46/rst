@@ -61,7 +61,13 @@ $(document).ready(function(){
         delmodal.style.display = 'none';
     });
     $('#patient_btn').on('click', function() {
-        modal.style.display = 'block';
+        if('{{$patient_count}}' == '{{config('const.max_patient')}}'){
+            regist_flg = false;
+            $('#result').text('{{config('const.max_patient')}}{{config('const.msg.err_005')}}');
+            resultmodal.style.display = 'block';
+        }else{
+            modal.style.display = 'block';
+        }
     });
     $('#regist_btn,#delete_exe_btn').on('click', function() {
         // 連打対策
