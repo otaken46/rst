@@ -14,7 +14,8 @@ class UploadFileController extends Controller
 {
     public function getfile(Request $request) {
 Log::debug('message111');
-Log::debug($request);
+Log::debug($request->header('id'));
+Log::debug($request->header('pass'));
         $id = $request->header('id');
         $pass =  $request->header('pass');
         if($id != NULL && $pass != NULL){
