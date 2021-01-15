@@ -195,7 +195,6 @@ $(document).ready(function(){
         </table>
     </div>
     <table border="1" id="data" class="font-size-small width1024 margintop30 sorttbl">
-            <thead class="th-block">
             <tr>
                 <td class="width54 tbl-heder th-block">NO</td>
                 <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width225 th-block">患者名 <i class="fa fa-sort"></i></th>
@@ -206,7 +205,6 @@ $(document).ready(function(){
                 <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width72 th-block">終了 <i class="fa fa-sort"></i></th>
                 <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width230 th-block">担当医 <i class="fa fa-sort"></i></th>
             </tr>
-            </thead>
             @php
                 $cnt = 1;
                 foreach ($patient as $val){

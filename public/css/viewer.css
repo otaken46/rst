@@ -15,3 +15,7 @@
     width: 500px;
     margin: 5% auto;
 }
+.th-block {
+    position: sticky;
+    top: 0;
+}

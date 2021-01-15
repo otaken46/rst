@@ -156,9 +156,9 @@ $(document).ready(function(){
     </div>
     <table border="1" id="data" class="margintop30 width1024 sorttbl">
             <tr>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width200 tbl-heder">閲覧者名<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width150 tbl-heder">閲覧者ID<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width180 tbl-heder">eメールアドレス<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width200 tbl-heder th-block">閲覧者名<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width150 tbl-heder th-block">閲覧者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width180 tbl-heder th-block">eメールアドレス<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;
