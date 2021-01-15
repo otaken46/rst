@@ -19,8 +19,10 @@ class ForceHttps
     {
         Log::debug("tesst111");
         Log::debug($request);
-        if (App::environment(['production']) && $_SERVER["HTTP_X_FORWARDED_PROTO"] != 'https') {
-            return redirect()->secure($request->getRequestUri());
+        if(isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+            if (App::environment(['production']) && $_SERVER["HTTP_X_FORWARDED_PROTO"] != 'https') {
+                return redirect()->secure($request->getRequestUri());
+            }
         }
         return $next($request);
     }
