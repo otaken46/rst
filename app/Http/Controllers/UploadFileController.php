@@ -24,6 +24,8 @@ Log::debug($request->header('pass'));
             if($sql_result == 1){
                 $err = true;
                 // ファイル情報取得
+                Log::debug('message111');
+                Log::debug($request->file('file'));
                 $file = $request->file('file');
                 $file_name = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
