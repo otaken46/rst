@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\FinalOutput;
-use App\Http\Models\PatientMst;
+use App\Http\Models\SettingMst;
 use Illuminate\Support\Facades\Log;
 
 class ChartPatientController extends Controller
@@ -42,7 +42,9 @@ class ChartPatientController extends Controller
                 $chart_patient[$date]['note'] = $val['note'];
             }
             $new_date = date('Y/m/d h:i',  strtotime($new_date));
-            return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient'));
+            $setting = SettingMst::get();
+            $memo_list = explode(",",$setting[0]['memo_list']);
+            return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient','memo_list'));
         }else{
             $errors = '';
             $id = '';

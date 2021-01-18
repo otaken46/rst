@@ -124,10 +124,11 @@
   var chart_data = @json($chart_patient);
   var old_date = '{{$old_date}}';
   var target_id ='{{$patient_id}}';
+  var memoChoices =@json($memo_list);
   </script>
   <script type="text/javascript" src="{{asset('/js/flont/_sampleChartDataY.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/js/flont/_sampleMemoChoices.js')}}"></script>
-  <!--
+  <!--  <script type="text/javascript" src="{{asset('/js/flont/_sampleMemoChoices.js')}}"></script>
+  
   ーーーーーーーーーーーーーーーーーーーー
   -->
 
