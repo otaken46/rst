@@ -224,26 +224,28 @@ $(document).ready(function(){
     </div>
     <table border="1" id="data" class="sorttbl">
             <tr>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width300">{{config('const.label.facility_manager_name')}}<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width230">{{config('const.label.facility_manager_id')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width250">{{config('const.label.facility_manager_name')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width225">{{config('const.label.facility_manager_id')}}<i class="fa fa-sort"></i></th>
                 <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width94">{{config('const.label.contact')}}<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width400">{{config('const.label.mail_address')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width350">{{config('const.label.mail_address')}}<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;
-                foreach ($facility_mng as $val){
-                    if($facility[0]->id == $val->facility_id){
-                        echo "<tr id ='item' class='item'>";
-                            echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
-                            echo "<td class = 'paddingleft10' id='facility_manager_id'>" . $val->facility_manager_id . "</td>";
-                            if($val->contact != 0){
-                                echo "<td class = 'textcenter' id='contact'>" . config('const.text.circle') . "</td>";
-                            }else{
-                                echo "<td></td>";
-                            }
-                            echo "<td class = 'paddingleft10' id='mail_address'>" . $val->mail_address . "</td>";
-                        echo "</tr>";
-                        $cnt++;
+                if(isset($facility_mng[0]->facility_id)){
+                    foreach ($facility_mng as $val){
+                        if($facility[0]->id == $val->facility_id){
+                            echo "<tr id ='item' class='item'>";
+                                echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
+                                echo "<td class = 'paddingleft10' id='facility_manager_id'>" . $val->facility_manager_id . "</td>";
+                                if($val->contact != 0){
+                                    echo "<td class = 'textcenter' id='contact'>" . config('const.text.circle') . "</td>";
+                                }else{
+                                    echo "<td></td>";
+                                }
+                                echo "<td class = 'paddingleft10' id='mail_address'>" . $val->mail_address . "</td>";
+                            echo "</tr>";
+                            $cnt++;
+                        }
                     }
                 }
                 while ($cnt < 5){

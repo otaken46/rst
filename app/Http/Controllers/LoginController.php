@@ -41,10 +41,10 @@ class LoginController extends Controller
             return redirect('/facility');
         }
         $facility_mng_mst = new FacilityManagerMst();
-        $sql_result = $facility_mng_mst->select('id','fail_count','account_rock')->where('facility_manager_id', $id)->get();
+        $sql_result = $facility_mng_mst->select('id','fail_count','account_rock')->where('facility_manager_id', $id)->where('delete_date', NULL)->get();
         //　施設管理者
         if(isset($sql_result[0]['id']) && $id != $setting[0]['admin_id']){
-            $sql = FacilityManagerMst::where('facility_manager_id', $id)->where('password', $pass)->get();
+            $sql = FacilityManagerMst::where('facility_manager_id', $id)->where('password', $pass)->where('delete_date', NULL)->get();
             //　ユーザーidとパスワードが正しいかつアカウントロックされていない
             if(isset($sql[0]['id']) && $sql_result[0]['account_rock'] == 0){
                 $request->session()->put('id', $request->id);

@@ -20,11 +20,19 @@ class UploadFileController extends Controller
             $sql_result = $patient_mst->where('patient_id',$id)->where('password',$pass)->where('delete_date', NULL)->count();
             if($sql_result == 1){
                 $err = true;
-                // ファイル情報取得
-                $file = $request->file('file');
-                $file_name = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $file_name_flont = str_replace("." . $extension,'',$file_name);
+                $check = $request->file('file');
+                if(!empty($check)){
+                    // ファイル情報取得
+                    $file = $request->file('file');
+                    $file_name = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $file_name_flont = str_replace("." . $extension,'',$file_name);
+                }else{
+                    $log_id = $this::operation_log($id,"RST016", "RST_003");
+                    $err = false;
+                    $result = "RST_003";
+                    return response()->json($result);
+                }
 
                 if($extension != "json"){
                     $log_id = $this::operation_log($id,"RST016", "RST_003");
