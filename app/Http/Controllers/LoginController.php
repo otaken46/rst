@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Models\FacilityManagerMst;
 use App\Http\Models\ViewerMst;
 use App\Http\Models\SettingMst;
@@ -25,7 +24,7 @@ class LoginController extends Controller
         $pass = '';
         return view('login_viewer', compact('id','pass','errors'));
     }
-    public function user_check (Request $request) 
+    public function user_check (Request $request)
     {
         $errors = '';
         $sql_result = 0;
