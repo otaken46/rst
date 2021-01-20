@@ -32,13 +32,11 @@ class ChartPatientController extends Controller
                 if($val['doc_date'] > $new_date){
                     $new_date = $val['doc_date'];
                 }
-                $chart_patient[$date]['mean_respr'] = round($val['mean_respr'],0);
-                $chart_patient[$date]['mean_cvr'] = round($val['mean_cvr'],0);
-                $chart_patient[$date]['mean_rsi'] = round($val['mean_rsi'],0);
-                $chart_patient[$date]['max_xhr2'] = round($val['max_xhr2'],1);
-                $chart_patient[$date]['mean_hr'] = round($val['mean_hr'],1);
-                $chart_patient[$date]['total_taido_pc'] = round($val['total_taido_pc'],1);
-                $chart_patient[$date]['exl_noise_pc'] = round($val['exl_noise_pc'],1);
+                $chart_patient[$date]['mean_rsi'] = sprintf('%d', floatval($val['mean_rsi']));
+                $chart_patient[$date]['mean_hr'] = sprintf('%d', floatval($val['mean_hr']));
+                $chart_patient[$date]['mean_respr'] = sprintf('%d', floatval($val['mean_respr']));
+                $chart_patient[$date]['mean_cvr'] = sprintf('%.2F', floatval($val['mean_cvr']));
+                $chart_patient[$date]['time_in_bed'] = sprintf('%.1F', floatval($val['time_in_bed']));
                 $chart_patient[$date]['note'] = $val['note'];
             }
             $new_date = date('Y/m/d h:i',  strtotime($new_date));

@@ -48,6 +48,7 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
+                    Log::debug($data);
                     try {
                         $log_id = $this::operation_log($data['Record']['Manage']['ID'],"RST017");
                         $manage = new Manage();
@@ -208,7 +209,7 @@ class Kernel extends ConsoleKernel
                     }
                 }
             }
-        })->dailyAt('02:10');
+        })->dailyAt('06:00');
     }
     public static function operation_log($userid, $operation_code, $result = NULL){
         $operation_log = new OperationLog();

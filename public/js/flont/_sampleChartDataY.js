@@ -70,11 +70,11 @@ function chartDataSet(date = "today") {
         DD = toDoubleDigits(today.getDate());
         str = YYYY + "-" + MM + "-" + DD;
         if(chart_data[str] != undefined){
-            data_rst_90.push(chart_data[str]['mean_respr']);
-            data_heart_90.push(chart_data[str]['mean_cvr']);
-            data_breath_90.push(chart_data[str]['mean_rsi']);
-            data_csr_90.push(chart_data[str]['max_xhr2']);
-            data_sleep_90.push(chart_data[str]['mean_hr']);
+            data_rst_90.push(chart_data[str]['mean_rsi']);
+            data_heart_90.push(chart_data[str]['mean_hr']);
+            data_breath_90.push(chart_data[str]['mean_respr']);
+            data_csr_90.push(chart_data[str]['mean_cvr']);
+            data_sleep_90.push(chart_data[str]['time_in_bed']);
             data_memo_90.push(chart_data[str]['note']);
         }else{
             data_rst_90 = data_rst_90.concat(null_array);
@@ -86,11 +86,11 @@ function chartDataSet(date = "today") {
         }
         if(cnt < 61){
             if(chart_data[str] != undefined){
-                data_rst_60.push(chart_data[str]['mean_respr']);
-                data_heart_60.push(chart_data[str]['mean_cvr']);
-                data_breath_60.push(chart_data[str]['mean_rsi']);
-                data_csr_60.push(chart_data[str]['max_xhr2']);
-                data_sleep_60.push(chart_data[str]['mean_hr']);
+                data_rst_60.push(chart_data[str]['mean_rsi']);
+                data_heart_60.push(chart_data[str]['mean_hr']);
+                data_breath_60.push(chart_data[str]['mean_respr']);
+                data_csr_60.push(chart_data[str]['mean_cvr']);
+                data_sleep_60.push(chart_data[str]['time_in_bed']);
                 data_memo_60.push(chart_data[str]['note']);
             }else{
                 data_rst_60 = data_rst_60.concat(null_array);
@@ -103,11 +103,11 @@ function chartDataSet(date = "today") {
         }
         if(cnt < 31){
             if(chart_data[str] != undefined){
-                data_rst_30.push(chart_data[str]['mean_respr']);
-                data_heart_30.push(chart_data[str]['mean_cvr']);
-                data_breath_30.push(chart_data[str]['mean_rsi']);
-                data_csr_30.push(chart_data[str]['max_xhr2']);
-                data_sleep_30.push(chart_data[str]['mean_hr']);
+                data_rst_30.push(chart_data[str]['mean_rsi']);
+                data_heart_30.push(chart_data[str]['mean_hr']);
+                data_breath_30.push(chart_data[str]['mean_respr']);
+                data_csr_30.push(chart_data[str]['mean_cvr']);
+                data_sleep_30.push(chart_data[str]['time_in_bed']);
                 data_memo_30.push(chart_data[str]['note']);
             }else{
                 data_rst_30 = data_rst_30.concat(null_array);
