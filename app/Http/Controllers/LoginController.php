@@ -26,7 +26,6 @@ class LoginController extends Controller
     }
     public function user_check (Request $request)
     {
-        
         $errors = '';
         $sql_result = 0;
         $sql = 0;
