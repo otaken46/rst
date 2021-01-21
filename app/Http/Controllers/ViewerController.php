@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\ViewerMst;
 use App\Http\Models\FacilityManagerMst;
-use App\Http\Models\FacilityMst;
-use App\Http\Models\PatientMst;
 use Illuminate\Support\Facades\Log;
 
 class ViewerController extends Controller
