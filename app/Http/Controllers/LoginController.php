@@ -26,6 +26,7 @@ class LoginController extends Controller
     }
     public function user_check (Request $request)
     {
+        Log::debug('message1111');
         $errors = '';
         $sql_result = 0;
         $sql = 0;
