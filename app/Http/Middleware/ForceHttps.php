@@ -17,17 +17,11 @@ class ForceHttps
      */
     public function handle($request, Closure $next)
     {
-        Log::debug('message333');
-        Log::debug(var_dump($request));
         if(array_key_exists('HTTP_X_FORWARDED_PROTO', $_SERVER)){
-            Log::debug('message000');
-            Log::debug($_SERVER['HTTP_X_FORWARDED_PROTO'] );
             if (App::environment(['production']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] != 'https') {
-                Log::debug('message111');
                 return redirect()->secure($request->getRequestUri());
             }
         }
-        Log::debug('message222');
         return $next($request);
     }
 }
