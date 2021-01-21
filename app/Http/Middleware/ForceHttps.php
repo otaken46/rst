@@ -17,6 +17,8 @@ class ForceHttps
      */
     public function handle($request, Closure $next)
     {
+        $test = "aa";
+        Log::debug(var_dump($test));
         if(array_key_exists('HTTP_X_FORWARDED_PROTO', $_SERVER)){
             if (App::environment(['production']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] != 'https') {
                 return redirect()->secure($request->getRequestUri());
