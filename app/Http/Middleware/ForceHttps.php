@@ -18,13 +18,10 @@ class ForceHttps
     public function handle($request, Closure $next)
     {
         if(array_key_exists('HTTP_X_FORWARDED_PROTO', $_SERVER)){
-            Log::debug('handle1111');
             if (App::environment(['production']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] != 'https') {
-                Log::debug('handle2222');
                 return redirect()->secure($request->getRequestUri());
             }
         }
-        Log::debug('handle3333');
         return $next($request);
     }
 }

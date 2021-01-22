@@ -54,12 +54,10 @@ class Handler extends ExceptionHandler
         if($this->isHttpException($exception)) {
             if($exception->getStatusCode() == 404 || $exception->getStatusCode() == 405){
                 //405はpostかget形式で定義していない場合になるAPIのURL直接ブラウザ表示対応
-                Log::debug("render1111");
                 return redirect('/');
             }
         }else{
             if($exception instanceof \Illuminate\Session\TokenMismatchException){
-                Log::debug("render2222");
                 return redirect('/');
             }
         }
