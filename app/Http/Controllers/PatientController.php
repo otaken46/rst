@@ -15,7 +15,8 @@ class PatientController extends Controller
         if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
             $facility = FacilityManagerMst::select('facility_mst.id','facility_mst.facility_id','facility_mst.facility_name')
             ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
-            ->where('facility_manager_id', $request->session()->get('id'))->get();
+            ->where('facility_manager_id', $request->session()->get('id'))
+            ->where('password', $request->session()->get('pass'))->get();
             $patient = PatientMst::where('facility_id',$facility[0]['id'])->where('delete_date', NULL)->get();
             $patient_count = PatientMst::where('facility_id',$facility[0]['id'])->where('delete_date', NULL)->count();
             $statuscount['regist_status'] = 0;

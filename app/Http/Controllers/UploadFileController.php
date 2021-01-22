@@ -40,7 +40,7 @@ class UploadFileController extends Controller
                     $result = "RST_004";
                 }
                 if($err){
-                    $file_name = $id . "_" . $pass . ".json";
+                    $file_name = rtrim($file_name,'.json') . "_" . $id . "_" . $pass . ".json";
                     //ファイル保存
                     $request->file('file')->storeAs('public/upload_file',$file_name);
                     $log_id = $this::operation_log($id,"RST016", "RST_001");
