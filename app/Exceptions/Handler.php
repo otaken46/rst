@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
             }
         }else{
             if($exception instanceof \Illuminate\Session\TokenMismatchException){
-                Log::debug("render1111");
+                Log::debug("render2222");
                 return redirect('/');
             }
         }
