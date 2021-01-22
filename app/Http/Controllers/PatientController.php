@@ -12,7 +12,7 @@ class PatientController extends Controller
 {
     public function index (Request $request) 
     {
-        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL && $request->session()->get('user') == "manager"){
             $facility = FacilityManagerMst::select('facility_mst.id','facility_mst.facility_id','facility_mst.facility_name')
             ->leftjoin('facility_mst','facility_mst.id','=','facility_manager_mst.facility_id')
             ->where('facility_manager_id', $request->session()->get('id'))

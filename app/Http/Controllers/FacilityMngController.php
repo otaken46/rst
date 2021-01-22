@@ -12,7 +12,7 @@ class FacilityMngController extends Controller
 {
     public function index (Request $request) 
     {
-        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL  && $request->session()->get('user') == "admin"){
             $default_facility_id = "";
             if($request->input('facility_id') != NULL){
                 $default_facility_id = $request->input('facility_id');

@@ -16,7 +16,7 @@ class ListPatientController extends Controller
         $user = NULL;
         $list_patient = array();
 
-        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL && $request->session()->get('user') == "viewer"){
             $viewer_mst = new ViewerMst();
             $viewer_mst_data = $viewer_mst->leftjoin('facility_mst','facility_mst.id','=','viewer_mst.facility_id')
             ->where('viewer_id',$request->session()->get('id'))->where('password', $request->session()->get('pass'))->get();

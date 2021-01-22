@@ -37,6 +37,7 @@ class LoginController extends Controller
         if($id == $setting[0]['admin_id'] && $pass == $setting[0]['admin_pass']){
             $request->session()->put('id', $request->id);
             $request->session()->put('pass', $request->pass);
+            $request->session()->put('user', "admin");
             $log_id = $this::operation_log($id,"RST001",config('const.operation.SUCCESS'));
             return redirect('/facility');
         }
@@ -49,6 +50,7 @@ class LoginController extends Controller
             if(isset($sql[0]['id']) && $sql_result[0]['account_rock'] == 0){
                 $request->session()->put('id', $request->id);
                 $request->session()->put('pass', $request->pass);
+                $request->session()->put('user', "manager");
                 $sql_result = $facility_mng_mst
                     ->where('facility_manager_id', $id)
                     ->update([
@@ -107,6 +109,7 @@ class LoginController extends Controller
             if(isset($sql[0]['id'])){
                 $request->session()->put('id', $id);
                 $request->session()->put('pass', $pass);
+                $request->session()->put('user', "viewer");
                 $sql_result = $viewer_mst
                 ->where('viewer_id', $id)
                 ->update([

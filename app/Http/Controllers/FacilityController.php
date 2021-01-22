@@ -14,7 +14,7 @@ class FacilityController extends Controller
 {
     public function index (Request $request) 
     {
-        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL){
+        if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL && $request->session()->get('user') == "admin"){
             $facility = FacilityMst::where('delete_date', NULL)->orderBy('create_date', 'asc')->get();
             $facility_count = FacilityMst::where('delete_date', NULL)->count();
             if(isset($facility[0]->id)){
