@@ -1,4 +1,10 @@
 @charset "utf-8";
+table{
+    table-layout: fixed;
+}
+td{
+    word-wrap:break-word;
+}
 .modal {
     display: none;
     position: fixed;
