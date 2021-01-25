@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\PatientMst;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class UploadFileController extends Controller
 {
@@ -43,8 +45,16 @@ class UploadFileController extends Controller
                     $file_name = rtrim($file_name,'.json') . "_" . $id . "_" . $pass . ".json";
                     //ファイル保存
                     $request->file('file')->storeAs('public/upload_file',$file_name);
-                    $log_id = $this::operation_log($id,"RST016", "RST_001");
-                    $result = "RST_001";
+                    $path = storage_path() . "\app\public\upload_file\\" . $file_name;
+                    $size = filesize($path);
+                    if(($size/1024) > 200){
+                        File::delete($path);
+                        $log_id = $this::operation_log($id,"RST016", "RST_003");
+                        $result = "RST_003";
+                    }else{
+                        $log_id = $this::operation_log($id,"RST016", "RST_001");
+                        $result = "RST_001";
+                    }
                 }
             }else{
                 $log_id = $this::operation_log($id,"RST016", "RST_002");
