@@ -45,7 +45,7 @@ class UploadFileController extends Controller
                     $file_name = rtrim($file_name,'.json') . "_" . $id . "_" . $pass . ".json";
                     //ファイル保存
                     $request->file('file')->storeAs('public/upload_file',$file_name);
-                    $path = storage_path() . "\app\public\upload_file\\" . $file_name;
+                    $path = storage_path() . "/app/public/upload_file/" . $file_name;
                     $size = filesize($path);
                     if(($size/1024) > 200){
                         File::delete($path);
