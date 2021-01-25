@@ -84,6 +84,12 @@ $(document).ready(function(){
                 treatment_status = $('#regist_treatment_status').val();
                 doctor = $('#regist_doctor').val();
                 err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
+                if((err) && patient_id == password){
+                    err = false; 
+                    text = '{{config('const.msg.err_009')}}';
+                    $("#error_message").text(text);
+                    error_message.style.display = "inline";
+                }
                 if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
                 if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}

@@ -69,6 +69,12 @@ $(document).ready(function(){
                 password = $('#regist_password').val();
                 mail_address = $('#regist_mail_address').val();
                 err = data_check("name", viewer_name, '{{config('const.label.viewer_name')}}{{config('const.msg.err_003')}}');
+                if((err) && viewer_id == password){
+                    err = false; 
+                    text = '{{config('const.msg.err_009')}}';
+                    $("#error_message").text(text);
+                    error_message.style.display = "inline";
+                }
                 if(err){err = data_check("id_pass", viewer_id, '{{config('const.label.viewer_id')}}{{config('const.msg.err_004')}}');}
                 if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.msg.err_008')}}');}
