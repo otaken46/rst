@@ -17,6 +17,7 @@ $(document).ready(function(){
             $('#result').text('{{config('const.max_viewer')}}{{config('const.msg.err_005')}}');
             resultmodal.style.display = 'block';
         }else{
+            regist_type = "new";
             modal.style.display = 'block';
         }
     });
@@ -69,14 +70,14 @@ $(document).ready(function(){
                 password = $('#regist_password').val();
                 mail_address = $('#regist_mail_address').val();
                 err = data_check("name", viewer_name, '{{config('const.label.viewer_name')}}{{config('const.msg.err_003')}}');
+                if(err){err = data_check("id_pass", viewer_id, '{{config('const.label.viewer_id')}}{{config('const.msg.err_004')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if((err) && viewer_id == password){
                     err = false; 
                     text = '{{config('const.msg.err_009')}}';
                     $("#error_message").text(text);
                     error_message.style.display = "inline";
                 }
-                if(err){err = data_check("id_pass", viewer_id, '{{config('const.label.viewer_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.msg.err_008')}}');}
             }
             if(err){
@@ -160,11 +161,11 @@ $(document).ready(function(){
         </tr>
         </table>
     </div>
-    <table border="1" id="data" class="margintop30 width1024 sorttbl">
+    <table border="1" id="data" class="margintop50 width1024 sorttbl">
             <tr>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width200 tbl-heder th-block">閲覧者名<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width150 tbl-heder th-block">閲覧者ID<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width180 tbl-heder th-block">eメールアドレス<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width200 tbl-heder">閲覧者名<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width150 tbl-heder">閲覧者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width180 tbl-heder">eメールアドレス<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;

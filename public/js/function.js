@@ -1,5 +1,3 @@
-const reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-const sp_reg = new RegExp(/[!"#$%&'()\*\+\.,\/:;<=>?@\[\\\]^`{|}~]/g);
 var text = "";
 var val = "";
 function select_data(e,ids){
@@ -52,8 +50,9 @@ function edit_btn_click(click_flg, ids, words,circles){
 function data_check(type, input_data, text){
   var result = true;
   var error_message = document.getElementById("error_message");
+  var kigo = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
   if(type == "facility_name"){
-    if(input_data.trim().length == 0 || (input_data.match(/^[ 　\r\n\t]*$/)) || (reg.test(input_data))){
+    if(input_data.trim().length == 0 || (input_data.match(/^[ 　\r\n\t]*$/)) || (kigo.test(input_data))){
       result = false;
     }
   }
@@ -63,7 +62,7 @@ function data_check(type, input_data, text){
     }
   }
   if(type == "pass"){
-    if(input_data.trim().length == 0 || !(input_data.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/))){
+    if(input_data.trim().length == 0 || !(input_data.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)) || (kigo.test(input_data))){
       result = false;
     }
   }

@@ -264,6 +264,12 @@ button.btn3:hover {
 .margintop30{
     margin-top: 30px;
 }
+.margintop40{
+    margin-top: 40px;
+}
+.margintop50{
+    margin-top: 50px;
+}
 .highlight {
     background-color: red;
 }
@@ -320,4 +326,10 @@ input {
     width: 400px;
     height: 100px;
     margin: 8% auto;
+}
+.tbl-heder{
+    border-color: black;
+    color: white;
+    background-color: #4672c4!important;
+    text-align: center;
 }

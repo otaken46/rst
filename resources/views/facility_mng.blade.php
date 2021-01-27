@@ -136,14 +136,14 @@ $(document).ready(function(){
                 contact = $('#regist_contact').val();
                 mail_address = $('#regist_mail_address').val();
                 err = data_check("name", facility_manager_name, '{{config('const.label.facility_manager_name')}}{{config('const.msg.err_003')}}');
+                if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if((err) && facility_manager_id == password){
                     err = false; 
                     text = '{{config('const.msg.err_009')}}';
                     $("#error_message").text(text);
                     error_message.style.display = "inline";
                 }
-                if(err){err = data_check("id_pass", facility_manager_id, '{{config('const.label.facility_manager_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("mail", mail_address, '{{config('const.label.mail_address')}}{{config('const.msg.err_008')}}');}
             }
             if(err){
@@ -230,10 +230,10 @@ $(document).ready(function(){
     </div>
     <table border="1" id="data" class="sorttbl">
             <tr>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width250">{{config('const.label.facility_manager_name')}}<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width225">{{config('const.label.facility_manager_id')}}<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width94">{{config('const.label.contact')}}<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width350">{{config('const.label.mail_address')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(1)')" class="width250 tbl-heder">{{config('const.label.facility_manager_name')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(2)')" class="width225 tbl-heder">{{config('const.label.facility_manager_id')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(3)')" class="width94 tbl-heder">{{config('const.label.contact')}}<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML('#data','.item', 'td:nth-child(4)')" class="width350 tbl-heder">{{config('const.label.mail_address')}}<i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 0;

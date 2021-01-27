@@ -1,6 +1,6 @@
 <?php
 return [
-    'version' => 'version_1.0',
+    'version' => 'version_1.1',
     'max_facility' => '15',
     'max_facility_mng' => '5',
     'max_viewer' => '50',
@@ -76,6 +76,7 @@ return [
         'DUPE_ID' => 'が既に使用されています。',
         'NG＿PASS' => 'パスワードを変更してください',
         'NOT_REGIST' => '登録できない日付です。',
+        'used_others' => '他のユーザーによって操作が行われました。',
     ),
     'operation'=>array(
         'SUCCESS' => 'success',

@@ -66,6 +66,7 @@ $(document).ready(function(){
             $('#result').text('{{config('const.max_patient')}}{{config('const.msg.err_005')}}');
             resultmodal.style.display = 'block';
         }else{
+            regist_type = "new";
             modal.style.display = 'block';
         }
     });
@@ -84,14 +85,14 @@ $(document).ready(function(){
                 treatment_status = $('#regist_treatment_status').val();
                 doctor = $('#regist_doctor').val();
                 err = data_check("name", patient_name, '{{config('const.label.patient_name')}}{{config('const.msg.err_003')}}');
+                if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
+                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if((err) && patient_id == password){
                     err = false; 
                     text = '{{config('const.msg.err_009')}}';
                     $("#error_message").text(text);
                     error_message.style.display = "inline";
                 }
-                if(err){err = data_check("id_pass", patient_id, '{{config('const.label.patient_id')}}{{config('const.msg.err_004')}}');}
-                if(err){err = data_check("pass", password, '{{config('const.label.password')}}{{config('const.msg.err_007')}}');}
                 if(err){err = data_check("name", doctor, '{{config('const.label.doctor')}}{{config('const.msg.err_003')}}');}
             }
             if(err){
@@ -200,16 +201,16 @@ $(document).ready(function(){
         </tr>
         </table>
     </div>
-    <table border="1" id="data" class="font-size-small width1024 margintop30 sorttbl">
+    <table border="1" id="data" class="font-size-small width1024 margintop50 sorttbl">
             <tr>
-                <td class="width54 tbl-heder th-block">NO</td>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width225 th-block">患者名 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(3)')" class="width154 th-block">患者ID<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(4)')" class="width145 th-block">登録年月日 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(5)')" class="width72 th-block">設置 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(6)')" class="width72 th-block">中断<i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width72 th-block">終了 <i class="fa fa-sort"></i></th>
-                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width230 th-block">担当医 <i class="fa fa-sort"></i></th>
+                <td class="width54 tbl-heder">NO</td>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(2)')" class="width225 tbl-heder">患者名 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(3)')" class="width154 tbl-heder">患者ID<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(4)')" class="width145 tbl-heder">登録年月日 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(5)')" class="width72 tbl-heder">設置 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(6)')" class="width72 tbl-heder">中断<i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(7)')" class="width72 tbl-heder">終了 <i class="fa fa-sort"></i></th>
+                <th onclick="w3.sortHTML_custom('#data','.item', 'td:nth-child(8)')" class="width230 tbl-heder">担当医 <i class="fa fa-sort"></i></th>
             </tr>
             @php
                 $cnt = 1;

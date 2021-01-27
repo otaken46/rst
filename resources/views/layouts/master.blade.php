@@ -23,6 +23,7 @@ var click_flg = false;
 var regist_flg = true;
 var regist_type = "new";
 var target_id = "";
+var update_date = "";
 $(document).ready(function(){
   $('#logout').on('click', function() {
         window.location.href = "{{ url('/logout')}}";
