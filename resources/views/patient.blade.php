@@ -115,7 +115,8 @@ $(document).ready(function(){
                         'doctor':doctor,
                         'regist_type':regist_type,
                         'facility_id':facility_id,
-                        'target_id':target_id},
+                        'target_id':target_id,
+                        'update_date':update_date},
                     dataType:'json'
                 })
                 // Ajaxリクエストが成功した場合
@@ -146,7 +147,7 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        ids = {'target_id':'val', 'patient_name':'txt', 'patient_id':'txt', 'password':'val', 'regist_status':'txt', 'setting_status':'txt', 'monitor_status':'txt', 'treatment_status':'txt', 'doctor':'txt'};
+        ids = {'target_id':'val', 'patient_name':'txt', 'patient_id':'txt', 'password':'val', 'regist_status':'txt', 'setting_status':'txt', 'monitor_status':'txt', 'treatment_status':'txt', 'doctor':'txt', 'update_date':'val'};
         var arr_select = select_data(this,ids);
         target_id = arr_select['target_id'];
         patient_name = arr_select['patient_name'];
@@ -157,6 +158,7 @@ $(document).ready(function(){
         monitor_status = arr_select['monitor_status'];
         treatment_status = arr_select['treatment_status'];
         doctor = arr_select['doctor'];
+        update_date = arr_select['update_date'];
         click_flg = arr_select['click_flg'];
         target_id = arr_select['target_id'];
     });
@@ -215,6 +217,12 @@ $(document).ready(function(){
             @php
                 $cnt = 1;
                 foreach ($patient as $val){
+                    if($val->update_date != ""){
+                        $date = strtotime($val->update_date);
+                        $date = date('Y-m-dH:i:s',$date);
+                    }else{
+                        $date = "no_update";
+                    }
                     echo "<tr class='item'>";
                         echo "<td class = 'textcenter width54' id='row_no'>" . $cnt . "</td>";
                         echo "<td class = 'paddingleft10 width225' id='patient_name'>" . $val->patient_name . "</td>";
@@ -237,7 +245,8 @@ $(document).ready(function(){
                         }
                         echo "<td class = 'paddingleft10 width230' id='doctor'>" . $val->doctor . "</td>";
                         echo   "<input type='hidden' id='target_id' value=" . $val->id . ">
-                             <input type='hidden' id='password' value=" . $val->password . ">";
+                             <input type='hidden' id='password' value=" . $val->password . ">
+                             <input type='hidden' id='update_date' value=" . $date . ">";
                     echo "</tr>";
                     $cnt++;
                 }

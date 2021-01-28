@@ -19,10 +19,15 @@ $(document).ready(function(){
         $('table#data #item').remove();
         $.each(facility_mng, function(key, value) {
             if(facility_id == value['facility_id']){
+                if(value['update_date'] != null){
+                    update_date = update_date_set(value['update_date']);
+                }else{
+                    update_date = "no_update";
+                }
                 str = "";
                 contact_str = "";
                 str += "<tr id='item' class='item'>";
-                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
+                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"><input type='hidden' id='update_date' value=" + update_date +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
                 if(value['contact'] == 1){contact_str = "〇";}
                 str += "   <td class = 'textcenter' id='contact'>" + contact_str +"</td>";
@@ -46,9 +51,14 @@ $(document).ready(function(){
         $('table#data #item').remove();
         $.each(facility_mng, function(key, value) {
             if(facility_id == value['facility_id']){
+                if(value['update_date'] != null){
+                    update_date = update_date_set(value['update_date']);
+                }else{
+                    update_date = "no_update";
+                }
                 str = "";
                 str += "<tr id ='item' class='item'>";
-                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"></td>";
+                str += "   <td class = 'paddingleft10' id='facility_manager_name'>" + value['facility_manager_name'] +"<input type='hidden' id='target_id' value=" +value['id'] +"><input type='hidden' id='password' value=" +value['password'] +"><input type='hidden' id='update_date' value=" + update_date +"></td>";
                 str += "   <td class = 'paddingleft10' id='facility_manager_id'>" + value['facility_manager_id'] +"</td>";
                 contact_str = "";
                 if(value['contact'] == 1){contact_str = "〇";}
@@ -163,7 +173,8 @@ $(document).ready(function(){
                         'mail_address':mail_address,
                         'regist_type':regist_type,
                         'facility_id':facility_id,
-                        'target_id':target_id},
+                        'target_id':target_id,
+                        'update_date':update_date},
                     dataType:'json'
                 })
                 // Ajaxリクエストが成功した場合
@@ -195,7 +206,7 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        ids = {'target_id':'val', 'facility_manager_name':'txt', 'facility_manager_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt'};
+        ids = {'target_id':'val', 'facility_manager_name':'txt', 'facility_manager_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt', 'update_date':'val'};
         var arr_select = select_data(this,ids);
         target_id = arr_select['target_id'];
         facility_manager_name = arr_select['facility_manager_name'];
@@ -203,6 +214,7 @@ $(document).ready(function(){
         password = arr_select['password'];
         contact = arr_select['contact'];
         mail_address = arr_select['mail_address'];
+        update_date = arr_select['update_date'];
         click_flg = arr_select['click_flg'];
     });
 });
@@ -240,8 +252,14 @@ $(document).ready(function(){
                 if(isset($facility_mng[0]->facility_id)){
                     foreach ($facility_mng as $val){
                         if($facility[0]->id == $val->facility_id){
+                            if($val->update_date != ""){
+                                $date = strtotime($val->update_date);
+                                $date = date('Y-m-dH:i:s',$date);
+                            }else{
+                                $date = "no_update";
+                            }
                             echo "<tr id ='item' class='item'>";
-                                echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
+                                echo "<td class = 'paddingleft10' id='facility_manager_name'>" . $val->facility_manager_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "><input type='hidden' id='update_date' value=" . $date . "></td>";
                                 echo "<td class = 'paddingleft10' id='facility_manager_id'>" . $val->facility_manager_id . "</td>";
                                 if($val->contact != 0){
                                     echo "<td class = 'textcenter' id='contact'>" . config('const.text.circle') . "</td>";

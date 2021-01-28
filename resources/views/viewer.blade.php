@@ -97,7 +97,8 @@ $(document).ready(function(){
                         'mail_address':mail_address,
                         'regist_type':regist_type,
                         'facility_id':facility_id,
-                        'target_id':target_id},
+                        'target_id':target_id,
+                        'update_date':update_date},
                     dataType:'json'
                 })
                 // Ajaxリクエストが成功した場合
@@ -128,7 +129,7 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','#data tr', function() {
-        ids = {'target_id':'val', 'viewer_name':'txt', 'viewer_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt'};
+        ids = {'target_id':'val', 'viewer_name':'txt', 'viewer_id':'txt', 'password':'val', 'contact':'txt', 'mail_address':'txt', 'update_date':'val'};
         var arr_select = select_data(this,ids);
         target_id = arr_select['target_id'];
         viewer_name = arr_select['viewer_name'];
@@ -136,6 +137,7 @@ $(document).ready(function(){
         password = arr_select['password'];
         contact = arr_select['contact'];
         mail_address = arr_select['mail_address'];
+        update_date = arr_select['update_date'];
         click_flg = arr_select['click_flg'];
     });
 });
@@ -170,8 +172,14 @@ $(document).ready(function(){
             @php
                 $cnt = 0;
                 foreach ($viewer as $val){
+                    if($val->update_date != ""){
+                        $date = strtotime($val->update_date);
+                        $date = date('Y-m-dH:i:s',$date);
+                    }else{
+                        $date = "no_update";
+                    }
                     echo "<tr class='item'>";
-                        echo "<td class = 'paddingleft10' id='viewer_name'>" . $val->viewer_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "></td>";
+                        echo "<td class = 'paddingleft10' id='viewer_name'>" . $val->viewer_name . "<input type='hidden' id='target_id' value=" . $val->id . "><input type='hidden' id='password' value=" . $val->password . "><input type='hidden' id='update_date' value=" . $date . "></td>";
                         echo "<td class = 'paddingleft10' id='viewer_id'>" . $val->viewer_id . "</td>";
                         echo "<td class = 'paddingleft10' id='mail_address'>" . $val->mail_address . "</td>";
                     echo "</tr>";

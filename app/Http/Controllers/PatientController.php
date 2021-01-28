@@ -55,8 +55,7 @@ class PatientController extends Controller
                     $dupe = $this::dupe_id_check($request['patient_id']);
                     $pass = $this::ng_password_check($request['password']);
                     if($dupe && $pass){
-                        $patient_mst = new PatientMst();
-                        $sql_result = $patient_mst->insert([
+                        $sql_result = PatientMst::insert([
                             'facility_id' => $request['facility_id'],
                             'patient_name' => $request['patient_name'],
                             'patient_id' => $request['patient_id'],
@@ -94,24 +93,39 @@ class PatientController extends Controller
                     }
                     $pass = $this::ng_password_check($request['password']);
                     if($pass){
-                        $message = config('const.btn.update');
-                        $patient_mst = new PatientMst();
-                        $sql_result = $patient_mst
-                        ->where('id', $request['target_id'])
-                        ->update([
-                            'facility_id' => $request['facility_id'],
-                            'patient_name' => $request['patient_name'],
-                            'password' => $request['password'],
-                            'setting_status' => $request['setting_status'],
-                            'monitor_status' => $request['monitor_status'],
-                            'treatment_status' => $request['treatment_status'],
-                            'doctor' => $request['doctor'],
-                            'update_date' => now(),
-                        ]);
-                        if($log_id != ""){
-                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        $target_record = PatientMst::where('id', $request['target_id'])->get();
+                        if($request['update_date'] != "no_update"){
+                            $update_date = substr_replace($request['update_date'], ' ', 10, 0);
+                        }else{
+                            $update_date = null;
                         }
-                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                        //排他制御
+                        if($target_record[0]['update_date'] == $update_date){
+                            $message = config('const.btn.update');
+                            $sql_result = PatientMst::where('id', $request['target_id'])
+                            ->update([
+                                'facility_id' => $request['facility_id'],
+                                'patient_name' => $request['patient_name'],
+                                'password' => $request['password'],
+                                'setting_status' => $request['setting_status'],
+                                'monitor_status' => $request['monitor_status'],
+                                'treatment_status' => $request['treatment_status'],
+                                'doctor' => $request['doctor'],
+                                'update_date' => now(),
+                            ]);
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                            }
+                            $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                        }else{
+                            // 変更されている場合
+                            $message = config('const.result.used_others');
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.EXCLUSIVE'));
+                            }
+                            $sql_result = 1;
+                            $res = ['result'=>'OK','message'=>$message];
+                        }
                     }else{
                         if($log_id != ""){
                             $this::operation_result($log_id,config('const.operation.NG_PASS'));
@@ -126,17 +140,33 @@ class PatientController extends Controller
                     }else{
                         $log_id = "";
                     }
-                    $message = config('const.btn.delete');
-                    $patient_mst = new PatientMst();
-                    $sql_result = $patient_mst
-                    ->where('id', $request['target_id'])
-                    ->update([
-                        'delete_date' => now(),
-                    ]);
-                    if($log_id != ""){
-                        $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                    $target_record = PatientMst::where('id', $request['target_id'])->get();
+                    if($request['update_date'] != "no_update"){
+                        $update_date = substr_replace($request['update_date'], ' ', 10, 0);
+                    }else{
+                        $update_date = null;
                     }
-                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    //排他制御
+                    if($target_record[0]['update_date'] == $update_date){
+                        $message = config('const.btn.delete');
+                        $sql_result = PatientMst::where('id', $request['target_id'])
+                        ->update([
+                            'update_date' => now(),
+                            'delete_date' => now(),
+                        ]);
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        }
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        // 変更されている場合
+                        $message = config('const.result.used_others');
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.EXCLUSIVE'));
+                        }
+                        $sql_result = 1;
+                        $res = ['result'=>'OK','message'=>$message];
+                    }
                 }
                 DB::commit();
             } catch (\Exception $e) {

@@ -82,3 +82,33 @@ function data_check(type, input_data, text){
   }
   return result;
 }
+// 1桁の数字を0埋めで2桁にする
+var toDoubleDigits = function(num) {
+  num += "";
+  if (num.length === 1) {
+    num = "0" + num;
+  }
+ return num;     
+};
+
+function update_date_set(mysql_string)
+{ 
+   var t,d, result = null;
+
+   if( typeof mysql_string === 'string' )
+   {
+      t = mysql_string.split(/[- :]/);
+
+      //when t[3], t[4] and t[5] are missing they defaults to zero
+      d = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+      var YYYY = d.getFullYear();
+      var MM = toDoubleDigits(d.getMonth()+1);
+      var DD = toDoubleDigits(d.getDate());
+      var hh = toDoubleDigits(d.getHours());
+      var mm = toDoubleDigits(d.getMinutes());
+      var ss = toDoubleDigits(d.getSeconds());
+      result = YYYY + "-" + MM + "-" + DD + hh + ":" + mm + ":" + ss;
+   }
+
+   return result;   
+}

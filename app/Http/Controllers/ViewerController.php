@@ -44,8 +44,7 @@ class ViewerController extends Controller
                     $dupe = $this::dupe_id_check($request['viewer_id']);
                     $pass = $this::ng_password_check($request['password']);
                     if($dupe && $pass){
-                        $viewer_mst = new ViewerMst();
-                        $sql_result = $viewer_mst->insert([
+                        $sql_result = ViewerMst::insert([
                             'facility_id' => $request['facility_id'],
                             'viewer_name' => $request['viewer_name'],
                             'viewer_id' => $request['viewer_id'],
@@ -83,21 +82,36 @@ class ViewerController extends Controller
                     }
                     $pass = $this::ng_password_check($request['password']);
                     if($pass){
-                        $message = config('const.btn.update');
-                        $viewer_mst = new ViewerMst();
-                        $sql_result = $viewer_mst
-                        ->where('id', $request['target_id'])
-                        ->update([
-                            'facility_id' => $request['facility_id'],
-                            'viewer_name' => $request['viewer_name'],
-                            'password' => $request['password'],
-                            'mail_address' => $request['mail_address'],
-                            'update_date' => now(),
-                        ]);
-                        if($log_id != ""){
-                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        $target_record = ViewerMst::where('id', $request['target_id'])->get();
+                        if($request['update_date'] != "no_update"){
+                            $update_date = substr_replace($request['update_date'], ' ', 10, 0);
+                        }else{
+                            $update_date = null;
                         }
-                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                        //排他制御
+                        if($target_record[0]['update_date'] == $update_date){
+                            $message = config('const.btn.update');
+                            $sql_result = ViewerMst::where('id', $request['target_id'])
+                            ->update([
+                                'facility_id' => $request['facility_id'],
+                                'viewer_name' => $request['viewer_name'],
+                                'password' => $request['password'],
+                                'mail_address' => $request['mail_address'],
+                                'update_date' => now(),
+                            ]);
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                            }
+                            $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                        }else{
+                            // 変更されている場合
+                            $message = config('const.result.used_others');
+                            if($log_id != ""){
+                                $this::operation_result($log_id,config('const.operation.EXCLUSIVE'));
+                            }
+                            $sql_result = 1;
+                            $res = ['result'=>'OK','message'=>$message];
+                        }
                     }else{
                         if($log_id != ""){
                             $this::operation_result($log_id,config('const.operation.NG_PASS'));
@@ -112,17 +126,34 @@ class ViewerController extends Controller
                     }else{
                         $log_id = "";
                     }
-                    $message = config('const.btn.delete');
-                    $viewer_mst = new ViewerMst();
-                    $sql_result = $viewer_mst
-                    ->where('id', $request['target_id'])
-                    ->update([
-                        'delete_date' => now(),
-                    ]);
-                    if($log_id != ""){
-                        $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                    $target_record = ViewerMst::where('id', $request['target_id'])
+                        ->where('facility_id', $request['facility_id'])->get();
+                        if($request['update_date'] != "no_update"){
+                            $update_date = substr_replace($request['update_date'], ' ', 10, 0);
+                        }else{
+                            $update_date = null;
+                        }
+                    //排他制御
+                    if($target_record[0]['update_date'] == $update_date){
+                        $message = config('const.btn.delete');
+                        $sql_result = ViewerMst::where('id', $request['target_id'])
+                        ->update([
+                            'update_date' => now(),
+                            'delete_date' => now(),
+                        ]);
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.SUCCESS'));
+                        }
+                        $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
+                    }else{
+                        // 変更されている場合
+                        $message = config('const.result.used_others');
+                        if($log_id != ""){
+                            $this::operation_result($log_id,config('const.operation.EXCLUSIVE'));
+                        }
+                        $sql_result = 1;
+                        $res = ['result'=>'OK','message'=>$message];
                     }
-                    $res = ['result'=>'OK','message'=>$message . config('const.result.OK')];
                 }
                 DB::commit();
             } catch (\Exception $e) {

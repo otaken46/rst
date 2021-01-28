@@ -83,6 +83,7 @@ return [
         'DUPE_ID' => 'fail dupe id',
         'NG_PASS' => 'ng pass',
         'FAIL' => 'fail',
+        'EXCLUSIVE' => 'exclusive',
     ),
     'ngpass'=>array(
         '123456',
