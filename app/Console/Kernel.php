@@ -48,14 +48,12 @@ class Kernel extends ConsoleKernel
                     $sql_result = 0;
                     $json = file_get_contents($val);
                     $data = json_decode($json, true);
-                    Log::debug($data);
                     try {
                         $log_id = $this::operation_log($data['Record']['Manage']['ID'],"RST017");
-                        $manage = new Manage();
-                        $update_check = $manage->where('patient_id',$data['Record']['Manage']['ID'])->where('doc_date',$data['Record']['Manage']['DocDate'])->count();
+                        
+                        $update_check = Manage::where('patient_id',$data['Record']['Manage']['ID'])->where('doc_date',$data['Record']['Manage']['DocDate'])->count();
                         if($update_check == 0){
-                            Log::debug("1111");
-                            $sql_result = $manage->insert([
+                            $sql_result = Manage::insert([
                                 'patient_id' => $data['Record']['Manage']['ID'],
                                 'doc_date' => $data['Record']['Manage']['DocDate'],
                                 'kind' => $data['Record']['Manage']['Kind'],
@@ -63,9 +61,7 @@ class Kernel extends ConsoleKernel
                                 'upload_datetime' => $data['Record']['Manage']['UploadDatetime'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("2222");
-                            $upload_data = new UploadData();
-                            $sql_result = $upload_data->insert([
+                            $sql_result = UploadData::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'analyze_timezone' => $data['Record']['Data']['AnalyzeTimezone'],
@@ -77,9 +73,7 @@ class Kernel extends ConsoleKernel
                                 'input_sample_num' => $data['Record']['Data']['InputSampleNum'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("3333");
-                            $deviceInfo = new DeviceInfo();
-                            $sql_result = $deviceInfo->insert([
+                            $sql_result = DeviceInfo::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'sensor_id' => $data['Record']['Data']['DeviceInfo']['SensorID'],
@@ -91,9 +85,7 @@ class Kernel extends ConsoleKernel
                                 'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("4444");
-                            $final_output = new FinalOutput();
-                            $sql_result = $final_output->insert([
+                            $sql_result = FinalOutput::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'mean_respr' => $data['Record']['Data']['FinalOutput7']['meanRespR'],
@@ -108,9 +100,7 @@ class Kernel extends ConsoleKernel
                                 'create_date' => now(),
                                 'update_date' => NULL,
                             ]);
-                            Log::debug("5555");
-                            $hr_final = new HrFinal();
-                            $sql_result = $hr_final->insert([
+                            $sql_result = HrFinal::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'mean_hr' => $data['Record']['Data']['HRfinal']['meanHR'],
@@ -119,8 +109,6 @@ class Kernel extends ConsoleKernel
                                 'xmin2_max_rsi' => $data['Record']['Data']['HRfinal']['Xmin2_maxRSI'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("6666");
-                            $sel_pwmtx_series = new SePwmtxSeriesOne();
                             $hf = "";
                             $resp_hz = "";
                             $resp_rate = "";
@@ -135,7 +123,7 @@ class Kernel extends ConsoleKernel
                             $var_index = $this->data_set($data['Record']['Data']['selPWmtxSeries']['VarIndex']);
                             $regularity = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Regularity']);
                             $respmx = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Respmx']);
-                            $sql_result = $sel_pwmtx_series->insert([
+                            $sql_result = SePwmtxSeriesOne::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'hf' => $hf,
@@ -147,8 +135,6 @@ class Kernel extends ConsoleKernel
                                 'respmx' => $respmx,
                                 'create_date' => now(),
                             ]);
-                            Log::debug("7777");
-                            $sel_pwmtx_series = new SePwmtxSeriesTwo();
                             $max_n = "";
                             $csr = "";
                             $csr_max = "";
@@ -163,7 +149,7 @@ class Kernel extends ConsoleKernel
                             $csr_pq = $this->data_set($data['Record']['Data']['selPWmtxSeries']['CSRpq']);
                             $rsi = $this->data_set($data['Record']['Data']['selPWmtxSeries']['RSI']);
                             $csr_max_respmax = $this->data_set($data['Record']['Data']['selPWmtxSeries']['CSRmax/Respmax']);
-                            $sql_result = $sel_pwmtx_series->insert([
+                            $sql_result = SePwmtxSeriesTwo::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'max_n' => $max_n,
@@ -175,8 +161,6 @@ class Kernel extends ConsoleKernel
                                 'csr_max_respmax' => $csr_max_respmax,
                                 'create_date' => now(),
                             ]);
-                            Log::debug("8888");
-                            $sel_pwmtx_series = new SePwmtxSeriesThree();
                             $rsi1 = "";
                             $lng_pwsel2 = "";
                             $nz4sel2 = "";
@@ -190,8 +174,8 @@ class Kernel extends ConsoleKernel
                             $nz_lng2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Nz_Lng2']);
                             $xn2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xn2']);
                             $xhr2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xhr2']);
-                            $v = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xmin2']);
-                            $sql_result = $sel_pwmtx_series->insert([
+                            $xmin2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xmin2']);
+                            $sql_result = SePwmtxSeriesThree::insert([
                                 'patient_id' => $data['Record']['Data']['ID'],
                                 'doc_date' => $data['Record']['Data']['DocDate'],
                                 'rsi1' => $rsi1,
@@ -204,9 +188,7 @@ class Kernel extends ConsoleKernel
                                 'create_date' => now(),
                             ]);
                         }else{
-                            Log::debug("9999");
-                            $sql_result = $manage
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = Manage::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Manage']['ID'],
@@ -216,10 +198,7 @@ class Kernel extends ConsoleKernel
                                 'upload_datetime' => $data['Record']['Manage']['UploadDatetime'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("00000");
-                            $upload_data = new UploadData();
-                            $sql_result = $upload_data
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = UploadData::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -233,10 +212,7 @@ class Kernel extends ConsoleKernel
                                 'input_sample_num' => $data['Record']['Data']['InputSampleNum'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("aaa");
-                            $deviceInfo = new DeviceInfo();
-                            $sql_result = $deviceInfo
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = DeviceInfo::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -250,10 +226,7 @@ class Kernel extends ConsoleKernel
                                 'module_error_count' => $data['Record']['Data']['DeviceInfo']['ModuleErrorCount'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("bbbb");
-                            $final_output = new FinalOutput();
-                            $sql_result = $final_output
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = FinalOutput::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -270,10 +243,8 @@ class Kernel extends ConsoleKernel
                                 'create_date' => now(),
                                 'update_date' => NULL,
                             ]);
-                            Log::debug("ccc");
                             $hr_final = new HrFinal();
-                            $sql_result = $hr_final
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = HrFinal::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -284,8 +255,6 @@ class Kernel extends ConsoleKernel
                                 'xmin2_max_rsi' => $data['Record']['Data']['HRfinal']['Xmin2_maxRSI'],
                                 'create_date' => now(),
                             ]);
-                            Log::debug("ddd");
-                            $sel_pwmtx_series = new SePwmtxSeriesOne();
                             $hf = "";
                             $resp_hz = "";
                             $resp_rate = "";
@@ -300,8 +269,7 @@ class Kernel extends ConsoleKernel
                             $var_index = $this->data_set($data['Record']['Data']['selPWmtxSeries']['VarIndex']);
                             $regularity = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Regularity']);
                             $respmx = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Respmx']);
-                            $sql_result = $sel_pwmtx_series
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = SePwmtxSeriesOne::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -315,8 +283,6 @@ class Kernel extends ConsoleKernel
                                 'respmx' => $respmx,
                                 'create_date' => now(),
                             ]);
-                            Log::debug("eee");
-                            $sel_pwmtx_series = new SePwmtxSeriesTwo();
                             $max_n = "";
                             $csr = "";
                             $csr_max = "";
@@ -331,8 +297,7 @@ class Kernel extends ConsoleKernel
                             $csr_pq = $this->data_set($data['Record']['Data']['selPWmtxSeries']['CSRpq']);
                             $rsi = $this->data_set($data['Record']['Data']['selPWmtxSeries']['RSI']);
                             $csr_max_respmax = $this->data_set($data['Record']['Data']['selPWmtxSeries']['CSRmax/Respmax']);
-                            $sql_result = $sel_pwmtx_series
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $sql_result = SePwmtxSeriesTwo::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -346,8 +311,6 @@ class Kernel extends ConsoleKernel
                                 'csr_max_respmax' => $csr_max_respmax,
                                 'create_date' => now(),
                             ]);
-                            Log::debug("fff");
-                            $sel_pwmtx_series = new SePwmtxSeriesThree();
                             $rsi1 = "";
                             $lng_pwsel2 = "";
                             $nz4sel2 = "";
@@ -361,9 +324,8 @@ class Kernel extends ConsoleKernel
                             $nz_lng2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Nz_Lng2']);
                             $xn2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xn2']);
                             $xhr2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xhr2']);
-                            $v = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xmin2']);
-                            $sql_result = $sel_pwmtx_series
-                            ->where('patient_id', $data['Record']['Manage']['ID'])
+                            $xmin2 = $this->data_set($data['Record']['Data']['selPWmtxSeries']['Xmin2']);
+                            $sql_result = SePwmtxSeriesThree::where('patient_id', $data['Record']['Manage']['ID'])
                             ->where('doc_date', $data['Record']['Manage']['DocDate'])
                             ->update([
                                 'patient_id' => $data['Record']['Data']['ID'],
@@ -380,9 +342,11 @@ class Kernel extends ConsoleKernel
                         }
                         $this::operation_result($log_id,"success");
                         File::delete($val);
+                        unset($data);
                     } catch (\Exception $e) {
                         report($e);
                         File::delete($val);
+                        unset($data);
                     }
                 }
             }
