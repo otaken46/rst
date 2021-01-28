@@ -26,7 +26,7 @@ class ForceHttps
             if (App::environment(['local'])){
                 return $next($request);
             }else{
-                return redirect('/');
+                return redirect()->secure($request->getRequestUri());
             }
         }
        
