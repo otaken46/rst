@@ -44,6 +44,7 @@ class Kernel extends ConsoleKernel
             if (empty($files)) {
                 Log::debug('ファイルが見つかりません！');
             } else {
+                ini_set('memory_limit', '-1');
                 foreach($files as $val){
                     $sql_result = 0;
                     $json = file_get_contents($val);
@@ -349,6 +350,7 @@ class Kernel extends ConsoleKernel
                         unset($data);
                     }
                 }
+                ini_set('memory_limit', '256M');
             }
         })->dailyAt('06:00');
     }
