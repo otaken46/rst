@@ -19,7 +19,7 @@
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light justify-content-between">
     <a id="title_name" href="javascript:void(0)"><i class="fas fa-arrow-left"></i>
     <span class="pr-2">患者ID：<span id="chart_idName">00001</span></span>
-    <span class="font-weight-normal chart_updateText d-none d-sm-inline"><?php if($new_date != ""){echo "<span id='chart_upDate'>" . $new_date . "</span> 更新";}?></span></a>
+    <span class="font-weight-normal chart_updateText d-none d-sm-inline"><?php if($create_new_date != ""){echo "<span id='chart_upDate'>" . $create_new_date . "</span> 更新";}?></span></a>
     <ul class="navbar-nav flex-row">
       <li class="nav-item mr-3 d-none d-sm-block">
         <span class="nav-link disabled">医療機関：<span id="list_userName">{{ Session::get('facility_name') }}</span></span>

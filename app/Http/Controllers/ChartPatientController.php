@@ -19,8 +19,11 @@ class ChartPatientController extends Controller
             $chart_patient_data = array();
             $old_date = "";
             $new_date = "";
+            $create_old_date = "";
+            $create_new_date = "";
             foreach($chart_data as $val){
                 $date = date('Y-m-d',  strtotime($val['doc_date']));
+                $create_date = date('Y-m-d',  strtotime($val['create_date']));
                 if($old_date == ""){
                     $old_date = $date;
                     $new_date = $val['doc_date'];
@@ -38,15 +41,26 @@ class ChartPatientController extends Controller
                 $chart_patient_data[$date]['mean_cvr'] = sprintf('%.2F', floatval($val['mean_cvr']));
                 $chart_patient_data[$date]['time_in_bed'] = sprintf('%.1F', floatval($val['time_in_bed']));
                 $chart_patient_data[$date]['note'] = $val['note'];
+                if($create_old_date == ""){
+                    $create_old_date = $create_date;
+                    $create_new_date = $val['create_date'];
+                }else{
+                    if($create_old_date > $create_date){
+                        $create_old_date = $create_date;
+                    }
+                }
+                if($val['create_date'] > $create_new_date){
+                    $create_new_date = $val['create_date'];
+                }
             }
-            if($new_date != ""){
-                $new_date = date('Y/m/d h:i',  strtotime($new_date));
+            if($create_new_date != ""){
+                $create_new_date = date('Y/m/d h:i',  strtotime($create_new_date));
             }
             $setting = SettingMst::get();
             $memo_list = explode(",",$setting[0]['memo_list']);
             $chart_patient = $this->chartDataSet($chart_patient_data, "today");
 
-            return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient','memo_list'));
+            return view('chart_patient', compact('patient_id','old_date','new_date','chart_patient','memo_list','create_new_date'));
         }else{
             $errors = '';
             $id = '';
