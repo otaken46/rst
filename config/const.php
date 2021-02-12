@@ -1,6 +1,6 @@
 <?php
 return [
-    'version' => 'version_1.1',
+    'version' => 'version_1.2',
     'max_facility' => '15',
     'max_facility_mng' => '5',
     'max_viewer' => '50',

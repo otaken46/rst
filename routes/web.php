@@ -34,3 +34,4 @@ Route::get('list_patient','ListPatientController@index');
 Route::post('list_patient','ListPatientController@regist');
 Route::get('chart_patient','ChartPatientController@index');
 Route::post('chart_patient','ChartPatientController@regist');
+Route::post('chart_data','ChartPatientController@chart_data');

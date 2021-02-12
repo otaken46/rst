@@ -34,6 +34,7 @@ class ListPatientController extends Controller
                 , tbl1.total_taido_pc as tbl3_total_taido_pc
                 , tbl1.note as tbl3_note
                 , tbl1.time_in_bed as tbl3_time_in_bed
+                , tbl1.create_date as tbl3_create_date
             FROM
                 db_rst.final_output7 AS tbl1 
                 LEFT JOIN db_rst.final_output7 AS tbl2 
@@ -62,7 +63,7 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['臥床時間'] = "";
                     foreach($final_output_data as $value){
                         if($val['patient_id'] == $value['tbl3_patient_id']){
-                            $list_patient[$cnt]['最終更新'] = date('yy/m/d',  strtotime($value['tbl3_doc_date']));
+                            $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['tbl3_create_date']));
                             $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
                             $list_patient[$cnt]['心拍数'] = sprintf('%d', floatval($value['tbl3_mean_hr']));
                             $list_patient[$cnt]['呼吸数'] = sprintf('%d', floatval($value['tbl3_mean_respr']));

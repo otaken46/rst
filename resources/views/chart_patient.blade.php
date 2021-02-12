@@ -17,7 +17,9 @@
 
 <body class="p_chart">
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light justify-content-between">
-    <a id="title_name" href="javascript:void(0)"><i class="fas fa-arrow-left"></i><span class="pr-2">患者ID：<span id="chart_idName">00001</span></span><span class="font-weight-normal chart_updateText d-none d-sm-inline">(<span id="chart_upDate">{{$new_date}}</span> 更新)</span></a>
+    <a id="title_name" href="javascript:void(0)"><i class="fas fa-arrow-left"></i>
+    <span class="pr-2">患者ID：<span id="chart_idName">00001</span></span>
+    <span class="font-weight-normal chart_updateText d-none d-sm-inline"><?php if($new_date != ""){echo "<span id='chart_upDate'>" . $new_date . "</span> 更新";}?></span></a>
     <ul class="navbar-nav flex-row">
       <li class="nav-item mr-3 d-none d-sm-block">
         <span class="nav-link disabled">医療機関：<span id="list_userName">{{ Session::get('facility_name') }}</span></span>
@@ -236,6 +238,55 @@
           regist_flg = true;
           return;
         }
+    }
+    async function get_chart_data(currentDate){
+        set_date = $('#calendar_change').val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ action('ChartPatientController@chart_data') }}",
+            type: 'POST',
+            data:{
+                'target_id':target_id,
+                'doc_date':currentDate,},
+            dataType:'json'
+        })
+        // Ajaxリクエストが成功した場合
+        .done(function(data) {
+            if (data.result == "OK") {
+              data_rst_30 = data.chart_data['data_rst_30'];
+              data_heart_30 = data.chart_data['data_heart_30'];
+              data_breath_30 = data.chart_data['data_breath_30'];
+              data_csr_30 = data.chart_data['data_csr_30'];
+              data_sleep_30 = data.chart_data['data_sleep_30'];
+              data_memo_30 = data.chart_data['data_memo_30'];
+              data_rst_60 = data.chart_data['data_rst_60'];
+              data_heart_60 = data.chart_data['data_heart_60'];
+              data_breath_60 = data.chart_data['data_breath_60'];
+              data_csr_60 = data.chart_data['data_csr_60'];
+              data_sleep_60 = data.chart_data['data_sleep_60'];
+              data_memo_60 = data.chart_data['data_memo_60'];
+              data_rst_90 = data.chart_data['data_rst_90'];
+              data_heart_90 = data.chart_data['data_heart_90'];
+              data_breath_90 = data.chart_data['data_breath_90'];
+              data_csr_90 = data.chart_data['data_csr_90'];
+              data_sleep_90 = data.chart_data['data_sleep_90'];
+              data_memo_90 = data.chart_data['data_memo_90'];
+              reDraw();
+              regist_flg = true;
+              return;
+            }
+        })
+        // Ajaxリクエストが失敗した場合
+        .fail(function(data) {
+            regist_flg = false;
+            $('#result').text('{{config('const.result.ACCESS_NG')}}');
+            resultmodal.style.display = 'block';
+            return;
+        });
     }
   </script>
 

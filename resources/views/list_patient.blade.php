@@ -97,8 +97,9 @@ var flag_yellow = @json($flag_yellow);
        $("#list_userName").text('{{$facility_name}}');
      });
      $(document).on("click", ".list_row", function(){
-       var patient_id = $(this).closest('tr').find('.sorting_1').text();
-       var url = "{{url('/chart_patient')}}" + "?patient_id=" + patient_id;
+       var table = $('#list_table').DataTable();
+       var data = table.row( this ).data();
+       var url = "{{url('/chart_patient')}}" + "?patient_id=" + data['患者ID'];
        window.location.href = url;
      });
      $(document).on("click", "#logout", function(){

@@ -1,125 +1,26 @@
 //flatpickr 用のデータ
 //var oldestDate = "2020-08-12"; //最古のデータの日付を格納
 var oldestDate = old_date;
-var first_view = true;
-var data_rst_30 = [];
-var data_heart_30 = [];
-var data_breath_30 = [];
-var data_csr_30 = [];
-var data_sleep_30 = [];
-var data_memo_30 = [];
-var data_rst_60 = [];
-var data_heart_60 = [];
-var data_breath_60 = [];
-var data_csr_60 = [];
-var data_sleep_60 = [];
-var data_memo_60 = [];
-var data_rst_90 = [];
-var data_heart_90 = [];
-var data_breath_90 = [];
-var data_csr_90 = [];
-var data_sleep_90 = [];
-var data_memo_90 = [];
-if(first_view){
-    first_view = false;
-    chartDataSet();
-}
-function chartDataSet(date = "today") {
-    var YYYY = "";
-    var MM = "";
-    var DD = "";
-    var toDoubleDigits = function(num) {
-        num += "";
-        if (num.length === 1) {
-        num = "0" + num;
-        }
-    return num;     
-    };
-    data_rst_30 = [];
-    data_heart_30 = [];
-    data_breath_30 = [];
-    data_csr_30 = [];
-    data_sleep_30 = [];
-    data_memo_30 = [];
-    data_rst_60 = [];
-    data_heart_60 = [];
-    data_breath_60 = [];
-    data_csr_60 = [];
-    data_sleep_60 = [];
-    data_memo_60 = [];
-    data_rst_90 = [];
-    data_heart_90 = [];
-    data_breath_90 = [];
-    data_csr_90 = [];
-    data_sleep_90 = [];
-    data_memo_90 = [];
-    if(date == "today"){
-        var today = new Date();
-    }else{
-        var today = new Date(date);
-    }
-    var null_array = [null];
-    for(var cnt = 90; cnt > 0 ;cnt--){
-        if(cnt == 90){
-            today.setDate(today.getDate() - (cnt - 1));
-        }else{
-            today.setDate(today.getDate() + 1);
-        }
-        YYYY = today.getFullYear();
-        MM = toDoubleDigits(today.getMonth() + 1);
-        DD = toDoubleDigits(today.getDate());
-        str = YYYY + "-" + MM + "-" + DD;
-        if(chart_data[str] != undefined){
-            data_rst_90.push(chart_data[str]['mean_rsi']);
-            data_heart_90.push(chart_data[str]['mean_hr']);
-            data_breath_90.push(chart_data[str]['mean_respr']);
-            data_csr_90.push(chart_data[str]['mean_cvr']);
-            data_sleep_90.push(chart_data[str]['time_in_bed']);
-            data_memo_90.push(chart_data[str]['note']);
-        }else{
-            data_rst_90 = data_rst_90.concat(null_array);
-            data_heart_90 = data_heart_90.concat(null_array);
-            data_breath_90 = data_breath_90.concat(null_array);
-            data_csr_90 = data_csr_90.concat(null_array);
-            data_sleep_90 = data_sleep_90.concat(null_array);
-            data_memo_90 = data_memo_90.concat(null_array);
-        }
-        if(cnt < 61){
-            if(chart_data[str] != undefined){
-                data_rst_60.push(chart_data[str]['mean_rsi']);
-                data_heart_60.push(chart_data[str]['mean_hr']);
-                data_breath_60.push(chart_data[str]['mean_respr']);
-                data_csr_60.push(chart_data[str]['mean_cvr']);
-                data_sleep_60.push(chart_data[str]['time_in_bed']);
-                data_memo_60.push(chart_data[str]['note']);
-            }else{
-                data_rst_60 = data_rst_60.concat(null_array);
-                data_heart_60 = data_heart_60.concat(null_array);
-                data_breath_60 = data_breath_60.concat(null_array);
-                data_csr_60 = data_csr_60.concat(null_array);
-                data_sleep_60 = data_sleep_60.concat(null_array);
-                data_memo_60 = data_memo_60.concat(null_array);
-            }
-        }
-        if(cnt < 31){
-            if(chart_data[str] != undefined){
-                data_rst_30.push(chart_data[str]['mean_rsi']);
-                data_heart_30.push(chart_data[str]['mean_hr']);
-                data_breath_30.push(chart_data[str]['mean_respr']);
-                data_csr_30.push(chart_data[str]['mean_cvr']);
-                data_sleep_30.push(chart_data[str]['time_in_bed']);
-                data_memo_30.push(chart_data[str]['note']);
-            }else{
-                data_rst_30 = data_rst_30.concat(null_array);
-                data_heart_30 = data_heart_30.concat(null_array);
-                data_breath_30 = data_breath_30.concat(null_array);
-                data_csr_30 = data_csr_30.concat(null_array);
-                data_sleep_30 = data_sleep_30.concat(null_array);
-                data_memo_30 = data_memo_30.concat(null_array);
-            }
-        }
-    }
-}
+var data_rst_30 = chart_data['data_rst_30'];
+var data_heart_30 = chart_data['data_heart_30'];
+var data_breath_30 = chart_data['data_breath_30'];
+var data_csr_30 = chart_data['data_csr_30'];
+var data_sleep_30 = chart_data['data_sleep_30'];
+var data_memo_30 = chart_data['data_memo_30'];
+var data_rst_60 = chart_data['data_rst_60'];
+var data_heart_60 = chart_data['data_heart_60'];
+var data_breath_60 = chart_data['data_breath_60'];
+var data_csr_60 = chart_data['data_csr_60'];
+var data_sleep_60 = chart_data['data_sleep_60'];
+var data_memo_60 = chart_data['data_memo_60'];
+var data_rst_90 = chart_data['data_rst_90'];
+var data_heart_90 = chart_data['data_heart_90'];
+var data_breath_90 = chart_data['data_breath_90'];
+var data_csr_90 = chart_data['data_csr_90'];
+var data_sleep_90 = chart_data['data_sleep_90'];
+var data_memo_90 = chart_data['data_memo_90'];
+
+
 //グラフ用のサンプルデータ
 //30日間
 //var data_rst_30 = [68,68,73,68,72,71,66,72,68,73,63,68,57,66,66,64,69,61,58,61,62,63,69,70,66,63,63,63,62,61]; //RST

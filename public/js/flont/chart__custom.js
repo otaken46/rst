@@ -51,7 +51,11 @@ $(document).on("click", "#calendar_close", function(){
 });
 //変更ボタン
 $(document).on("click", "#calendar_change", function(){
-　reDraw();
+  if(regist_flg){
+    regist_flg = false;
+    currentDate = flatpickr.formatDate(latestDatePicker.selectedDates[0], "Y-m-d");
+    chart_data = get_chart_data(currentDate);
+  }
 });
 
 //グラフの期間選択ボタン押下時の制御
