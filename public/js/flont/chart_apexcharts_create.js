@@ -14,19 +14,19 @@ var data_color_arry_stroke = ['#13364D', '#CF252B', '#1B9582', '#FFFFFF', '#9AA0
 グラフ描画のoptionsで使うデータの設定
 --------------------*/
 //Y軸の最大値の設定
-function maxY() {
-  max = Math.max(Math.max.apply(null,arryY_rst[1]), Math.max.apply(null,arryY_heart[1]), Math.max.apply(null,arryY_breath[1])) + 10;
+function maxY(data_rst,data_heart,data_breath) {
+  max = Math.max(Math.max.apply(null,data_rst), Math.max.apply(null,data_heart), Math.max.apply(null,data_breath)) + 10;
   max = Math.floor(max/5)*5; //5の倍数にする
   //console.log(max);
   return max;
 }
 //Y軸のメモリ間隔の設定
-function tickAmountY() {
-  return Math.floor(maxY()/5);
+function tickAmountY(data_rst,data_heart,data_breath) {
+  return Math.floor(maxY(data_rst,data_heart,data_breath)/5);
 }
 //Y軸の設定 (update時にも使用)
-var y_axis_setting = [
-  {
+var y_axis_setting = function () {
+  var setting = [{
     seriesName: arryY_rst[0],
     labels: {
       minWidth: 40,
@@ -36,9 +36,9 @@ var y_axis_setting = [
       }
     },
     min: 0,
-    decimalsInFloat:0,
-    tickAmount: tickAmountY(),
-    max: maxY(),
+    decimalsInFloat: 0,
+    tickAmount: tickAmountY(arryY_rst[1], arryY_heart[1], arryY_breath[1]),
+    max: maxY(arryY_rst[1], arryY_heart[1], arryY_breath[1]),
     title: {
       text: "RST・心拍数・呼吸数・臥床時間",
       style: {
@@ -47,16 +47,17 @@ var y_axis_setting = [
         fontWeight: 600,
       }
     },
-  },
-  { //心拍数のY軸
+  }, { //心拍数のY軸
     seriesName: arryY_rst[0],
+    min: 0,
+    max: maxY(arryY_rst[1], arryY_heart[1], arryY_breath[1]),
     show: false,
-  },
-  { //呼吸数のY軸
+  }, { //呼吸数のY軸
     seriesName: arryY_rst[0],
+    min: 0,
+    max: maxY(arryY_rst[1], arryY_heart[1], arryY_breath[1]),
     show: false,
-  },
-  { //CSRのY軸は第二軸を作成
+  }, { //CSRのY軸は第二軸を作成
     seriesName: arryY_csr[0],
     opposite: true,
     labels: {
@@ -69,7 +70,7 @@ var y_axis_setting = [
       }
     },
     min: 0,
-    decimalsInFloat:1,
+    decimalsInFloat: 1,
     tickAmount: 6,
     max: 3,
     title: {
@@ -80,13 +81,14 @@ var y_axis_setting = [
         fontWeight: 600,
       }
     }
-  },
-  { //臥床時間のY軸
+  }, { //臥床時間のY軸
     seriesName: arryY_rst[0],
+    min: 0,
+    max: maxY(arryY_rst[1], arryY_heart[1], arryY_breath[1]),
     show: false,
-  }
-];
-
+  }];
+  return setting;
+}
 //グラフの高さの設定
 function chart_h() {
   if(window.innerWidth > 952) { //凡例が一列に収まっている場合
@@ -204,7 +206,7 @@ var options = {
       enabled: false
     }
   },
-  yaxis: y_axis_setting,
+  yaxis: y_axis_setting(),
   tooltip: {
     shared: true,
     //fillSeriesColor: data_color_arry,

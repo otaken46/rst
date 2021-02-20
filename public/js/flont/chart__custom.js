@@ -29,7 +29,6 @@ $(document).on("click", "#list_table .memoClickable", function(){
   $("#memo_set").removeClass("memo_create");
   $("#memo_set").addClass("memo_edit");
   memoSetPicker.setDate($(this)[0].dataset.date); //ピッカーの日付を指定の日にする
-  $("#memo_setDate").prop('disabled', true);
   $("#memo_setLabel span").text($(this)[0].dataset.value); //内容の初期選択肢を設定
   $("#memo_setLabel")[0].dataset.value = $("#memo_setLabel_choices li:first-of-type")[0].dataset.value; //内容の初期選択肢のvalue値を設定
   $("#memo_set").modal("show");
@@ -56,6 +55,7 @@ $(document).on("click", "#calendar_change", function(){
     currentDate = flatpickr.formatDate(latestDatePicker.selectedDates[0], "Y-m-d");
     chart_data = get_chart_data(currentDate);
   }
+  　reDraw();
 });
 
 //グラフの期間選択ボタン押下時の制御
@@ -67,7 +67,7 @@ $(document).on("click", "#chart_dayRange_choices li" ,function(){
     reDraw();
   }
 });
-    
+
 //グラフの凡例押下時の制御
 $(document).on("click", "#chart_legend input[type='checkbox']", function(){
   var targetName = $(this).attr("name");
@@ -79,7 +79,7 @@ $(document).on("click", "#chart_legend input[type='checkbox']", function(){
 ウィンドウサイズが変更されたときの制御
 --------------------*/
 var timerResized;
-var currentRatio = window.devicePixelRatio; 
+var currentRatio = window.devicePixelRatio;
 window.addEventListener( "resize", function () {
   if(currentRatio === window.devicePixelRatio){ //ズームした直後でない時のみ実行
     clearTimeout(timerResized);
@@ -108,7 +108,7 @@ function createScrollBar() {
     var timerScroll;
     $("#list_table").scroll(function() {
       clearTimeout(timerScroll);
-      timerScroll = setTimeout(function(){ 
+      timerScroll = setTimeout(function(){
         var scrollLeft = $("#list_table").scrollLeft() * (visible_w / table_w);
         $("#scroll_box").css("transform", "translateX(" + scrollLeft + "px");
       },200);
@@ -151,7 +151,7 @@ function reDraw() {
       chart: { width: document.getElementById('chart').clientWidth, height: chart_h(), events: {updated: function() {setDataToTable(dataForTable); createMemoLabel(); createScrollBar();}}},
       series: [{data: arryY_rst[1]}, {data: arryY_heart[1]}, {data: arryY_breath[1]}, {data: arryY_csr[1]}, {data: arryY_sleep[1]}],
       xaxis: {categories: arryX_moto},
-      yaxis: y_axis_setting
+      yaxis: y_axis_setting()
     },true);
   });
 }
