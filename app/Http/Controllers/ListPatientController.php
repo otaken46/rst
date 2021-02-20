@@ -27,7 +27,7 @@ class ListPatientController extends Controller
                 , tbl1.patient_id as tbl3_patient_id
                 , tbl1.doc_date as tbl3_doc_date
                 , tbl1.mean_respr as tbl3_mean_respr
-                , tbl1.mean_cvr as tbl3_mean_cvr
+                , tbl1.mean_csr as tbl3_mean_csr
                 , tbl1.mean_rsi as tbl3_mean_rsi
                 , tbl1.max_xhr2 as tbl3_max_xhr2
                 , tbl1.mean_hr as tbl3_mean_hr
@@ -67,7 +67,7 @@ class ListPatientController extends Controller
                             $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
                             $list_patient[$cnt]['心拍数'] = sprintf('%d', floatval($value['tbl3_mean_hr']));
                             $list_patient[$cnt]['呼吸数'] = sprintf('%d', floatval($value['tbl3_mean_respr']));
-                            $list_patient[$cnt]['CSRグレード'] = sprintf('%.2F', floatval($value['tbl3_mean_cvr']));
+                            $list_patient[$cnt]['CSRグレード'] = sprintf('%.2F', floatval($value['tbl3_mean_csr']));
                             $list_patient[$cnt]['臥床時間'] = sprintf('%.1F', floatval($value['tbl3_time_in_bed']));
                         }
                     }

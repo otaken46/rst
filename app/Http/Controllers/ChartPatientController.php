@@ -38,7 +38,7 @@ class ChartPatientController extends Controller
                 $chart_patient_data[$date]['mean_rsi'] = sprintf('%d', floatval($val['mean_rsi']));
                 $chart_patient_data[$date]['mean_hr'] = sprintf('%d', floatval($val['mean_hr']));
                 $chart_patient_data[$date]['mean_respr'] = sprintf('%d', floatval($val['mean_respr']));
-                $chart_patient_data[$date]['mean_cvr'] = sprintf('%.2F', floatval($val['mean_cvr']));
+                $chart_patient_data[$date]['mean_csr'] = sprintf('%.1F', floatval($val['mean_csr']));
                 $chart_patient_data[$date]['time_in_bed'] = sprintf('%.1F', floatval($val['time_in_bed']));
                 $chart_patient_data[$date]['note'] = $val['note'];
                 if($create_old_date == ""){
@@ -163,7 +163,7 @@ class ChartPatientController extends Controller
                 $result_data['data_rst_90'][] = $chart_data[date("Y-m-d", $target_day)]['mean_rsi'];
                 $result_data['data_heart_90'][] = $chart_data[date("Y-m-d", $target_day)]['mean_hr'];
                 $result_data['data_breath_90'][] = $chart_data[date("Y-m-d", $target_day)]['mean_respr'];
-                $result_data['data_csr_90'][] = $chart_data[date("Y-m-d", $target_day)]['mean_cvr'];
+                $result_data['data_csr_90'][] = $chart_data[date("Y-m-d", $target_day)]['mean_csr'];
                 $result_data['data_sleep_90'][] = $chart_data[date("Y-m-d", $target_day)]['time_in_bed'];
                 $result_data['data_memo_90'][] = $chart_data[date("Y-m-d", $target_day)]['note'];
             }else{
@@ -179,7 +179,7 @@ class ChartPatientController extends Controller
                     $result_data['data_rst_60'][] = $chart_data[date("Y-m-d", $target_day)]['mean_rsi'];
                     $result_data['data_heart_60'][] = $chart_data[date("Y-m-d", $target_day)]['mean_hr'];
                     $result_data['data_breath_60'][] = $chart_data[date("Y-m-d", $target_day)]['mean_respr'];
-                    $result_data['data_csr_60'][] = $chart_data[date("Y-m-d", $target_day)]['mean_cvr'];
+                    $result_data['data_csr_60'][] = $chart_data[date("Y-m-d", $target_day)]['mean_csr'];
                     $result_data['data_sleep_60'][] = $chart_data[date("Y-m-d", $target_day)]['time_in_bed'];
                     $result_data['data_memo_60'][] = $chart_data[date("Y-m-d", $target_day)]['note'];
                 }else{
@@ -196,7 +196,7 @@ class ChartPatientController extends Controller
                     $result_data['data_rst_30'][] = $chart_data[date("Y-m-d", $target_day)]['mean_rsi'];
                     $result_data['data_heart_30'][] = $chart_data[date("Y-m-d", $target_day)]['mean_hr'];
                     $result_data['data_breath_30'][] = $chart_data[date("Y-m-d", $target_day)]['mean_respr'];
-                    $result_data['data_csr_30'][] = $chart_data[date("Y-m-d", $target_day)]['mean_cvr'];
+                    $result_data['data_csr_30'][] = $chart_data[date("Y-m-d", $target_day)]['mean_csr'];
                     $result_data['data_sleep_30'][] = $chart_data[date("Y-m-d", $target_day)]['time_in_bed'];
                     $result_data['data_memo_30'][] = $chart_data[date("Y-m-d", $target_day)]['note'];
                 }else{
@@ -237,7 +237,7 @@ class ChartPatientController extends Controller
             $chart_patient_data[$date]['mean_rsi'] = sprintf('%d', floatval($val['mean_rsi']));
             $chart_patient_data[$date]['mean_hr'] = sprintf('%d', floatval($val['mean_hr']));
             $chart_patient_data[$date]['mean_respr'] = sprintf('%d', floatval($val['mean_respr']));
-            $chart_patient_data[$date]['mean_cvr'] = sprintf('%.2F', floatval($val['mean_cvr']));
+            $chart_patient_data[$date]['mean_csr'] = sprintf('%.1F', floatval($val['mean_csr']));
             $chart_patient_data[$date]['time_in_bed'] = sprintf('%.1F', floatval($val['time_in_bed']));
             $chart_patient_data[$date]['note'] = $val['note'];
         }

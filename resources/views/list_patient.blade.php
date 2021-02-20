@@ -16,7 +16,7 @@
 
 <body class="bg_color p_list">
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light justify-content-between">
-    <a id="title_name" href="#">RST解析結果表示システム</a>
+    <a id="title_name" href="#">COVID-19患者用RSTモニタリング</a>
     <ul class="navbar-nav flex-row">
       <li class="nav-item mr-3 d-none d-sm-block">
         <span class="nav-link disabled">医療機関：<span id="list_userName">〇〇〇〇病院</span></span>
