@@ -237,7 +237,7 @@ class ChartPatientController extends Controller
             $chart_patient_data[$date]['mean_rsi'] = sprintf('%d', floatval($val['mean_rsi']));
             $chart_patient_data[$date]['mean_hr'] = sprintf('%d', floatval($val['mean_hr']));
             $chart_patient_data[$date]['mean_respr'] = sprintf('%d', floatval($val['mean_respr']));
-            $chart_patient_data[$date]['mean_csr'] = sprintf('%.1F', floatval($val['mean_csr']));
+            $chart_patient_data[$date]['mean_csr'] = sprintf('%.2F', floatval($val['mean_csr']));
             $chart_patient_data[$date]['time_in_bed'] = sprintf('%.1F', floatval($val['time_in_bed']));
             $chart_patient_data[$date]['note'] = $val['note'];
         }
