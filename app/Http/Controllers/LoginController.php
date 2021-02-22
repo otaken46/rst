@@ -45,7 +45,7 @@ class LoginController extends Controller
         $sql_result = $facility_mng_mst->select('id','fail_count','account_rock')->where('facility_manager_id', $id)->where('delete_date', NULL)->get();
         //　施設管理者
         if(isset($sql_result[0]['id']) && $id != $setting[0]['admin_id']){
-            $sql = FacilityManagerMst::where('facility_manager_id', $id)->where('password', $pass)->where('delete_date', NULL)->get();
+            $sql = FacilityManagerMst::where('facility_manager_id', 'like binary', $id)->where('password', 'like binary', $pass)->where('delete_date', NULL)->get();
             //　ユーザーidとパスワードが正しいかつアカウントロックされていない
             if(isset($sql[0]['id']) && $sql_result[0]['account_rock'] == 0){
                 $request->session()->put('id', $request->id);
@@ -105,7 +105,7 @@ class LoginController extends Controller
         $sql_result = $viewer_mst->where('viewer_id', $id)->where('account_rock', 0)->get();
         //　閲覧者
         if(isset($sql_result[0]['id'])){
-            $sql = $viewer_mst->where('viewer_id', $id)->where('password', $pass)->get();
+            $sql = $viewer_mst->where('viewer_id', 'like binary', $id)->where('password', 'like binary', $pass)->get();
             if(isset($sql[0]['id'])){
                 $request->session()->put('id', $id);
                 $request->session()->put('pass', $pass);

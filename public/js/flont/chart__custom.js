@@ -29,6 +29,7 @@ $(document).on("click", "#list_table .memoClickable", function(){
   $("#memo_set").removeClass("memo_create");
   $("#memo_set").addClass("memo_edit");
   memoSetPicker.setDate($(this)[0].dataset.date); //ピッカーの日付を指定の日にする
+  $("#memo_setDate").prop('disabled', true);
   $("#memo_setLabel span").text($(this)[0].dataset.value); //内容の初期選択肢を設定
   $("#memo_setLabel")[0].dataset.value = $("#memo_setLabel_choices li:first-of-type")[0].dataset.value; //内容の初期選択肢のvalue値を設定
   $("#memo_set").modal("show");
@@ -55,7 +56,7 @@ $(document).on("click", "#calendar_change", function(){
     currentDate = flatpickr.formatDate(latestDatePicker.selectedDates[0], "Y-m-d");
     chart_data = get_chart_data(currentDate);
   }
-  　reDraw();
+　reDraw();
 });
 
 //グラフの期間選択ボタン押下時の制御
@@ -148,7 +149,7 @@ function reDraw() {
     //--------------------
     chart.clearAnnotations(); //今のメモラベルを削除する
     chart.updateOptions({ //グラフのデータを更新して描画する
-      chart: { width: document.getElementById('chart').clientWidth, height: chart_h(), events: {updated: function() {setDataToTable(dataForTable); createMemoLabel(); createScrollBar();}}},
+      chart: { width: document.getElementById('chart').clientWidth, height: chart_h(), events: {updated: function() {setDataToTable(dataForTable); createMemoLabel(); createScrollBar(); resetDisplayChart();}}},
       series: [{data: arryY_rst[1]}, {data: arryY_heart[1]}, {data: arryY_breath[1]}, {data: arryY_csr[1]}, {data: arryY_sleep[1]}],
       xaxis: {categories: arryX_moto},
       yaxis: y_axis_setting()
@@ -165,4 +166,9 @@ function createMemoChoices(arry){
   //初期状態では選択肢の最初の項目を設定
   $("#memo_setLabel")[0].dataset.value = arry[0];
    $("#memo_setLabel span").text(arry[0]);
+}
+
+//凡例をクリックして非表示にしていた設定をリセットして、凡例とグラフを再度表示状態に戻す関数 (グラフの再描画時に使用)
+function resetDisplayChart(){
+  $("#chart_legend input[type='checkbox']").prop("checked",true);
 }

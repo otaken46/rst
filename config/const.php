@@ -6,7 +6,7 @@ return [
     'max_viewer' => '50',
     'max_patient' => '100',
     'err_001' => '入力内容が正しくありません',
-    'title'=> 'RSTモニタシステム',
+    'title'=> 'COVID-19患者用RSTモニタリング',
     'page_title'=>array(
         'facility' => '(施設登録)',
         'facility_mng' => '(施設管理者登録)',

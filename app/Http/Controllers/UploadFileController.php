@@ -14,7 +14,7 @@ class UploadFileController extends Controller
         $pass =  $request->header('pass');
         if($id != NULL && $pass != NULL){
             $patient_mst = new PatientMst();
-            $sql_result = $patient_mst->where('patient_id',$id)->where('password',$pass)->where('delete_date', NULL)->count();
+            $sql_result = $patient_mst->where('patient_id', 'like binary',$id)->where('password', 'like binary',$pass)->where('delete_date', NULL)->count();
             if($sql_result == 1){
                 $err = true;
                 $check = $request->file('file');
