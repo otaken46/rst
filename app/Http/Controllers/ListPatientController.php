@@ -98,6 +98,7 @@ class ListPatientController extends Controller
             $pass = '';
             return view('login_viewer', compact('id','pass','errors'));
         }
+        Log::debug($list_patient);
         $request->session()->put('facility_name', $facility_name);
         return view('list_patient', compact('facility_name','list_patient','flag_pink','flag_yellow'));
     }
