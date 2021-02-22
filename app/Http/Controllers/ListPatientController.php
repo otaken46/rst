@@ -44,10 +44,10 @@ class ListPatientController extends Controller
                     ) 
             WHERE
                 tbl2.id IS NULL');
-                $patient_mst_data = PatientMst::where('facility_id',$viewer_mst_data[0]['id'])->where('delete_date', NULL)->get();
+                $patient_mst_data = PatientMst::where('facility_id', 'like binary',$viewer_mst_data[0]['id'])->where('delete_date', NULL)->get();
                 $cnt = 0;
                 $date ="";
-                
+
                 $array = json_decode(json_encode($patient_mst_data), true);
                 $final_output_data = json_decode(json_encode($final_output), true);
                 $flag_pink = array();
@@ -62,6 +62,8 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['CSRグレード'] = "";
                     $list_patient[$cnt]['臥床時間'] = "";
                     foreach($final_output_data as $value){
+                        Log::debug($val['patient_id']);
+                        Log::debug($value['tbl3_patient_id']);
                         if($val['patient_id'] == $value['tbl3_patient_id']){
                             $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['tbl3_create_date']));
                             $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
@@ -98,7 +100,7 @@ class ListPatientController extends Controller
             $pass = '';
             return view('login_viewer', compact('id','pass','errors'));
         }
-        Log::debug($list_patient);
+
         $request->session()->put('facility_name', $facility_name);
         return view('list_patient', compact('facility_name','list_patient','flag_pink','flag_yellow'));
     }
