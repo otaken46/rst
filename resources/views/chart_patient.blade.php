@@ -3,7 +3,7 @@
 <head>
   <!-- "{{config('const.version')}}" -->
   <meta charset="UTF-8">
-  <title>詳細グラフ｜RST結果ビューア</title>
+  <title>COVID-19患者用RSTモニタリング</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- ライブラリ -->
