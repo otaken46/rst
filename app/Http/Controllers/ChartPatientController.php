@@ -15,7 +15,7 @@ class ChartPatientController extends Controller
         if($request->session()->get('id') != NULL && $request->session()->get('pass') != NULL && $request->input('patient_id') != NULL  && $request->session()->get('user') == "viewer"){
             $patient_id = $request->input('patient_id');
             $final_output = new FinalOutput();
-            $chart_data =  FinalOutput::where('patient_id',$patient_id)->get();
+            $chart_data =  FinalOutput::where('patient_id', 'like binary', $patient_id)->get();
             $chart_patient_data = array();
             $old_date = "";
             $new_date = "";

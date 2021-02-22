@@ -62,8 +62,6 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['CSRグレード'] = "";
                     $list_patient[$cnt]['臥床時間'] = "";
                     foreach($final_output_data as $value){
-                        Log::debug($val['patient_id']);
-                        Log::debug($value['tbl3_patient_id']);
                         if($val['patient_id'] == $value['tbl3_patient_id']){
                             $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['tbl3_create_date']));
                             $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
