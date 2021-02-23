@@ -123,8 +123,7 @@
       ※ バックエンドとの連携後、削除してください
   -->
   <script type="text/javascript">
-  var chart_data = new Array()
-  chart_data = {{$chart_patient}};
+  var chart_data = @json($chart_patient);
   var old_date = '{{$old_date}}';
   var target_id ='{{$patient_id}}';
   var memoChoices =@json($memo_list);
