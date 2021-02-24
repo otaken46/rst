@@ -246,10 +246,10 @@ class ChartPatientController extends Controller
         $res = ['result'=>'OK','chart_data'=>$chart_patient];
 
         if($sql_result != 0){
-            $result = json_encode($res);
+            $result = json_encode($res, JSON_NUMERIC_CHECK);
             return $result;
         }else{
-            $result = json_encode($res);
+            $result = json_encode($res,JSON_NUMERIC_CHECK);
             return $result;
         }
     }
