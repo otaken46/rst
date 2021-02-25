@@ -22,28 +22,19 @@ class ListPatientController extends Controller
             ->where('viewer_id',$request->session()->get('id'))->where('password', $request->session()->get('pass'))->get();
             if(isset($viewer_mst_data[0]['id'])){
                 $facility_name = $viewer_mst_data[0]['facility_name'];
-                $final_output = DB::select('SELECT
-                tbl1.id as tbl3_id
-                , tbl1.patient_id as tbl3_patient_id
-                , tbl1.doc_date as tbl3_doc_date
-                , tbl1.mean_respr as tbl3_mean_respr
-                , tbl1.mean_csr as tbl3_mean_csr
-                , tbl1.mean_rsi as tbl3_mean_rsi
-                , tbl1.max_xhr2 as tbl3_max_xhr2
-                , tbl1.mean_hr as tbl3_mean_hr
-                , tbl1.total_taido_pc as tbl3_total_taido_pc
-                , tbl1.note as tbl3_note
-                , tbl1.time_in_bed as tbl3_time_in_bed
-                ,(select max(tbl4.create_date) from db_rst.final_output7 as tbl4 where tbl4.patient_id = tbl1.patient_id) as maxcreate_date
-            FROM
-                db_rst.final_output7 AS tbl1 
-                LEFT JOIN db_rst.final_output7 AS tbl2 
-                    ON ( 
-                        tbl1.patient_id = tbl2.patient_id 
-                        AND tbl1.doc_date < tbl2.doc_date
-                    ) 
-            WHERE
-                tbl2.id IS NULL');
+                $final_output = DB::select(
+                'SELECT
+                    tbl3.patient_id AS tbl3_patient_id
+                    ,tbl3.mean_respr AS tbl3_mean_respr
+                    ,tbl3.mean_csr AS tbl3_mean_csr
+                    ,tbl3.mean_rsi AS tbl3_mean_rsi
+                    ,tbl3.mean_hr AS tbl3_mean_hr
+                    ,tbl3.time_in_bed AS  tbl3_time_in_bed
+                    , max(tbl3.create_date) AS tbl3_create_date
+                FROM
+                    db_rst.final_output7 AS tbl3
+                GROUP BY
+                tbl3.patient_id');
                 $patient_mst_data = PatientMst::where('facility_id', 'like binary',$viewer_mst_data[0]['id'])->where('delete_date', NULL)->get();
                 $cnt = 0;
                 $date ="";
@@ -63,7 +54,7 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['臥床時間'] = "";
                     foreach($final_output_data as $value){
                         if($val['patient_id'] == $value['tbl3_patient_id']){
-                            $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['maxcreate_date']));
+                            $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['tbl3_create_date']));
                             $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
                             $list_patient[$cnt]['心拍数'] = sprintf('%d', floatval($value['tbl3_mean_hr']));
                             $list_patient[$cnt]['呼吸数'] = sprintf('%d', floatval($value['tbl3_mean_respr']));
