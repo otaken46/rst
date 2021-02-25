@@ -22,7 +22,7 @@ function createTrNum(dataArry, index){ //データが数値(メモ以外)の場�
   $(trID).append("<th class='dataTitle' title='" + dataArry[0] + "' style='width:" + table_th_w + "px;'>" + dataArry[0] + "</th>");
   for(var i=0; i<dataArry[1].length; i++){
     var elem_num = dataArry[1][i];
-    if(elem_num || elem_num == 0){
+    if(elem_num){
       if(typeof elem_num === "number" && Number.isInteger(elem_num) === false){ //データが数値かつ整数ではない場合
         elem_num = Math.round(elem_num*10)/10; //小数点第一位までになるように四捨五入
       }
