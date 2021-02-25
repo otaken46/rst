@@ -47,6 +47,8 @@ class ListPatientController extends Controller
                         if($val['patient_id'] == $value['patient_id']){
                             $targetdate = $value['create_date'];
                             if($createdate == "1990/01/01" || $targetdate > $createdate){
+                                Log::debug($targetdate);
+                                Log::debug($value['patient_id']);
                                 $createdate = $targetdate;
                                 $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['create_date']));
                                 $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['mean_rsi']));
