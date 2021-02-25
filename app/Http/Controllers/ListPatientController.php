@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Models\ViewerMst;
 use App\Http\Models\PatientMst;
 use App\Http\Models\SettingMst;
+use App\Http\Models\FinalOutput;
 use Illuminate\Support\Facades\Log;
 
 class ListPatientController extends Controller
@@ -22,19 +23,7 @@ class ListPatientController extends Controller
             ->where('viewer_id',$request->session()->get('id'))->where('password', $request->session()->get('pass'))->get();
             if(isset($viewer_mst_data[0]['id'])){
                 $facility_name = $viewer_mst_data[0]['facility_name'];
-                $final_output = DB::select('SELECT
-                tbl3.patient_id AS tbl3_patient_id
-                , tbl3.mean_respr AS tbl3_mean_respr
-                , tbl3.mean_csr AS tbl3_mean_csr
-                , tbl3.mean_rsi AS tbl3_mean_rsi
-                , tbl3.mean_hr AS tbl3_mean_hr
-                , tbl3.time_in_bed AS tbl3_time_in_bed
-                , max(tbl3.create_date) AS tbl3_create_date 
-                FROM
-                    db_rst.final_output7 AS tbl3 
-                    WHERE tbl3.doc_date IS NOT NULL
-                GROUP BY
-                tbl3.patient_id');
+                $final_output = FinalOutput::whereNotNull('doc_date')->get();
                 $patient_mst_data = PatientMst::where('facility_id', 'like binary',$viewer_mst_data[0]['id'])->where('delete_date', NULL)->get();
                 $cnt = 0;
                 $date ="";
@@ -52,14 +41,20 @@ class ListPatientController extends Controller
                     $list_patient[$cnt]['呼吸数'] = "";
                     $list_patient[$cnt]['CSRグレード'] = "";
                     $list_patient[$cnt]['臥床時間'] = "";
+                    $createdate = "1990/01/01";//dummy
+                    $targetdate = "";    
                     foreach($final_output_data as $value){
-                        if($val['patient_id'] == $value['tbl3_patient_id']){
-                            $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['tbl3_create_date']));
-                            $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['tbl3_mean_rsi']));
-                            $list_patient[$cnt]['心拍数'] = sprintf('%d', floatval($value['tbl3_mean_hr']));
-                            $list_patient[$cnt]['呼吸数'] = sprintf('%d', floatval($value['tbl3_mean_respr']));
-                            $list_patient[$cnt]['CSRグレード'] = sprintf('%.2F', floatval($value['tbl3_mean_csr']));
-                            $list_patient[$cnt]['臥床時間'] = sprintf('%.1F', floatval($value['tbl3_time_in_bed']));
+                        if($val['patient_id'] == $value['patient_id']){
+                            $targetdate = $value['create_date'];
+                            if($createdate == "1990/01/01" || $targetdate > $createdate){
+                                $createdate = $targetdate;
+                                $list_patient[$cnt]['最終更新'] = date('Y/m/d',  strtotime($value['create_date']));
+                                $list_patient[$cnt]['RST'] = sprintf('%d', floatval($value['mean_rsi']));
+                                $list_patient[$cnt]['心拍数'] = sprintf('%d', floatval($value['mean_hr']));
+                                $list_patient[$cnt]['呼吸数'] = sprintf('%d', floatval($value['mean_respr']));
+                                $list_patient[$cnt]['CSRグレード'] = sprintf('%.2F', floatval($value['mean_csr']));
+                                $list_patient[$cnt]['臥床時間'] = sprintf('%.1F', floatval($value['time_in_bed']));
+                            }
                         }
                     }
                     $cnt++;
