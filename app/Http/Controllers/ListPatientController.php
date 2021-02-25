@@ -22,17 +22,17 @@ class ListPatientController extends Controller
             ->where('viewer_id',$request->session()->get('id'))->where('password', $request->session()->get('pass'))->get();
             if(isset($viewer_mst_data[0]['id'])){
                 $facility_name = $viewer_mst_data[0]['facility_name'];
-                $final_output = DB::select(
-                'SELECT
-                    tbl3.patient_id AS tbl3_patient_id
-                    ,tbl3.mean_respr AS tbl3_mean_respr
-                    ,tbl3.mean_csr AS tbl3_mean_csr
-                    ,tbl3.mean_rsi AS tbl3_mean_rsi
-                    ,tbl3.mean_hr AS tbl3_mean_hr
-                    ,tbl3.time_in_bed AS  tbl3_time_in_bed
-                    , max(tbl3.create_date) AS tbl3_create_date
+                $final_output = DB::select('SELECT
+                tbl3.patient_id AS tbl3_patient_id
+                , tbl3.mean_respr AS tbl3_mean_respr
+                , tbl3.mean_csr AS tbl3_mean_csr
+                , tbl3.mean_rsi AS tbl3_mean_rsi
+                , tbl3.mean_hr AS tbl3_mean_hr
+                , tbl3.time_in_bed AS tbl3_time_in_bed
+                , max(tbl3.create_date) AS tbl3_create_date 
                 FROM
-                    db_rst.final_output7 AS tbl3
+                    db_rst.final_output7 AS tbl3 
+                    WHERE tbl3.doc_date IS NOT NULL
                 GROUP BY
                 tbl3.patient_id');
                 $patient_mst_data = PatientMst::where('facility_id', 'like binary',$viewer_mst_data[0]['id'])->where('delete_date', NULL)->get();
