@@ -59,6 +59,7 @@ class ListPatientController extends Controller
                     }
                     $cnt++;
                 }
+                Log::debug($list_patient);
                 //患者一覧の色付き
                 $cnt = 0;
                 $setting = SettingMst::get();
