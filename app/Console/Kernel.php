@@ -352,7 +352,7 @@ class Kernel extends ConsoleKernel
                 }
                 ini_set('memory_limit', '256M');
             }
-        })->dailyAt('06:00');
+        })->dailyAt('20:53');
     }
     public static function operation_log($userid, $operation_code, $result = NULL){
         $operation_log = new OperationLog();
